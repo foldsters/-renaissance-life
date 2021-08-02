@@ -1,0 +1,18 @@
+Category : Entity
+-----------------------------------------------------------
+
+Data:
+    <title> : String -- Required for Constructor
+    <tickValue> : Int? -- Init to zero
+
+
+Does:
+    1. Create instance of Category :: String -> Category
+    2. Getter for title :: () -> String
+    3. Setter for title :: String -> ()
+    4. Getter for tickValue :: () -> Int?
+    5. Setter for tickValue :: Int? -> ()
+
+
+Don't(s):
+    Accept negative tickValue -> IllegalArgumentException
