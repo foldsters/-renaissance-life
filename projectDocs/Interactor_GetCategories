@@ -1,0 +1,12 @@
+GetCategories : Interactor
+-----------------------------------------------------------
+
+Data:
+
+
+
+Does:
+    1. GetCategories :: DayCatLog -> Iterable<Category>
+
+
+Don't(s):

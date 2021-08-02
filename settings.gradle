@@ -1,3 +1,4 @@
 rootProject.name = "Renaissance Life"
 include ':app'
 include ':core'
+include ':platform'

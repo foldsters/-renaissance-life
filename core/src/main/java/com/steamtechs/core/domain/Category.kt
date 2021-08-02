@@ -1,4 +1,4 @@
-package com.steamtechs.core
+package com.steamtechs.core.domain
 
 class Category(var title: String) {
     var tickValue : Int  = 0

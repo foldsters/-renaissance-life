@@ -1,0 +1,12 @@
+AddCategory : Interactor
+-----------------------------------------------------------
+
+Data:
+
+
+
+Does:
+    1. AddCategory :: DayCatLog -> Category -> ()
+
+
+Don't(s):

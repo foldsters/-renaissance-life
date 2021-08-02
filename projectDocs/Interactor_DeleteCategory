@@ -1,0 +1,14 @@
+DeleteCategory: Interactor
+-----------------------------------------------------------
+
+Data:
+
+
+
+Does:
+    1. DeleteCategory :: DayCatLog -> Category -> ()
+
+
+
+Don't(s):
+    1. Allow DeleteCategory on Category not in DayCatLog -> IllegalArgumentException

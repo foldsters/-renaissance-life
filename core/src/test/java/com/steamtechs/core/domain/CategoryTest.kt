@@ -1,4 +1,4 @@
-package com.steamtechs.core
+package com.steamtechs.core.domain
 
 import org.junit.jupiter.api.*
 import org.junit.jupiter.api.Assertions.assertEquals
@@ -16,7 +16,7 @@ internal class CategoryTest{
     @Nested
     @DisplayName("Given instance of Category called 'testCategory', ")
     inner class GivenTestCategory{
-        lateinit var testCategory : Category
+        private lateinit var testCategory : Category
 
         @BeforeEach
         fun `Given instance of Category called 'testCategory'`(){

@@ -1,0 +1,14 @@
+DayCatLog : Entity
+-----------------------------------------------------------
+
+Data:
+
+
+Does:
+    1. Create Instance of DayCatLog :: DayCatLogDataSource -> DayCatLog
+    2. getCategories returns an Iterable :: () -> Iterable<Categories>
+    3. addCategory :: Category -> ()
+    4. deleteCategory :: Category -> ()
+
+
+Don't(s):

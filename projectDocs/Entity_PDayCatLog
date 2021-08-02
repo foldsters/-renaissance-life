@@ -1,0 +1,17 @@
+PDayCatLog extends DayCatLog : Entity
+-----------------------------------------------------------
+
+Data:
+    1. catList : Holds a list of categories
+
+
+Does:
+    1. Add Category : Category -> ()
+    2. Delete Category : Category -> ()
+    3. Change Category Name : Category, String -> ()
+    4. Set Category Tick Value : Category, Int -> ()
+
+
+Don't(s):
+    1. {2} Allow deleteCategory on Category not in PDayCatLog -> IllegalArgumentsException
+    
