@@ -8,6 +8,7 @@ import androidx.room.RoomDatabase
 @Database(entities = [CategoryEntity::class], version = 1)
 abstract class CategoryDatabase : RoomDatabase() {
 
+    // Inflates a singleton instance
     companion object {
 
         private const val DATABASE_NAME = "category.db"
@@ -19,7 +20,6 @@ abstract class CategoryDatabase : RoomDatabase() {
                 .allowMainThreadQueries()
                 .fallbackToDestructiveMigration()
                 .build()
-
 
         fun getInstance(context: Context): CategoryDatabase =
             (instance ?: create(context)).also { instance = it }

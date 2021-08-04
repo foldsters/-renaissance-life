@@ -1,6 +1,6 @@
 package com.steamtechs.core.domain
 
-class Category(var title: String) {
+open class Category(var title: String) {
     var tickValue : Int  = 0
         set(value){
             negativeCheck(value)

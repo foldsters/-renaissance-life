@@ -8,13 +8,13 @@ interface CategoryDao {
     fun getAll(): List<CategoryEntity>
 
     @Query("SELECT * FROM category WHERE date BETWEEN :startDate AND :endDate")
-    fun getCategoriesBetweenDates(startDate : String, endDate : String): List<CategoryEntity>
+    fun getBetweenDates(startDate : String, endDate : String): List<CategoryEntity>
 
     @Query("SELECT * FROM category WHERE date == :date")
-    fun getCategoriesAtDate(date : String): List<CategoryEntity>
+    fun getAtDate(date : String): List<CategoryEntity>
 
     @Insert
-    fun insertAllCategories(vararg categories: CategoryEntity)
+    fun insertAll(vararg categories: CategoryEntity)
 
     @Delete
     fun deleteCategory(category: CategoryEntity)
@@ -23,6 +23,6 @@ interface CategoryDao {
     fun deleteAll()
 
     @Query("DELETE FROM category WHERE date == :date")
-    fun deleteCategoriesAtDate(date: String)
+    fun deleteAtDate(date: String)
 
 }

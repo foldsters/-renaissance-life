@@ -3,13 +3,10 @@ package com.steamtechs.renaissancelife
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
-import androidx.room.Room
 import com.steamtechs.renaissancelife.framework.db.CategoryDatabase
 import com.steamtechs.renaissancelife.framework.db.CategoryEntity
 
 class MainActivity : AppCompatActivity() {
-
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,9 +23,9 @@ class MainActivity : AppCompatActivity() {
         val today = CategoryEntity("2021-08-03", "hello", 3)
         val nextWeek = CategoryEntity("2021-08-10", "hello", 4)
 
-        categoryDao.insertAllCategories(today, yesterday, lastWeek, nextWeek)
+        categoryDao.insertAll(today, yesterday, lastWeek, nextWeek)
 
-        val categories : List<CategoryEntity> = categoryDao.getCategoriesBetweenDates("2021-08-01", "2021-08-05")
+        val categories : List<CategoryEntity> = categoryDao.getBetweenDates("2021-08-01", "2021-08-05")
 
         Toast.makeText(this, categories.toString(), Toast.LENGTH_LONG).show()
 
