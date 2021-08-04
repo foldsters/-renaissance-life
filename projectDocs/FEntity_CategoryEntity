@@ -1,0 +1,18 @@
+CategoryEntity : FEntity
+-----------------------------------------------------------
+
+Data:
+    <id : Int>
+    <date : String>
+    <title : String>
+    <tickvalue : Int>
+
+
+Does:
+    1. Create Instance
+        1.1 Default Literal Constructor :: Int -> String -> String -> Int -> CategoryEntity
+        1.2 Category-Based Constructor :: String -> Category -> CategoryEntity
+    2. Getters
+    3. Setters
+
+Don't(s):
