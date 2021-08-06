@@ -1,17 +1,16 @@
 package com.steamtechs.core.interactors
 
-import com.steamtechs.core.data.DayCatLog
+import com.steamtechs.core.data.DayCategoryLog
 import com.steamtechs.core.domain.Category
-import com.steamtechs.renaissancelife.platform.datasources.PDayCatLog
-import org.junit.jupiter.api.Assertions.*
+import com.steamtechs.renaissancelife.platform.datasources.PDayCategoryLog
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 
 internal class AddCategoryTest{
 
-    val testPDayCatLog = PDayCatLog()
+    val testPDayCatLog = PDayCategoryLog()
     val testCat1 = Category("Test1")
-    val testDayCatLog = DayCatLog(testPDayCatLog)
+    val testDayCatLog = DayCategoryLog(testPDayCatLog)
 
     @Test
     @DisplayName("Show AddCategory.")

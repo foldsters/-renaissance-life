@@ -1,0 +1,18 @@
+RoomCategoryDataSource : Entity
+-----------------------------------------------------------
+Note: RCDS stands for RoomCategoryDataSource
+
+Data:
+    1. private <category dao>
+
+
+Does:
+    1. Create Instance of RCDS :: () -> RCDS
+    2. Get Categories : () -> Iterable<Category>
+    3. Add Category : Category -> ()
+    4. Delete Category : Category -> ()
+    5. Change Category Name : Category, String -> ()
+    6. Set Category Tick Value : Category, Int -> ()
+
+
+Don't(s):

@@ -1,0 +1,14 @@
+CategoryDao : Interface
+-----------------------------------------------------------
+
+Data:
+    None
+
+
+Does:
+    1. Add CategoryEntity to Database :: CategoryEntity -> ()
+    2. Get all CategoryEntities from Database :: () -> List<CategoryEntity>
+    3. Remove a CategoryEntity from Database :: CategoryEntity -> ()
+
+
+Don't(s):

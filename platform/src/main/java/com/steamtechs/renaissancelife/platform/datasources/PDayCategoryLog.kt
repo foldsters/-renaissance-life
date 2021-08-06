@@ -1,10 +1,10 @@
 package com.steamtechs.renaissancelife.platform.datasources
 
 import com.steamtechs.core.domain.Category
-import com.steamtechs.core.data.DayCatLogDataSource
+import com.steamtechs.core.data.DayCategoryLogDataSource
 import kotlin.IllegalArgumentException
 
-class PDayCatLog : DayCatLogDataSource
+class PDayCategoryLog : DayCategoryLogDataSource
 {
     private var categoryList = mutableListOf<Category>()
 

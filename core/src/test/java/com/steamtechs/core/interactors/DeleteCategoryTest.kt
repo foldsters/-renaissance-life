@@ -1,9 +1,8 @@
 package com.steamtechs.core.interactors
 
-import com.steamtechs.core.data.DayCatLog
+import com.steamtechs.core.data.DayCategoryLog
 import com.steamtechs.core.domain.Category
-import com.steamtechs.renaissancelife.platform.datasources.PDayCatLog
-import org.junit.jupiter.api.Assertions.*
+import com.steamtechs.renaissancelife.platform.datasources.PDayCategoryLog
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
@@ -11,9 +10,9 @@ import kotlin.IllegalArgumentException
 
 internal class DeleteCategoryTest{
 
-    val testPDayCatLog = PDayCatLog()
+    val testPDayCatLog = PDayCategoryLog()
     val testCat1 = Category("Test1")
-    val testDayCatLog= DayCatLog(testPDayCatLog).also { AddCategory(it, testCat1) }
+    val testDayCatLog= DayCategoryLog(testPDayCatLog).also { AddCategory(it, testCat1) }
 
     @Test
     @DisplayName("show DeleteCategory.")

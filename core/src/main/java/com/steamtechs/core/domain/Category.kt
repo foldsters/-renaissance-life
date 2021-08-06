@@ -7,6 +7,8 @@ class Category(var title: String) {
             field = value
         }
 
+    var date = ""
+
     fun negativeCheck(value:Int){
         if (value < 0){
             throw IllegalArgumentException("tickValue cannot be Negative")
