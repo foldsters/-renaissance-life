@@ -12,20 +12,20 @@ class PDayCategoryLog : DayCategoryLogDataSource
         return categoryList
     }
 
-    override fun addCategory(cat: Category) {
-        categoryList.add(cat)
+    override fun addCategory(category: Category) {
+        categoryList.add(category)
     }
 
-    override fun deleteCategory(cat: Category) {
-        val removed = categoryList.remove(cat)
+    override fun deleteCategory(category: Category) {
+        val removed = categoryList.remove(category)
         if (!removed) throw IllegalArgumentException("!")
     }
 
-    override fun changeCategoryName(cat: Category, name: String) {
+    override fun changeCategoryName(category: Category, name: String) {
         TODO("Not yet implemented")
     }
 
-    override fun setCategoryTickValue(cat: Category, count: Int) {
+    override fun setCategoryTickValue(category: Category, count: Int) {
         TODO("Not yet implemented")
     }
 
