@@ -6,7 +6,7 @@ import com.steamtechs.renaissancelife.platform.datasources.PDayCategoryLog
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 
-internal class AddCategoryTest{
+internal class AddCategoryTest{ //
 
     val testPDayCatLog = PDayCategoryLog()
     val testCat1 = Category("Test1")
