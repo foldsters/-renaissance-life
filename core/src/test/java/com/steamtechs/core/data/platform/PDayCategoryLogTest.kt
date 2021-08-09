@@ -1,11 +1,9 @@
-package com.steamtechs.renaissancelife.platform.datasources
+package com.steamtechs.core.data.platform
 
 import com.steamtechs.core.domain.Category
 import com.steamtechs.core.data.DayCategoryLogDataSource
 import org.junit.jupiter.api.*
 import org.junit.jupiter.api.Assertions.*
-import org.junit.jupiter.api.Assertions.assertAll
-import kotlin.IllegalArgumentException
 
 internal class PDayCategoryLogTest {
 

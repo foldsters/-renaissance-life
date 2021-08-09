@@ -1,8 +1,7 @@
-package com.steamtechs.renaissancelife.platform.datasources
+package com.steamtechs.core.data.platform
 
 import com.steamtechs.core.domain.Category
 import com.steamtechs.core.data.DayCategoryLogDataSource
-import kotlin.IllegalArgumentException
 
 class PDayCategoryLog : DayCategoryLogDataSource
 {
