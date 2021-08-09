@@ -14,7 +14,7 @@ internal class DayCategoryLogTest {
     lateinit var dayCategoryLog: DayCategoryLog
 
     val dCDS: DayCategoryLogDataSource = PDayCategoryLog()
-    val categoryList = listOf<Category>(Category("Test1"), Category("Test2"), Category("Test3"))
+    val categoryList = listOf(Category("Test1"), Category("Test2"), Category("Test3"))
 
 
     @Test
