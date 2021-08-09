@@ -1,0 +1,13 @@
+ClearAllCategoriesInStorage: Interactor
+-----------------------------------------------------------
+
+Data:
+
+
+
+Does:
+    1. ClearAllCategoriesInStorage :: DayCategoryLog -> Unit
+
+
+
+Don't(s):

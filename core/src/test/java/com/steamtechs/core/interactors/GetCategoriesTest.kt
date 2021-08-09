@@ -9,16 +9,14 @@ import org.junit.jupiter.api.Test
 
 internal class GetCategoriesTest{
 
-    val testPDayCatLog = PDayCategoryLog()
-    val testCat1 = Category("Test1")
-    val testCat2 = Category("Test2")
-    val testDayCatLog = DayCategoryLog(testPDayCatLog)
+    private val testPDayCatLog = PDayCategoryLog()
+    private val testDayCatLog = DayCategoryLog(testPDayCatLog)
+    private val categoryList = listOf(Category("Test1"), Category("Test2"), Category("Test3"))
 
     @Test
     @DisplayName("GetCategories returns Iterable of Category.")
     fun `GetCategories returns Iterable of Category`() {
-        testPDayCatLog.addCategory(testCat1)
-        testPDayCatLog.addCategory(testCat2)
+        testPDayCatLog.addCategories(categoryList)
         assertInstanceOf(Iterable::class.java, GetCategories(testDayCatLog))
     }
 }

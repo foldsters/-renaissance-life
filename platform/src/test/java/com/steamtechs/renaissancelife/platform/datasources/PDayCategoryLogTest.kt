@@ -12,14 +12,14 @@ internal class PDayCategoryLogTest {
     @Test
     @DisplayName("Create instance of PDayCatLog.")
     fun `Create instance of PDayCatLog`() {
-        var pdcl = PDayCategoryLog()
+        val pdcl = PDayCategoryLog()
         assertInstanceOf(PDayCategoryLog::class.java, pdcl)
     }
 
     @Test
-    @DisplayName("Check PDayCatLog inherets from DayCatLog.")
-    fun `Check PDayCatLog inherets from DayCatLog`() {
-        var pdcl = PDayCategoryLog()
+    @DisplayName("Check PDayCatLog inherits from DayCatLog.")
+    fun `Check PDayCatLog inherits from DayCatLog`() {
+        val pdcl = PDayCategoryLog()
         assertInstanceOf(DayCategoryLogDataSource::class.java, pdcl)
     }
 
@@ -28,21 +28,18 @@ internal class PDayCategoryLogTest {
     @DisplayName("Given instance of PDayCatLog,")
     inner class GivenPDayCategoryLog {
         lateinit var pdcl1: PDayCategoryLog
-        lateinit var cat1: Category
-        lateinit var cat2: Category
+        val categoriesList = listOf<Category>(Category("Test1"), Category("Test2"))
 
 
         @BeforeEach
         fun `Given instance of PDayCatLog`() {
             pdcl1 = PDayCategoryLog()
-            cat1 = Category("Test")
-            cat2 = Category("Test2")
         }
 
         @Test
         @DisplayName("Get Categories from Instance.")
         fun `Get Categories from Instance`() {
-            var cats = pdcl1.getCategories()
+            val cats = pdcl1.getCategories()
             assertEquals(listOf<Category>(), cats)
 
         }
@@ -50,28 +47,30 @@ internal class PDayCategoryLogTest {
         @Test
         @DisplayName("Get Categories from Interface Instance.")
         fun `Get Categories from Interface Instance`() {
-            var cats = (pdcl1 as DayCategoryLogDataSource).getCategories()
+            val cats = (pdcl1 as DayCategoryLogDataSource).getCategories()
             assertEquals(listOf<Category>(), cats)
-
         }
 
         @Test
-        @DisplayName("Add Category to PDayCatLog.")
-        fun `Add Category to PDayCatLog`() {
-            pdcl1.addCategory(cat1)
-            assertEquals(cat1, pdcl1.iterator().next())
+        @DisplayName("Clear All Categories.")
+        fun clearAllCategories() {
+            pdcl1.clearAllCategories()
+            assertTrue(pdcl1.getCategories().isEmpty())
         }
 
         @Test
-        @DisplayName("Add another category to instance.")
-        fun `Add another category to instance`() {
-            pdcl1.addCategory(cat1)
-            pdcl1.addCategory(cat2)
-            assertAll(
-                {assertTrue(pdcl1.contains(cat1))},
-                {assertTrue(pdcl1.contains(cat2))}
-            )
+        @DisplayName("Add Categories from Iterable.")
+        fun addCategoriesFromIterable() {
+            pdcl1.addCategories(categoriesList)
+            assertIterableEquals(categoriesList, pdcl1.getCategories())
+        }
 
+        @Test
+        @DisplayName("Add Categories first calls Clear All Categories.")
+        fun addCategoriesFirstCallsClearAllCategories() {
+            pdcl1.addCategories(categoriesList)
+            pdcl1.addCategories(emptyList<Category>())
+            assertTrue(pdcl1.getCategories().isEmpty())
         }
 
         @Nested
@@ -80,35 +79,37 @@ internal class PDayCategoryLogTest {
 
             @BeforeEach
             fun `Given Category in instance`(){
-                pdcl1.addCategory(cat1)
+                pdcl1.addCategories(categoriesList)
             }
 
             @Test
-            @DisplayName("Delete Category from PDayCatLog.")
-            fun `Add Category to PDayCatLog`() {
-                pdcl1.deleteCategory(cat1)
-                assertFalse(pdcl1.contains(cat1))
+            @DisplayName("Show Getter on Populated Instance.")
+            fun showGetterOnPopulatedInstance() {
+                assertIterableEquals(categoriesList,pdcl1.getCategories())
             }
 
             @Test
-            @DisplayName("Throw IllegalArgumentsException when deleting Category not in PDayCatLog.")
-            fun `Throw IllegalArgumentsException when deleting Category not in PDayCatLog`() {
-                assertThrows<IllegalArgumentException> {
-                    pdcl1.deleteCategory(cat2)
-                }
+            @DisplayName("Clear All Categories on Populated Instance.")
+            fun clearAllCategoriesOnPopulatedInstance() {
+                pdcl1.clearAllCategories()
+                assertTrue(pdcl1.getCategories().isEmpty())
             }
 
+            @Test
+            @DisplayName("Add Categories to Populated Instance.")
+            fun addCategoriesToPopulatedInstance() {
+                val newCategories : Iterable<Category> =
+                    listOf(Category("Test3"), Category("Test4"), Category("Test5"))
+                pdcl1.addCategories(newCategories)
+                assertIterableEquals(newCategories, pdcl1)
+            }
 
+            @Test
+            @DisplayName("Show Iterator.")
+            fun showIterator() {
+                assertInstanceOf(Iterator::class.java, pdcl1.iterator())
+            }
 
         }
-
-
-
-
-
-
-
-
     }
-
 }

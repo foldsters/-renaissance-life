@@ -6,9 +6,9 @@ Data:
 
 
 Does:
-    1. Add CategoryEntity to Database :: CategoryEntity -> ()
-    2. Get all CategoryEntities from Database :: () -> List<CategoryEntity>
-    3. Remove a CategoryEntity from Database :: CategoryEntity -> ()
+    1. Get all CategoryEntities from Database :: () -> List<CategoryEntity>
+    2. Clear All CategoryEntities from Database :: () -> ()
+    3. Add CategoryEntities to Database :: List<CategoryEntity> -> ()
 
 
 Don't(s):

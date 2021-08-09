@@ -6,28 +6,21 @@ import kotlin.IllegalArgumentException
 
 class PDayCategoryLog : DayCategoryLogDataSource
 {
-    private var categoryList = mutableListOf<Category>()
+    private val categoryList = mutableListOf<Category>()
 
     override fun getCategories(): List<Category> {
         return categoryList
     }
 
-    override fun addCategory(category: Category) {
-        categoryList.add(category)
+    override fun clearAllCategories() {
+        categoryList.clear()
     }
 
-    override fun deleteCategory(category: Category) {
-        val removed = categoryList.remove(category)
-        if (!removed) throw IllegalArgumentException("!")
+    override fun addCategories(categories: Iterable<Category>) {
+        this.clearAllCategories()
+        categoryList.addAll(categories)
     }
 
-    override fun changeCategoryName(category: Category, name: String) {
-        TODO("Not yet implemented")
-    }
-
-    override fun setCategoryTickValue(category: Category, count: Int) {
-        TODO("Not yet implemented")
-    }
 
     override fun iterator(): Iterator<Category> {
         return categoryList.iterator()

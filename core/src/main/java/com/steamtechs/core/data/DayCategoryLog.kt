@@ -8,14 +8,12 @@ class DayCategoryLog(val dayCategoryLogDataSource: DayCategoryLogDataSource) {
         return dayCategoryLogDataSource.getCategories()
     }
 
-    fun addCategory(cat: Category) {
-        dayCategoryLogDataSource.addCategory(cat)
+    fun clearAllCategories() {
+        dayCategoryLogDataSource.clearAllCategories()
     }
 
-    fun deleteCategory(cat: Category) {
-        dayCategoryLogDataSource.deleteCategory(cat)
+    fun addCategories(categories: Iterable<Category>) {
+        dayCategoryLogDataSource.addCategories(categories)
     }
-
-
 
 }

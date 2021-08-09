@@ -32,8 +32,8 @@ internal class AppRoomDatabaseTest {
     @DisplayName("Clear All Tables of Database.")
     fun clearAllTablesOfDatabase() {
         val db = AppRoomDatabase.getInstance(appContext)
-        val categoryDataSourceRoom : RoomCategoryDataSource = RoomCategoryDataSource(appContext)
-        categoryDataSourceRoom.addCategory(Category("TestCategory"))
+        val categoryDataSourceRoom = RoomCategoryDataSource(appContext)
+        categoryDataSourceRoom.addCategories(listOf(Category("TestCategory")))
         db.clearAllTables()
         assertTrue(db.categoryDao().getAllCategories().isEmpty())
     }

@@ -6,7 +6,7 @@ Data:
 
 
 Does:
-    1. AddCategory :: DayCatLog -> Category -> ()
+    1. AddCategories :: DayCatLog -> Iterable<Category> -> ()
 
 
 Don't(s):

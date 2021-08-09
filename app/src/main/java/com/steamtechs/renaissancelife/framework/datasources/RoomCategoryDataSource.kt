@@ -9,28 +9,24 @@ import com.steamtechs.renaissancelife.framework.db.CategoryEntity
 class RoomCategoryDataSource(context: Context) : DayCategoryLogDataSource {
 
     private val categoryDao = AppRoomDatabase.getInstance(context).categoryDao()
+
+
     override fun getCategories(): Iterable<Category> {
         return categoryDao.getAllCategories().map {it.toCategory()}
     }
 
-    override fun addCategory(category: Category) {
-        categoryDao.addCategory(CategoryEntity.fromCategory(category))
+    override fun clearAllCategories() {
+        categoryDao.clearAllCategories()
     }
 
-    override fun deleteCategory(category: Category) {
-
+    override fun addCategories(categories: Iterable<Category>) {
+        categoryDao.clearAllCategories()
+        categoryDao.addCategories( categories.map { CategoryEntity.fromCategory(it) } )
     }
 
-    override fun changeCategoryName(category: Category, name: String) {
-        TODO("To eventually remove")
-    }
-
-    override fun setCategoryTickValue(category: Category, count: Int) {
-        TODO("To eventually remove")
-    }
 
     override fun iterator(): Iterator<Category> {
-        TODO("Not yet implemented")
+        return this.getCategories().iterator()
     }
 
 }

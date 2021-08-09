@@ -23,23 +23,41 @@ internal class RoomCategoryDataSourceTest {
 
 
 
-//    @Test
-//    @DisplayName("Get Categories from RCDS instance.")
-//    fun getCategoriesFromRcdsInstance() {
-//        val rcds = RoomCategoryDataSource(appContext)
-//        val categoriesFromDatabase = rcds.getCategories()
-//        println("******")
-//        println(categoriesFromDatabase.toString())
-//        assertEquals(0, categoriesFromDatabase.count())
-//    }
+    @Test
+    @DisplayName("Get Categories from RCDS instance.")
+    fun getCategoriesFromRcdsInstance() {
+        val rcds = RoomCategoryDataSource(appContext)
+        val categoriesFromDatabase = rcds.getCategories()
+        println(categoriesFromDatabase)
+        assertEquals(0, categoriesFromDatabase.count())
+    }
 
-//    @Test
-//    @DisplayName("Add Category to RCDS instance.")
-//    fun addCategoryToRcdsInstance() {
-//        val rcds = RoomCategoryDataSource(appContext)
-//        val category1 = Category("Test1")
-//        rcds.addCategory()
-//    }
+    @Test
+    @DisplayName("Clear All Categories from RCDS.")
+    fun clearAllCategoriesFromRcds() {
+        val rcds = RoomCategoryDataSource(appContext)
+        rcds.clearAllCategories()
+        val categoriesFromDatabase = rcds.getCategories()
+        assertEquals(0, categoriesFromDatabase.count())
+    }
+
+
+    @Test
+    @DisplayName("Add Categories to RCDS instance.")
+    fun addCategoriesToRcdsInstance() {
+        val rcds = RoomCategoryDataSource(appContext)
+        val categories = listOf<Category>(Category("Test1"), Category("Test2"))
+        rcds.addCategories(categories)
+        assertEquals(2, rcds.getCategories().count())
+    }
+
+    @Test
+    @DisplayName("Show Iterator Method.")
+    fun showIteratorMethod() {
+        val rcds = RoomCategoryDataSource(appContext)
+        val ircds = rcds.iterator()
+        assertInstanceOf(Iterator::class.java,ircds)
+    }
 
 
 }
