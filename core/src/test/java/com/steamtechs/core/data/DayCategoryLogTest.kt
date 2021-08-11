@@ -11,29 +11,47 @@ import org.junit.jupiter.api.Test
 
 internal class DayCategoryLogTest {
 
-    lateinit var dayCategoryLog: DayCategoryLog
+    // SETUP
 
-    val dCDS: DayCategoryLogDataSource = PDayCategoryLog()
-    val categoryList = listOf(Category("Test1"), Category("Test2"), Category("Test3"))
+    lateinit var dayCategoryLogDataSource: DayCategoryLogDataSource
+
+    @BeforeEach
+    fun setup() {
+        dayCategoryLogDataSource = PDayCategoryLog()
+    }
 
 
+    // TESTS
+
+    // Instance / Constructor Tests
     @Test
     @DisplayName("Create instance of DayCatLog.")
     fun `Create instance of DayCatLog`() {
-        dayCategoryLog = DayCategoryLog(dCDS)
+        val dayCategoryLog = DayCategoryLog(dayCategoryLogDataSource)
         assertInstanceOf(DayCategoryLog::class.java, dayCategoryLog)
     }
 
+
+    // Tests Assuming Instance of DayCatLog
     @Nested
     @DisplayName("Given instance of DayCatLog,")
     inner class GivenDayCategoryLog {
 
+        // SETUP
+
+        lateinit var dayCategoryLog: DayCategoryLog
+        lateinit var categoryList : List<Category>
 
         @BeforeEach
         fun `Given instance of PDayCatLog`() {
-            dayCategoryLog = DayCategoryLog(dCDS)
+            dayCategoryLog = DayCategoryLog(dayCategoryLogDataSource)
+            categoryList = listOf(Category("Test1"), Category("Test2"), Category("Test3"))
         }
 
+
+        // TESTS
+
+        // Getter Tests
         @Test
         @DisplayName("Get Categories from Instance.")
         fun `Get Categories from Instance`() {
@@ -42,6 +60,8 @@ internal class DayCategoryLogTest {
 
         }
 
+
+        // Clear Categories Tests
         @Test
         @DisplayName("Clear All Categories.")
         fun clearAllCategories() {
@@ -49,6 +69,8 @@ internal class DayCategoryLogTest {
             assertTrue(dayCategoryLog.getCategories().toList().isEmpty())
         }
 
+
+        // Add Categories Tests
         @Test
         @DisplayName("Add Categories from Iterable.")
         fun addCategoriesFromIterable() {
@@ -56,21 +78,30 @@ internal class DayCategoryLogTest {
             assertIterableEquals(categoryList, dayCategoryLog.getCategories())
         }
 
+
+        // Assuming Instance of dayCategoryLog has Categories in it
         @Nested
         @DisplayName("Given Populated Instance,")
         inner class GivenPopulatedInstance {
+
+            // SETUP
 
             @BeforeEach
             fun `Given Populated Instance`() {
                 dayCategoryLog.addCategories(categoryList)
             }
 
+
+            // TESTS
+
+            // Getter Tests
             @Test
             @DisplayName("Show Getter on Populated Instance.")
             fun showGetterOnPopulatedInstance() {
                 assertIterableEquals(categoryList, dayCategoryLog.getCategories())
             }
 
+            // Clear Categories Tests
             @Test
             @DisplayName("Clear All Categories on Populated Instance.")
             fun clearAllCategoriesOnPopulatedInstance() {
@@ -78,6 +109,7 @@ internal class DayCategoryLogTest {
                 assertTrue(dayCategoryLog.getCategories().toList().isEmpty())
             }
 
+            // Add Categories Tests
             @Test
             @DisplayName("Add Categories to Populated Instance.")
             fun addCategoriesToPopulatedInstance() {
@@ -86,7 +118,6 @@ internal class DayCategoryLogTest {
                 dayCategoryLog.addCategories(newCategories)
                 assertIterableEquals(newCategories, dayCategoryLog.getCategories())
             }
-
         }
     }
 }

@@ -1,9 +1,9 @@
-PDayCatLog : Entity
+PDayCategoryLog : Entity
     Extends PDayCategoryLog
 -----------------------------------------------------------
 
 Data:
-    1. catList : Holds a list of categories
+    1. <catList> : Holds a list of categories
 
 
 Does:

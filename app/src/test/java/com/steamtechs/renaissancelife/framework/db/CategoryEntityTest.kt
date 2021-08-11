@@ -1,89 +1,126 @@
 package com.steamtechs.renaissancelife.framework.db
 
 import com.steamtechs.core.domain.Category
-//import org.junit.Assert.*
+import org.junit.Before
 import org.junit.Test
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.DisplayName
 
 class CategoryEntityTest {
 
-    @Test
-    @DisplayName("Create Instance of Category Entity using Default Literal Constructor")
-    fun createInstanceOfCategoryEntityUsingDefaultLiteralConstructor() {
-        val ce = CategoryEntity(
+    // SETUP
+
+    lateinit var category1 : Category
+    lateinit var category2 : Category
+
+    lateinit var categoryEntityFromPrimaryConstructor : CategoryEntity
+    lateinit var categoryEntityFromSecondaryConstructor1 : CategoryEntity
+    lateinit var categoryEntityFromSecondaryConstructor2 : CategoryEntity
+
+    @Before
+    fun setupCategories() {
+        category1 = Category("Cat1").apply { tickValue = 43 }
+        category2 = Category("Cat2").apply { tickValue = 92 }
+    }
+
+    fun setupCategoryEntityFromPrimaryConstructor() {
+        categoryEntityFromPrimaryConstructor = CategoryEntity(
             id = 0,
             date = "2021-08-04",
             title = "Test1",
-            tickValue = 5)
-        assertInstanceOf(CategoryEntity::class.java, ce)
+            tickValue = 5
+        )
+    }
+
+    fun setupCategoryEntitiesFromSecondaryConstructors() {
+        categoryEntityFromSecondaryConstructor1 = CategoryEntity.fromCategory(category1)
+        categoryEntityFromSecondaryConstructor2 = CategoryEntity.fromCategory(category2)
+    }
+
+
+    // TESTS
+
+    // Constructor Tests
+    @Test
+    @DisplayName("Create Instance of Category Entity using Default Literal Constructor")
+    fun createInstanceOfCategoryEntityUsingDefaultLiteralConstructor() {
+        setupCategoryEntityFromPrimaryConstructor()
+
+        assertInstanceOf(CategoryEntity::class.java, categoryEntityFromPrimaryConstructor)
     }
 
     @Test
     @DisplayName("Create instance with fromCategory")
     fun createInstanceWithSecondaryConstructor() {
-        val ce = CategoryEntity.fromCategory(givenCategoryInstance1())
-        assertInstanceOf(CategoryEntity::class.java, ce)
+        setupCategoryEntitiesFromSecondaryConstructors()
+
+        assertInstanceOf(CategoryEntity::class.java, categoryEntityFromSecondaryConstructor1)
     }
 
+
+    // Getter Tests
     @Test
-    @DisplayName("Get id, date, title, tickvalue from instance")
-    fun getIdDateTitleTickvalueFromInstance() {
-        val ce : CategoryEntity =givenCategoryEntityInstance1()
+    @DisplayName("Get id, date, title, tickValue from instance")
+    fun getIdDateTitleTickValueFromInstance() {
+        setupCategoryEntitiesFromSecondaryConstructors()
+
         assertAll(
-            { assertEquals(0, ce.id)},
-            { assertEquals("", ce.date)},
-            { assertEquals("Cat1", ce.title)},
-            { assertEquals(43, ce.tickValue)})
+            { assertEquals(0, categoryEntityFromSecondaryConstructor1.id)},
+            { assertEquals("", categoryEntityFromSecondaryConstructor1.date)},
+            { assertEquals("Cat1", categoryEntityFromSecondaryConstructor1.title)},
+            { assertEquals(43, categoryEntityFromSecondaryConstructor1.tickValue)}
+        )
     }
 
+
+    // Core Category Instance Creation Tests
     @Test
     @DisplayName("Create Category with toCategory")
     fun createCategoryWithToCategory() {
-        val ce = givenCategoryEntityInstance1()
-        val realCategory = ce.toCategory()
+        setupCategoryEntitiesFromSecondaryConstructors()
+
+        val realCategory = categoryEntityFromSecondaryConstructor1.toCategory()
+
         assertInstanceOf(Category::class.java, realCategory)
     }
 
+
+    // Equality Related Tests
     @Test
     @DisplayName("Check Equality that ignores id")
     fun checkEqualityThatIgnoresId() {
-        val ce = givenCategoryEntityInstance1()
-        val equlce = CategoryEntity(42,ce.date,ce.title, ce.tickValue)
-        assertEquals(ce,equlce)
+        setupCategoryEntitiesFromSecondaryConstructors()
+
+        val equivalentCategoryEntity = CategoryEntity(
+            42,
+            categoryEntityFromSecondaryConstructor1.date,
+            categoryEntityFromSecondaryConstructor1.title,
+            categoryEntityFromSecondaryConstructor1.tickValue)
+
+        assertEquals(categoryEntityFromSecondaryConstructor1, equivalentCategoryEntity)
     }
 
     @Test
     @DisplayName("Generate Hash which neglects id")
     fun generateHashWhichNeglectsId() {
-        val ce = givenCategoryEntityInstance1()
-        val equlce = CategoryEntity(42,ce.date,ce.title, ce.tickValue)
-        assertEquals(ce.hashCode(),equlce.hashCode())
-    }
+        setupCategoryEntitiesFromSecondaryConstructors()
 
-    @Test
-    @DisplayName("Two instances with Same Non-id information are Equal")
-    fun twoInstancesWithSameNonIdInformationAreEqual() {
-        val ce1 : CategoryEntity = givenCategoryEntityInstance1()
-        val ce2 : CategoryEntity = CategoryEntity(843, ce1.date, ce1.title, ce1.tickValue)
-        assertEquals(ce1, ce2)
+        val equivalentCategoryEntity = CategoryEntity(
+            42,
+            categoryEntityFromSecondaryConstructor1.date,
+            categoryEntityFromSecondaryConstructor1.title,
+            categoryEntityFromSecondaryConstructor1.tickValue)
+
+        assertEquals(categoryEntityFromSecondaryConstructor1.hashCode(),
+            equivalentCategoryEntity.hashCode())
     }
 
     @Test
     @DisplayName("Neglecting id, Dissimilar Instances Equals returns False")
     fun neglectingIdDissimilarInstancesEqualsReturnsFalse() {
-        val ce1: CategoryEntity = givenCategoryEntityInstance1()
-        val ce2: CategoryEntity = givenCategoryEntityInstance2()
-        assertNotEquals(ce1, ce2)
+        setupCategoryEntitiesFromSecondaryConstructors()
+
+        assertNotEquals(categoryEntityFromSecondaryConstructor1,
+                        categoryEntityFromSecondaryConstructor2)
     }
-
-    private fun givenCategoryInstance1() : Category = Category("Cat1").apply { tickValue = 43 }
-    private fun givenCategoryInstance2() : Category = Category("Cat2").apply { tickValue = 92 }
-
-    private fun givenCategoryEntityInstance1() : CategoryEntity =
-        CategoryEntity.fromCategory(givenCategoryInstance1())
-
-    private fun givenCategoryEntityInstance2() : CategoryEntity =
-        CategoryEntity.fromCategory(givenCategoryInstance2())
-
 }

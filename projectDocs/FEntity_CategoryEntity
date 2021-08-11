@@ -11,14 +11,14 @@ Data:
 Does:
     1. Create Instance
         1.1 Default literal Constructor (used by DB) :: Int -> String -> String -> Int -> CategoryEntity
-        1.2 Category-based Companion Object (Prefered Constructor) :: String -> Category -> CategoryEntity
+        1.2 Category-based Companion Object (Preferred Constructor) :: String -> Category -> CategoryEntity
     2. Getters for
-        2.1 id :: () -> Int
-        2.2 date :: () -> String
-        2.3 title :: () -> String
-        2.4 tickValue :: () -> Int
-    3. Create Core Category instance :: CategoryEntity -> Category
-    4. Check for Equality :: CategoryEntity -> CategoryEntity -> Boolean
-        4.1 Generate Hashcode :: CategoryEntity -> Int
+        2.1 id :: Int
+        2.2 date :: String
+        2.3 title :: String
+        2.4 tickValue :: Int
+    3. Create Core Category instance :: Category
+    4. Check for Equality :: (CategoryEntity) -> Boolean
+        4.1 Generate Hashcode :: Int
 
 Don't(s):

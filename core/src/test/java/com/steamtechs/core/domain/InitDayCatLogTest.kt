@@ -7,16 +7,21 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 
-internal class InitDayCatLogTest{
+internal class InitDayCatLogTest {
+
+    // SETUP
 
     lateinit var dayCategoryLog: DayCategoryLog
-    private val pDayCategoryLog = PDayCategoryLog()
 
     @BeforeEach
     @DisplayName("Given a DayCatLog, ")
     fun `Given a DayCatLog`(){
+        val pDayCategoryLog = PDayCategoryLog()
         dayCategoryLog = DayCategoryLog(pDayCategoryLog)
     }
+
+
+    // TESTS
 
     @Test
     @DisplayName("Return Local DayCategoryLog.")
@@ -29,7 +34,6 @@ internal class InitDayCatLogTest{
     fun `Show returned Instance is a Copy of given Instance`() {
         val categoryList = listOf<Category>(Category("Cat1"), Category("Cat2"))
         dayCategoryLog.addCategories(categoryList)
-        assertEquals(categoryList,InitDayCategoryLog(dayCategoryLog).getCategories())
+        assertEquals(categoryList, InitDayCategoryLog(dayCategoryLog).getCategories())
     }
-
 }

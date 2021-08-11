@@ -4,14 +4,27 @@ import com.steamtechs.core.data.DayCategoryLog
 import com.steamtechs.core.domain.Category
 import com.steamtechs.core.data.platform.PDayCategoryLog
 import org.junit.jupiter.api.Assertions.*
+import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 
-internal class GetCategoriesTest{
+internal class GetCategoriesTest {
 
-    private val testPDayCatLog = PDayCategoryLog()
-    private val testDayCatLog = DayCategoryLog(testPDayCatLog)
-    private val categoryList = listOf(Category("Test1"), Category("Test2"), Category("Test3"))
+    // SETUP
+
+    lateinit var testPDayCatLog : PDayCategoryLog
+    lateinit var testDayCatLog : DayCategoryLog
+    lateinit var categoryList : List<Category>
+
+    @BeforeEach
+    fun setup() {
+        testPDayCatLog = PDayCategoryLog()
+        testDayCatLog = DayCategoryLog(testPDayCatLog)
+        categoryList = listOf(Category("Test1"), Category("Test2"), Category("Test3"))
+    }
+
+
+    // TESTS
 
     @Test
     @DisplayName("GetCategories returns Iterable of Category.")

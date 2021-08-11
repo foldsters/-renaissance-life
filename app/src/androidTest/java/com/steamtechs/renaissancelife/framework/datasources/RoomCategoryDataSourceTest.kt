@@ -3,60 +3,84 @@ package com.steamtechs.renaissancelife.framework.datasources
 import androidx.test.platform.app.InstrumentationRegistry
 import com.steamtechs.core.domain.Category
 import com.steamtechs.renaissancelife.framework.datasources.RoomCategoryDataSource
+import org.junit.Before
 import org.junit.jupiter.api.DisplayName
 import org.junit.Test
 import org.junit.jupiter.api.Assertions.*
 
 
-internal class RoomCategoryDataSourceTest {
+class RoomCategoryDataSourceTest {
 
     // RCDS stands for RoomCategoryDataSource
 
-    var appContext = InstrumentationRegistry.getInstrumentation().targetContext
-    
-    @Test
-    @DisplayName("Create Instance of RCDS")
-    fun createInstanceOfRCDS() {
-        val rcds = RoomCategoryDataSource(appContext)
-        assertInstanceOf(RoomCategoryDataSource::class.java, rcds)
+    // SETUP
+
+    lateinit var roomCategoryDataSource : RoomCategoryDataSource
+
+    fun setupRoomCategoryDataSource() {
+        val appContext = InstrumentationRegistry.getInstrumentation().targetContext
+        roomCategoryDataSource = RoomCategoryDataSource(appContext)
     }
 
 
+    // TESTS
 
+    // Constructor Tests
+    @Test
+    @DisplayName("Verify Instance of RCDS")
+    fun createInstanceOfRCDS() {
+        setupRoomCategoryDataSource()
+
+        assertInstanceOf(RoomCategoryDataSource::class.java, roomCategoryDataSource)
+    }
+
+
+    // Getter Tests
     @Test
     @DisplayName("Get Categories from RCDS instance.")
     fun getCategoriesFromRcdsInstance() {
-        val rcds = RoomCategoryDataSource(appContext)
-        val categoriesFromDatabase = rcds.getCategories()
-        println(categoriesFromDatabase)
+        setupRoomCategoryDataSource()
+
+        val categoriesFromDatabase = roomCategoryDataSource.getCategories()
+
         assertEquals(0, categoriesFromDatabase.count())
     }
 
+
+    // Clear Categories Tests
     @Test
     @DisplayName("Clear All Categories from RCDS.")
     fun clearAllCategoriesFromRcds() {
-        val rcds = RoomCategoryDataSource(appContext)
-        rcds.clearAllCategories()
-        val categoriesFromDatabase = rcds.getCategories()
+        setupRoomCategoryDataSource()
+
+        roomCategoryDataSource.clearAllCategories()
+        val categoriesFromDatabase = roomCategoryDataSource.getCategories()
+
         assertEquals(0, categoriesFromDatabase.count())
     }
 
 
+    // Add Categories Tests
     @Test
     @DisplayName("Add Categories to RCDS instance.")
     fun addCategoriesToRcdsInstance() {
-        val rcds = RoomCategoryDataSource(appContext)
+        setupRoomCategoryDataSource()
+
         val categories = listOf<Category>(Category("Test1"), Category("Test2"))
-        rcds.addCategories(categories)
-        assertEquals(2, rcds.getCategories().count())
+        roomCategoryDataSource.addCategories(categories)
+
+        assertEquals(2, roomCategoryDataSource.getCategories().count())
     }
 
+    // Iterator Tests
     @Test
     @DisplayName("Show Iterator Method.")
     fun showIteratorMethod() {
-        val rcds = RoomCategoryDataSource(appContext)
-        val ircds = rcds.iterator()
-        assertInstanceOf(Iterator::class.java,ircds)
+        setupRoomCategoryDataSource()
+
+        val dataSourceIterator = roomCategoryDataSource.iterator()
+
+        assertInstanceOf(Iterator::class.java, dataSourceIterator)
     }
 
 

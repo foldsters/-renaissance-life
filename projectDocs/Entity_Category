@@ -3,15 +3,19 @@ Category : Entity
 
 Data:
     <title> : String -- Required for Constructor
-    <tickValue> : Int? -- Init to zero
+    <tickValue> : Int -- Init to zero
 
 
 Does:
     1. Create instance of Category :: String -> Category
-    2. Getter for title :: () -> String
-    3. Setter for title :: String -> ()
-    4. Getter for tickValue :: () -> Int?
-    5. Setter for tickValue :: Int? -> ()
+    2. Getters
+        2.1 Getter for title :: () -> String
+        2.2 Getter for tickValue :: () -> Int
+        3.3 Getter for date :: () -> String
+    3. Setters
+        3.1 Setter for title :: String -> ()
+        3.2 Setter for tickValue :: Int -> ()
+        3.3 Setter for date :: String -> ()
 
 
 Don't(s):

@@ -6,7 +6,7 @@ Data:
 
 
 Does:
-    1. Calls LocalizeDayCategoryLog and returns Populated PDayCategoryLog Instance  ::
+    1. Invoke Method returns Populated PDayCategoryLog Instance  ::
             DayCategoryLog -> DayCategoryLog
 
 

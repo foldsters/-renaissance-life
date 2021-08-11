@@ -7,107 +7,141 @@ import org.junit.jupiter.api.Assertions.*
 
 internal class PDayCategoryLogTest {
 
+    // TESTS
+
+    // Constructor and Instantiation Tests
     @Test
     @DisplayName("Create instance of PDayCatLog.")
     fun `Create instance of PDayCatLog`() {
-        val pdcl = PDayCategoryLog()
-        assertInstanceOf(PDayCategoryLog::class.java, pdcl)
+        val pDayCatLog = PDayCategoryLog()
+
+        assertInstanceOf(PDayCategoryLog::class.java, pDayCatLog)
     }
 
     @Test
     @DisplayName("Check PDayCatLog inherits from DayCatLog.")
     fun `Check PDayCatLog inherits from DayCatLog`() {
-        val pdcl = PDayCategoryLog()
-        assertInstanceOf(DayCategoryLogDataSource::class.java, pdcl)
+        val pDayCatLog = PDayCategoryLog()
+
+        assertInstanceOf(DayCategoryLogDataSource::class.java, pDayCatLog)
     }
 
 
+    // Tests Assuming Instantiation
     @Nested
     @DisplayName("Given instance of PDayCatLog,")
     inner class GivenPDayCategoryLog {
-        lateinit var pdcl1: PDayCategoryLog
-        val categoriesList = listOf<Category>(Category("Test1"), Category("Test2"))
 
+        // SETUP
+
+        lateinit var pDayCategoryLog : PDayCategoryLog
+        lateinit var categoryList : List<Category>
 
         @BeforeEach
         fun `Given instance of PDayCatLog`() {
-            pdcl1 = PDayCategoryLog()
+            pDayCategoryLog = PDayCategoryLog()
+            categoryList = listOf(Category("Test1"), Category("Test2"))
         }
 
+
+        // TESTS
+
+        // Getter Tests
         @Test
         @DisplayName("Get Categories from Instance.")
         fun `Get Categories from Instance`() {
-            val cats = pdcl1.getCategories()
-            assertEquals(listOf<Category>(), cats)
+            val categories = pDayCategoryLog.getCategories()
+
+            assertEquals(listOf<Category>(), categories)
 
         }
 
         @Test
         @DisplayName("Get Categories from Interface Instance.")
         fun `Get Categories from Interface Instance`() {
-            val cats = (pdcl1 as DayCategoryLogDataSource).getCategories()
+            val cats = (pDayCategoryLog as DayCategoryLogDataSource).getCategories()
+
             assertEquals(listOf<Category>(), cats)
         }
 
+
+        // Clear Categories Tests
         @Test
         @DisplayName("Clear All Categories.")
         fun clearAllCategories() {
-            pdcl1.clearAllCategories()
-            assertTrue(pdcl1.getCategories().isEmpty())
+            pDayCategoryLog.clearAllCategories()
+
+            assertTrue(pDayCategoryLog.getCategories().isEmpty())
         }
 
+
+        // Add Categories Tests
         @Test
         @DisplayName("Add Categories from Iterable.")
         fun addCategoriesFromIterable() {
-            pdcl1.addCategories(categoriesList)
-            assertIterableEquals(categoriesList, pdcl1.getCategories())
+            pDayCategoryLog.addCategories(categoryList)
+
+            assertIterableEquals(categoryList, pDayCategoryLog.getCategories())
         }
 
         @Test
         @DisplayName("Add Categories first calls Clear All Categories.")
         fun addCategoriesFirstCallsClearAllCategories() {
-            pdcl1.addCategories(categoriesList)
-            pdcl1.addCategories(emptyList<Category>())
-            assertTrue(pdcl1.getCategories().isEmpty())
+            pDayCategoryLog.addCategories(categoryList)
+            pDayCategoryLog.addCategories(emptyList<Category>())
+
+            assertTrue(pDayCategoryLog.getCategories().isEmpty())
         }
 
+
+        // Tests Assuming a Category is in pDayCatLog
         @Nested
         @DisplayName("Given Category in instance,")
         inner class GivenCategoryInInstance {
 
+            // SETUP
+
             @BeforeEach
             fun `Given Category in instance`(){
-                pdcl1.addCategories(categoriesList)
+                pDayCategoryLog.addCategories(categoryList)
             }
 
+            // TESTS
+
+            // Getter Tests
             @Test
             @DisplayName("Show Getter on Populated Instance.")
             fun showGetterOnPopulatedInstance() {
-                assertIterableEquals(categoriesList,pdcl1.getCategories())
+                assertIterableEquals(categoryList,pDayCategoryLog.getCategories())
             }
 
+
+            // Clear Categories Tests
             @Test
             @DisplayName("Clear All Categories on Populated Instance.")
             fun clearAllCategoriesOnPopulatedInstance() {
-                pdcl1.clearAllCategories()
-                assertTrue(pdcl1.getCategories().isEmpty())
+                pDayCategoryLog.clearAllCategories()
+                assertTrue(pDayCategoryLog.getCategories().isEmpty())
             }
 
+
+            // Add Categories Tests
             @Test
             @DisplayName("Add Categories to Populated Instance.")
             fun addCategoriesToPopulatedInstance() {
                 val newCategories : Iterable<Category> =
                     listOf(Category("Test3"), Category("Test4"), Category("Test5"))
-                pdcl1.addCategories(newCategories)
-                assertIterableEquals(newCategories, pdcl1)
+                pDayCategoryLog.addCategories(newCategories)
+                assertIterableEquals(newCategories, pDayCategoryLog)
             }
 
+
+            // Iterator Tests
             @Test
             @DisplayName("Show Iterator.")
             fun showIterator() {
-                assertInstanceOf(Iterator::class.java, pdcl1.iterator())
+                assertInstanceOf(Iterator::class.java, pDayCategoryLog.iterator())
             }
-
         }
     }
 }
