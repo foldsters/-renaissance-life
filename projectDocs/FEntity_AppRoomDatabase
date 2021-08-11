@@ -1,0 +1,15 @@
+AppRoomDatabase : FEntity
+-----------------------------------------------------------
+
+Data:
+    1. <Category Dao> :: CategoryDao
+    
+
+Does:
+    1. Creates Database Instance :: () -> AppRoomDatabase
+    2. Getter for Category Dao :: () -> CategoryDao
+    3. Clear Tables of Database :: () -> ()
+    
+
+Don't(s):
+    
