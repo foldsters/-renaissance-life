@@ -28,7 +28,6 @@ class RoomCategoryDataSource constructor(val categoryDao : CategoryDao) : DayCat
         categoryDao.addCategories( categories.map { CategoryEntity.fromCategory(it) } )
     }
 
-
     override fun iterator(): Iterator<Category> {
         return this.getCategories().iterator()
     }
