@@ -2,7 +2,6 @@ package com.steamtechs.core.data
 
 
 import com.steamtechs.core.domain.Category
-import com.steamtechs.core.data.platform.PDayCategoryLog
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.DisplayName
