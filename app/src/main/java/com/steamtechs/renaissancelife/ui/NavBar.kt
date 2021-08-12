@@ -15,7 +15,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.steamtechs.renaissancelife.R
 
-@Preview
+//@Preview
 @Composable
 fun NavBar() {
 

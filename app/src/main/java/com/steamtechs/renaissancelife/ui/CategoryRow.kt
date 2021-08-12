@@ -12,8 +12,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
 
+
+//@Preview
 @Composable
-@Preview
 fun CategoryRow(categoryName: String = "") {
 
     val modifier = Modifier
