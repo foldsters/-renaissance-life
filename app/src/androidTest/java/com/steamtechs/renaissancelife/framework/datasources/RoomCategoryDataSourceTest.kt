@@ -3,6 +3,7 @@ package com.steamtechs.renaissancelife.framework.datasources
 import androidx.test.platform.app.InstrumentationRegistry
 import com.steamtechs.core.domain.Category
 import com.steamtechs.renaissancelife.framework.datasources.RoomCategoryDataSource
+import com.steamtechs.renaissancelife.framework.db.AppRoomDatabase
 import org.junit.Before
 import org.junit.jupiter.api.DisplayName
 import org.junit.Test
@@ -19,7 +20,8 @@ class RoomCategoryDataSourceTest {
 
     fun setupRoomCategoryDataSource() {
         val appContext = InstrumentationRegistry.getInstrumentation().targetContext
-        roomCategoryDataSource = RoomCategoryDataSource(appContext)
+        val dao = AppRoomDatabase.getInstance(appContext).categoryDao()
+        roomCategoryDataSource = RoomCategoryDataSource(dao)
     }
 
 

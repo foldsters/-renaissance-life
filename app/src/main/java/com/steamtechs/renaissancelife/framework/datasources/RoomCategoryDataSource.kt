@@ -4,12 +4,16 @@ import android.content.Context
 import com.steamtechs.core.data.DayCategoryLogDataSource
 import com.steamtechs.core.domain.Category
 import com.steamtechs.renaissancelife.framework.db.AppRoomDatabase
+import com.steamtechs.renaissancelife.framework.db.CategoryDao
 import com.steamtechs.renaissancelife.framework.db.CategoryEntity
+import dagger.hilt.EntryPoint
+import dagger.hilt.InstallIn
+import dagger.hilt.android.EntryPointAccessors
+import dagger.hilt.android.qualifiers.ActivityContext
+import dagger.hilt.components.SingletonComponent
+import javax.inject.Inject
 
-class RoomCategoryDataSource(context: Context) : DayCategoryLogDataSource {
-
-    private val categoryDao = AppRoomDatabase.getInstance(context).categoryDao()
-
+class RoomCategoryDataSource constructor(val categoryDao : CategoryDao) : DayCategoryLogDataSource {
 
     override fun getCategories(): Iterable<Category> {
         return categoryDao.getAllCategories().map {it.toCategory()}

@@ -25,8 +25,7 @@ internal class AppRoomDatabaseTest {
     }
 
     fun setupRoomDataSource() {
-        val appContext = InstrumentationRegistry.getInstrumentation().targetContext!!
-        roomDataSource = RoomCategoryDataSource(appContext)
+        roomDataSource = RoomCategoryDataSource(database.categoryDao())
     }
 
 
