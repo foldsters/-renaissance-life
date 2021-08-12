@@ -1,0 +1,13 @@
+AppModule : Dagger Hilt Module
+-----------------------------------------------------------
+
+Data:
+    None
+
+
+Does:
+    1. Provides Database Dependency Injection Recipe
+
+
+
+Don't(s):

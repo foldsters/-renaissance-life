@@ -1,0 +1,19 @@
+RoomCategoryDataSource : Entity
+    Extends DayCategoryLogDataSource
+-----------------------------------------------------------
+Note: RCDS stands for RoomCategoryDataSource
+
+Data:
+    1. private <category dao>
+
+
+Does:
+    1. Create Instance of RCDS :: () -> RCDS
+    2. Get Categories :: () -> Iterable<Category>
+    3. Clear All Categories :: () -> ()
+    4. Add Categories :: Iterable<Category> -> ()
+    5. Iterator :: RCDS -> Iterator<Category>
+
+
+Don't(s):
+    {4} Keep persistent data from before adding -- clearAllCategories gets called before addCategories

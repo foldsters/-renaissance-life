@@ -1,0 +1,12 @@
+AddCategory : Interactor
+-----------------------------------------------------------
+
+Data:
+
+
+
+Does:
+    1. AddCategories :: DayCatLog -> Iterable<Category> -> ()
+
+
+Don't(s):

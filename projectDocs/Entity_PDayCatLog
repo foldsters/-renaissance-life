@@ -1,17 +1,18 @@
-PDayCatLog extends DayCatLog : Entity
+PDayCategoryLog : Entity
+    Extends PDayCategoryLog
 -----------------------------------------------------------
 
 Data:
-    1. catList : Holds a list of categories
+    1. <catList> : Holds a list of categories
 
 
 Does:
-    1. Add Category : Category -> ()
-    2. Delete Category : Category -> ()
-    3. Change Category Name : Category, String -> ()
-    4. Set Category Tick Value : Category, Int -> ()
+    1. Create Instance of PDayCatLog :: () -> PDayCatLog
+    2. getCategories :: () -> List<Category>
+    3. clearAllCategories :: () -> Unit
+    4. addCategories :: Iterable<Category> -> Unit
+    5. Show Iterator Method :: () -> Iterator<Category>
 
 
 Don't(s):
-    1. {2} Allow deleteCategory on Category not in PDayCatLog -> IllegalArgumentsException
-    
+    {4} Keep persistent data from before adding -- clearAllCategories gets called before addCategories

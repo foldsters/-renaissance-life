@@ -1,0 +1,12 @@
+BaseApplication : Application
+-----------------------------------------------------------
+
+Data:
+    None
+
+
+Does:
+    1. Acts as a lifecycle container for Dagger Hilt
+
+
+Don't(s):
