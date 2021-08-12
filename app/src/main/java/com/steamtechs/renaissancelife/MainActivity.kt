@@ -15,19 +15,16 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
-
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {MyFirstComposable()}
     }
 }
+
 @Preview
 @Composable
 fun MyFirstComposable(){
     Box{
         Text(text = "Stuffs Here!")
-        setContentView(R.layout.activity_main)
-
     }
 }
