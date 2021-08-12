@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Test
 
 internal class CategoryScraperTest{
 
-    val dayCatLog = DayCatLog(PDayCatLog().also { it.addCategory(Category("This Category")) })
+    private val dayCatLog = DayCatLog(PDayCatLog().also { it.addCategory(Category("This Category")) })
 
     @Test
     @DisplayName("getCategoryFromDate returns an Iterable of Category.")
