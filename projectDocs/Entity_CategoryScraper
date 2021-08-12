@@ -1,0 +1,13 @@
+CategoryScraper: Entity
+-----------------------------------------------------------
+
+Data:
+    
+
+
+Does:
+    1. Scrape all Categories from a given Date :: DayCategoryLog -> date: String -> Iterable<Category>
+
+
+Don't(s):
+    
