@@ -4,7 +4,7 @@ import org.junit.jupiter.api.*
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertInstanceOf
 
-internal class CategoryTest{
+internal class CategoryTest{ //
 
     // TESTS
 

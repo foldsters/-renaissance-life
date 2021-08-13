@@ -2,7 +2,6 @@ package com.steamtechs.core.interactors
 
 import com.steamtechs.core.data.DayCategoryLog
 import com.steamtechs.core.domain.Category
-import com.steamtechs.core.data.platform.PDayCategoryLog
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
