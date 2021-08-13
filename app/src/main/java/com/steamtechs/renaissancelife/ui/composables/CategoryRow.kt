@@ -13,7 +13,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
 
 
-//@Preview
 @Composable
 fun CategoryRow(categoryName: String = "") {
 
@@ -57,7 +56,4 @@ fun CategoryRow(categoryName: String = "") {
             Text("+", fontSize = 8.em)
         }
     }
-
-
-
 }

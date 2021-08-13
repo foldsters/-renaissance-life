@@ -8,7 +8,11 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.lifecycle.MutableLiveData
+import com.steamtechs.core.domain.Category
 import com.steamtechs.renaissancelife.ui.AppViewModel
+import com.steamtechs.renaissancelife.ui.LiveCategory
+import com.steamtechs.renaissancelife.ui.composables.Toggle
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -19,14 +23,9 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        setContent {MyFirstComposable()}
-    }
-}
+        appViewModel.categoryList.add(LiveCategory.fromCategory(Category("Hello", "2021-08-13")))
 
-//@Preview
-@Composable
-fun MyFirstComposable(){
-    Box{
-        Text(text = "Stuffs Here!")
+        //setContent {HelloScreen(appViewModel)}
+        setContent { Toggle() }
     }
 }
