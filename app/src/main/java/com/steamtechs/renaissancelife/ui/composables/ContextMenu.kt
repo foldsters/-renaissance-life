@@ -72,7 +72,7 @@ fun Toggle() {
                 categoryName = categoryName1,
                 categoryTicks = tickValue1,
                 onNameChange = { categoryName1 = it },
-                onTickChange = {tickValue1 = it},
+                onTickChange = {tickValue1 = if (it >= 0) it else 0},
                 onMenuState = { showMenu1 = it },
                 onEditState = { editMode1 = it },
                 modifier = modifier,
