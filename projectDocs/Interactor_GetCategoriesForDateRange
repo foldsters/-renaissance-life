@@ -1,0 +1,13 @@
+GetCategoriesForDate: Interactor
+-----------------------------------------------------------
+
+Data:
+
+
+
+Does:
+    1. Retrieves Categories from date "yyyy-MM-dd" to date (inclusive)
+        :: DayCategoryLog -> String -> String -> Iterable<Cateogry>
+
+
+Don't(s):

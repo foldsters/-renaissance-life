@@ -1,6 +1,7 @@
 package com.steamtechs.core.interactors
 
 import com.steamtechs.core.data.DayCategoryLog
+import com.steamtechs.core.data.platform.PDayCategoryLog
 import com.steamtechs.core.domain.Category
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.DisplayName
@@ -10,7 +11,7 @@ internal class ClearAllCategoriesInStorageTest{
 
     // SETUP
 
-    lateinit var dayCatLog : DayCategoryLog
+    private lateinit var dayCatLog : DayCategoryLog
 
     @BeforeEach
     fun setup() {

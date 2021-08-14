@@ -6,8 +6,8 @@ Data:
 
 
 Does:
-    1. Invoke Method returns Populated PDayCategoryLog Instance  ::
-            DayCategoryLog -> DayCategoryLog
+    1. Invoke Method returns Target DayCategoryLog Instance from Source DayCategoryLog  ::
+            DayCategoryLogDataSource -> DayCategoryLogDataSource -> DayCategoryLog
 
 
 Don't(s):
