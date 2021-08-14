@@ -17,7 +17,7 @@ import androidx.compose.ui.unit.em
 fun CategoryRow(categoryName: String = "") {
 
     val modifier = Modifier
-    var categoryInt by remember { mutableStateOf(0)}
+    var categoryInt by remember { mutableStateOf(0) }
 
     Row(
         modifier = modifier.height(75.dp),

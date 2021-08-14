@@ -8,6 +8,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
+import com.steamtechs.core.data.DayCategoryLog
 import com.steamtechs.core.domain.Category
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
@@ -17,6 +18,13 @@ class AppViewModel @Inject constructor(
     private val savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
+    private lateinit var allCategories : DayCategoryLog
     var categoryList = mutableListOf<LiveCategory>()
+
+    fun setAllCategories(dayCategoryLog: DayCategoryLog) {
+
+    }
+
+
 
 }
