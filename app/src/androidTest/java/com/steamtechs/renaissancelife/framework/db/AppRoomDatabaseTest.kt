@@ -3,8 +3,6 @@ package com.steamtechs.renaissancelife.framework.db
 import androidx.test.platform.app.InstrumentationRegistry
 import com.steamtechs.core.domain.Category
 import com.steamtechs.renaissancelife.framework.datasources.RoomCategoryDataSource
-import org.junit.After
-import org.junit.Before
 import org.junit.jupiter.api.DisplayName
 import org.junit.Test
 import org.junit.jupiter.api.Assertions.*

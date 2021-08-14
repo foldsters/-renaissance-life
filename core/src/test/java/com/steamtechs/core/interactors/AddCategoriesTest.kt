@@ -1,6 +1,7 @@
 package com.steamtechs.core.interactors
 
 import com.steamtechs.core.data.DayCategoryLog
+import com.steamtechs.core.data.platform.PDayCategoryLog
 import com.steamtechs.core.domain.Category
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach

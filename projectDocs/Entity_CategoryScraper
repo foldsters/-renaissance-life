@@ -6,7 +6,7 @@ Data:
 
 
 Does:
-    1. Scrape all Categories from a given Date :: DayCategoryLog -> date: String -> Iterable<Category>
+    1. Scrape all Categories from a given Date "yyyy-MM-dd" :: DayCategoryLog -> String -> Iterable<Category>
 
 
 Don't(s):

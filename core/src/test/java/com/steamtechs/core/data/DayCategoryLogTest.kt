@@ -1,6 +1,7 @@
 package com.steamtechs.core.data
 
 
+import com.steamtechs.core.data.platform.PDayCategoryLog
 import com.steamtechs.core.domain.Category
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.BeforeEach
@@ -24,27 +25,26 @@ internal class DayCategoryLogTest {
 
     // Instance / Constructor Tests
     @Test
-    @DisplayName("Create instance of DayCatLog.")
-    fun `Create instance of DayCatLog`() {
+    @DisplayName("Create instance of DayCategoryLog.")
+    fun `Create instance of DayCategoryLog`() {
         val dayCategoryLog = DayCategoryLog(dayCategoryLogDataSource)
         assertInstanceOf(DayCategoryLog::class.java, dayCategoryLog)
     }
 
 
-    // Tests Assuming Instance of DayCatLog
+    // Tests Assuming Instance of DayCategoryLog
     @Nested
-    @DisplayName("Given instance of DayCatLog,")
+    @DisplayName("Given instance of DayCategoryLog,")
     inner class GivenDayCategoryLog {
 
         // SETUP
 
         lateinit var dayCategoryLog: DayCategoryLog
-        lateinit var categoryList : List<Category>
+        var categoryList = listOf(Category("Test1"), Category("Test2"), Category("Test3"))
 
         @BeforeEach
-        fun `Given instance of PDayCatLog`() {
+        fun `Given instance of PDayCategoryLog`() {
             dayCategoryLog = DayCategoryLog(dayCategoryLogDataSource)
-            categoryList = listOf(Category("Test1"), Category("Test2"), Category("Test3"))
         }
 
 
@@ -54,8 +54,8 @@ internal class DayCategoryLogTest {
         @Test
         @DisplayName("Get Categories from Instance.")
         fun `Get Categories from Instance`() {
-            val categoryList = dayCategoryLog.getCategories()
-            assertEquals(listOf<Category>(), categoryList)
+            val emptyCategoryList = dayCategoryLog.getCategories()
+            assertEquals(listOf<Category>(), emptyCategoryList)
 
         }
 
@@ -71,8 +71,8 @@ internal class DayCategoryLogTest {
 
         // Add Categories Tests
         @Test
-        @DisplayName("Add Categories from Iterable.")
-        fun addCategoriesFromIterable() {
+        @DisplayName("Clear DB then Add Categories from Iterable.")
+        fun clearDbThenAddCategoriesFromIterable() {
             dayCategoryLog.addCategories(categoryList)
             assertIterableEquals(categoryList, dayCategoryLog.getCategories())
         }
@@ -110,8 +110,8 @@ internal class DayCategoryLogTest {
 
             // Add Categories Tests
             @Test
-            @DisplayName("Add Categories to Populated Instance.")
-            fun addCategoriesToPopulatedInstance() {
+            @DisplayName("Clear DB then Add Categories to Populated Instance.")
+            fun clearDbThenAddCategoriesToPopulatedInstance() {
                 val newCategories: Iterable<Category> =
                     listOf(Category("Test3"), Category("Test4"), Category("Test5"))
                 dayCategoryLog.addCategories(newCategories)

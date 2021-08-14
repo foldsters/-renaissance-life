@@ -1,6 +1,7 @@
 package com.steamtechs.core.domain
 
 import com.steamtechs.core.data.DayCategoryLog
+import com.steamtechs.core.data.platform.PDayCategoryLog
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.DisplayName
@@ -10,13 +11,14 @@ internal class InitDayCatLogTest {
 
     // SETUP
 
-    lateinit var dayCategoryLog: DayCategoryLog
+    lateinit var sourceDayCategoryLog: DayCategoryLog
+    lateinit var targetDayCategoryLog: DayCategoryLog
 
     @BeforeEach
     @DisplayName("Given a DayCatLog, ")
     fun `Given a DayCatLog`(){
-        val pDayCategoryLog = PDayCategoryLog()
-        dayCategoryLog = DayCategoryLog(pDayCategoryLog)
+        sourceDayCategoryLog = DayCategoryLog(PDayCategoryLog())
+        targetDayCategoryLog = DayCategoryLog(PDayCategoryLog())
     }
 
 
@@ -25,14 +27,15 @@ internal class InitDayCatLogTest {
     @Test
     @DisplayName("Return Local DayCategoryLog.")
     fun `Return copied DayCategoryLog`() {
-        assertInstanceOf(DayCategoryLog::class.java, InitDayCategoryLog(dayCategoryLog))
+        assertInstanceOf(DayCategoryLog::class.java, InitDayCategoryLog(sourceDayCategoryLog, targetDayCategoryLog))
     }
 
     @Test
     @DisplayName("Show returned Instance is a Copy of given Instance.")
     fun `Show returned Instance is a Copy of given Instance`() {
         val categoryList = listOf<Category>(Category("Cat1"), Category("Cat2"))
-        dayCategoryLog.addCategories(categoryList)
-        assertEquals(categoryList, InitDayCategoryLog(dayCategoryLog).getCategories())
+        sourceDayCategoryLog.addCategories(categoryList)
+        InitDayCategoryLog(sourceDayCategoryLog, targetDayCategoryLog)
+        assertEquals(categoryList, targetDayCategoryLog.getCategories())
     }
 }
