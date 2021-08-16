@@ -3,7 +3,7 @@ PDayCategoryLog : Entity
 -----------------------------------------------------------
 
 Data:
-    1. <catList> : Holds a list of categories
+    1. private <catList> : Holds a list of categories
 
 
 Does:
