@@ -3,11 +3,8 @@ package com.steamtechs.core.interactors
 import com.steamtechs.core.data.DayCategoryLog
 import com.steamtechs.core.domain.Category
 import com.steamtechs.renaissancelife.platform.datasources.PDayCategoryLog
+import org.junit.jupiter.api.*
 import org.junit.jupiter.api.Assertions.*
-import org.junit.jupiter.api.BeforeEach
-import org.junit.jupiter.api.DisplayName
-import org.junit.jupiter.api.Nested
-import org.junit.jupiter.api.Test
 
 internal class ReplaceCategoriesByDateTest{
 
@@ -53,7 +50,11 @@ internal class ReplaceCategoriesByDateTest{
             targetDayCategoryLog = DayCategoryLog(PDayCategoryLog().also { it.addCategories(targetCategoryList) })
         }
 
-
+        @Test
+        @DisplayName("Target contains Cateogies from Source.")
+        fun `Target contains Cateogies from Source`() {
+            fail<Exception>("TO-DO")
+        }
     }
 
 }

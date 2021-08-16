@@ -9,7 +9,6 @@ object ReplaceCategoriesByDate {
         val tempCategoryList  = targetDayCategoryLog.filter { it.date != sourceDate }
         ensureSourceNotEmpty(sourceDayCategoryLog)
         ensureAllSameDate(sourceDate,sourceDayCategoryLog)
-
         targetDayCategoryLog.addCategories(sourceDayCategoryLog + tempCategoryList)
     }
 
@@ -21,7 +20,7 @@ object ReplaceCategoriesByDate {
 
 
     fun ensureAllSameDate(sourceDate: String, sourceDayCategoryLog: DayCategoryLog) {
-        for (category in sourceDayCategoryLog.getCategories()) {
+        for (category in sourceDayCategoryLog) {
             if (category.date != sourceDate) {
                 throw IllegalArgumentException("Not all Dates Match in sourceDayCategoryLog.")
             }
