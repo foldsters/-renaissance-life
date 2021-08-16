@@ -1,11 +1,11 @@
 package com.steamtechs.core.domain
 
 import com.steamtechs.core.data.DayCategoryLog
-import com.steamtechs.core.data.platform.PDayCategoryLog
+import com.steamtechs.renaissancelife.platform.datasources.PDayCategoryLog
+import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.DisplayName
-import org.junit.jupiter.api.Test
 
 internal class InitDayCatLogTest {
 

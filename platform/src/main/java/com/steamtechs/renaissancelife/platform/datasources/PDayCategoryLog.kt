@@ -1,4 +1,4 @@
-package com.steamtechs.core.data.platform
+package com.steamtechs.renaissancelife.platform.datasources
 
 import com.steamtechs.core.domain.Category
 import com.steamtechs.core.data.DayCategoryLogDataSource
