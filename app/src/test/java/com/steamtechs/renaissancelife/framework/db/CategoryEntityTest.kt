@@ -1,8 +1,10 @@
 package com.steamtechs.renaissancelife.framework.db
 
 import com.steamtechs.core.domain.Category
+import org.junit.Before
 import org.junit.jupiter.api.Assertions.*
-import org.junit.jupiter.api.*
+import org.junit.Test
+import org.junit.jupiter.api.DisplayName
 
 class CategoryEntityTest {
 
@@ -15,7 +17,7 @@ class CategoryEntityTest {
     lateinit var categoryEntityFromSecondaryConstructor1 : CategoryEntity
     lateinit var categoryEntityFromSecondaryConstructor2 : CategoryEntity
 
-    @BeforeEach
+    @Before
     fun setupCategories() {
         category1 = Category("Cat1").apply { tickValue = 43 }
         category2 = Category("Cat2").apply { tickValue = 92 }
