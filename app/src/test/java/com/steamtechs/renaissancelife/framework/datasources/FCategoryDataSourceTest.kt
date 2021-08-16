@@ -2,9 +2,9 @@ package com.steamtechs.renaissancelife.framework.datasources
 
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.DisplayName
-import org.junit.jupiter.api.Test
+import org.junit.Test
 
-internal class FCategoryDataSourceTest{
+internal class FCategoryDataSourceTest {
 
     @Test
     @DisplayName("Create Instance of FCategoryDataSource.")

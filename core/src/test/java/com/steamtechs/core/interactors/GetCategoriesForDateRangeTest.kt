@@ -3,7 +3,6 @@ package com.steamtechs.core.interactors
 import com.steamtechs.core.data.DayCategoryLog
 import com.steamtechs.renaissancelife.platform.datasources.PDayCategoryLog
 import com.steamtechs.core.domain.Category
-import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Assertions.assertInstanceOf
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
