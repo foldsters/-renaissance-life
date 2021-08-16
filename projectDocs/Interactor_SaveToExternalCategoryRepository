@@ -1,0 +1,16 @@
+SaveToExternalCategoryRepository : Interactor
+-----------------------------------------------------------
+
+Data:
+    1. From Constructor
+        1. <sourceCategoryRepository> : CategoryRepository
+        2. <targetCategoryRepository> : CategoryRepository
+
+
+Does:
+    1. Writes Categories from sourceCategoryRepository to targetCategoryRepository ::
+        CategoryRepository -> CategoryRepository -> Unit
+
+
+Don't(s):
+    

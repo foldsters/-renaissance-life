@@ -4,17 +4,18 @@ ReplaceCategoriesByDate : Interactor
 Data:
     1. <sourceDate> : String
     2. From Constructor:
-        1. sourceDayCategoryLog : DayCategoryLog
-        2. targetDayCategoryLog : DayCategoryLog
+        1. <sourceDate> : String
+        2. <sourceCategoryRepository> : CategoryRepository
+        3. <targetCategoryRepository> : CategoryRepository
 
 
 
 Does:
-    1. Replace Categories in Target from Source for sourceDate ::
-            DayCategoryLog -> DayCategoryLog -> Unit
+    1. Replace Categories in targetCategoryRepository from sourceCategoryRepository for sourceDate ::
+           String -> CategoryRepository -> CategoryRepository -> Unit
 
 
 
 Don't(s):
-    2. Accept Empty sourceDayCategoryLog -> InvalidArgumentException
-    1. Accept sourceDayCategoryLogs with Categories from Multiple Dates -> InvalidArgumentException
+    2. Accept Empty sourceCategoryRepository -> InvalidArgumentException
+    1. Accept sourceCategoryRepository(s) with Categories from Multiple Dates -> InvalidArgumentException

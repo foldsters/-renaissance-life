@@ -8,7 +8,7 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 
-internal class InitDayCatLogTest {
+internal class InitLocalCategoryRepositoryTest {
 
     // SETUP
 
@@ -16,8 +16,8 @@ internal class InitDayCatLogTest {
     lateinit var targetCategoryRepository: CategoryRepository
 
     @BeforeEach
-    @DisplayName("Given a DayCatLog, ")
-    fun `Given a DayCatLog`(){
+    @DisplayName("Given a CategoryRepository, ")
+    fun `Given a CategoryRepository`(){
         sourceCategoryRepository = CategoryRepository(PCategoryRepository())
         targetCategoryRepository = CategoryRepository(PCategoryRepository())
     }
@@ -26,9 +26,9 @@ internal class InitDayCatLogTest {
     // TESTS
 
     @Test
-    @DisplayName("Return Local DayCategoryLog.")
-    fun `Return copied DayCategoryLog`() {
-        assertInstanceOf(CategoryRepository::class.java, InitDayCategoryLog(sourceCategoryRepository, targetCategoryRepository))
+    @DisplayName("Return Local CategoryRepository.")
+    fun `Return copied CategoryRepository`() {
+        assertInstanceOf(CategoryRepository::class.java, InitLocalCateogryRepository(sourceCategoryRepository, targetCategoryRepository))
     }
 
     @Test
@@ -36,7 +36,7 @@ internal class InitDayCatLogTest {
     fun `Show returned Instance is a Copy of given Instance`() {
         val categoryList = listOf<Category>(Category("Cat1"), Category("Cat2"))
         sourceCategoryRepository.addCategories(categoryList)
-        InitDayCategoryLog(sourceCategoryRepository, targetCategoryRepository)
+        InitLocalCateogryRepository(sourceCategoryRepository, targetCategoryRepository)
         assertEquals(categoryList, targetCategoryRepository.getCategories())
     }
 }

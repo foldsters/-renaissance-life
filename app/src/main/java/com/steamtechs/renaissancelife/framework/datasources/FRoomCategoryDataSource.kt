@@ -1,11 +1,10 @@
 package com.steamtechs.renaissancelife.framework.datasources
 
-import com.steamtechs.core.domain.Category
 import com.steamtechs.renaissancelife.framework.db.CategoryDao
 import com.steamtechs.renaissancelife.framework.db.CategoryEntity
 
 class FRoomCategoryDataSource: CategoryDao {
-    private val categoryList: List<CategoryEntity> = listOf()
+    private val categoryList: MutableList<CategoryEntity> = mutableListOf()
 
     override fun getAllCategoryEntities(): List<CategoryEntity> {
         return categoryList
@@ -15,7 +14,7 @@ class FRoomCategoryDataSource: CategoryDao {
         categoryList.drop(categoryList.size)
     }
 
-    override fun addCategoryEntities(categories: Iterable<CategoryEntity>) {
-        categoryList.plus(categories)
+    override fun addCategoryEntities(categoryEntities: Iterable<CategoryEntity>) {
+        categoryList.addAll(categoryEntities)
     }
 }

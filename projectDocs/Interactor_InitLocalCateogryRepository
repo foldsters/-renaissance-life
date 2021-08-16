@@ -1,0 +1,13 @@
+InitLocalCateogryRepository : Entity
+-----------------------------------------------------------
+
+Data:
+
+
+
+Does:
+    1. Invoke returns targetCategoryRepository populated from sourceCategoryRepository ::
+            CategoryRepository -> CategoryRepository -> CategoryRepository
+
+
+Don't(s):
