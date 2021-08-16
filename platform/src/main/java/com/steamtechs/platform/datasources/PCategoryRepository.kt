@@ -1,4 +1,4 @@
-package com.steamtechs.renaissancelife.platform.datasources
+package com.steamtechs.platform.datasources
 
 import com.steamtechs.core.domain.Category
 import com.steamtechs.core.data.CategoryDataSource

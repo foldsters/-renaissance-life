@@ -1,4 +1,4 @@
-package com.steamtechs.core.domain
+package com.steamtechs.core.interactors
 
 import com.steamtechs.core.data.CategoryRepository
 

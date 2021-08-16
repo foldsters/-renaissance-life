@@ -2,7 +2,7 @@ package com.steamtechs.core.data.platform
 
 import com.steamtechs.core.domain.Category
 import com.steamtechs.core.data.CategoryDataSource
-import com.steamtechs.renaissancelife.platform.datasources.PCategoryRepository
+import com.steamtechs.platform.datasources.PCategoryRepository
 import org.junit.jupiter.api.*
 import org.junit.jupiter.api.Assertions.*
 

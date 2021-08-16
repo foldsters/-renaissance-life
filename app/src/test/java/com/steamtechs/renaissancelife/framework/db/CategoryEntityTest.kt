@@ -1,10 +1,8 @@
 package com.steamtechs.renaissancelife.framework.db
 
 import com.steamtechs.core.domain.Category
-import org.junit.jupiter.api.BeforeEach
-import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.Assertions.*
-import org.junit.jupiter.api.DisplayName
+import org.junit.jupiter.api.*
 
 class CategoryEntityTest {
 
