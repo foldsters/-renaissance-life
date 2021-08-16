@@ -1,7 +1,7 @@
 package com.steamtechs.core.interactors
 
-import com.steamtechs.core.data.DayCategoryLog
-import com.steamtechs.renaissancelife.platform.datasources.PDayCategoryLog
+import com.steamtechs.core.data.CategoryRepository
+import com.steamtechs.renaissancelife.platform.datasources.PCategoryRepository
 import com.steamtechs.core.domain.Category
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.DisplayName
@@ -11,13 +11,13 @@ internal class ClearAllCategoriesInStorageTest{
 
     // SETUP
 
-    private lateinit var dayCatLog : DayCategoryLog
+    private lateinit var catRepository : CategoryRepository
 
     @BeforeEach
     fun setup() {
-        val pDayCatLog = PDayCategoryLog()
+        val pDayCatLog = PCategoryRepository()
         val categoryList = listOf(Category("Test1"), Category("Test2"), Category("Test3"))
-        dayCatLog = DayCategoryLog(pDayCatLog).also { AddCategories(it, categoryList) }
+        catRepository = CategoryRepository(pDayCatLog).also { AddCategories(it, categoryList) }
     }
 
     // TESTS
@@ -25,7 +25,7 @@ internal class ClearAllCategoriesInStorageTest{
     @Test
     @DisplayName("Clear All Categories on Populated Instance")
     fun clearAllCategoriesOnPopulatedInstance() {
-        ClearAllCategoriesInStorage(dayCatLog)
+        ClearAllCategoriesInStorage(catRepository)
     }
 
 }

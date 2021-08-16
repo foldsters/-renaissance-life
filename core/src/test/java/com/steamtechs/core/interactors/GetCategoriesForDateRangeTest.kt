@@ -1,7 +1,7 @@
 package com.steamtechs.core.interactors
 
-import com.steamtechs.core.data.DayCategoryLog
-import com.steamtechs.renaissancelife.platform.datasources.PDayCategoryLog
+import com.steamtechs.core.data.CategoryRepository
+import com.steamtechs.renaissancelife.platform.datasources.PCategoryRepository
 import com.steamtechs.core.domain.Category
 import org.junit.jupiter.api.Assertions.assertInstanceOf
 import org.junit.jupiter.api.DisplayName
@@ -16,7 +16,7 @@ internal class GetCategoriesForDateRangeTest{
         Category("Cat4", "2021-12-08", 0),
         Category("Cat5", "2019-08-21", 9),
     )
-    val dayCategoryLog = DayCategoryLog(PDayCategoryLog().also { it.addCategories(categoryList) })
+    val dayCategoryLog = CategoryRepository(PCategoryRepository().also { it.addCategories(categoryList) })
     val startDate : String = "2021-01-01"
     val endDate : String = "2021-12-31"
 

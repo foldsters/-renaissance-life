@@ -1,7 +1,7 @@
 package com.steamtechs.core.interactors
 
-import com.steamtechs.core.data.DayCategoryLog
-import com.steamtechs.renaissancelife.platform.datasources.PDayCategoryLog
+import com.steamtechs.core.data.CategoryRepository
+import com.steamtechs.renaissancelife.platform.datasources.PCategoryRepository
 import com.steamtechs.core.domain.Category
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.BeforeEach
@@ -12,14 +12,14 @@ internal class GetCategoriesTest {
 
     // SETUP
 
-    lateinit var testPDayCatLog : PDayCategoryLog
-    lateinit var testDayCatLog : DayCategoryLog
+    lateinit var testPCatRepository : PCategoryRepository
+    lateinit var testCatRepository : CategoryRepository
     lateinit var categoryList : List<Category>
 
     @BeforeEach
     fun setup() {
-        testPDayCatLog = PDayCategoryLog()
-        testDayCatLog = DayCategoryLog(testPDayCatLog)
+        testPCatRepository = PCategoryRepository()
+        testCatRepository = CategoryRepository(testPCatRepository)
         categoryList = listOf(Category("Test1"), Category("Test2"), Category("Test3"))
     }
 
@@ -29,7 +29,7 @@ internal class GetCategoriesTest {
     @Test
     @DisplayName("GetCategories returns Iterable of Category.")
     fun `GetCategories returns Iterable of Category`() {
-        testPDayCatLog.addCategories(categoryList)
-        assertInstanceOf(Iterable::class.java, GetCategories(testDayCatLog))
+        testPCatRepository.addCategories(categoryList)
+        assertInstanceOf(Iterable::class.java, GetCategories(testCatRepository))
     }
 }

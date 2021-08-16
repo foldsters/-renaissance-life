@@ -59,7 +59,7 @@ internal class AppRoomDatabaseTest {
         roomDataSource.addCategories(listOf(Category("TestCategory")))
         database.clearAllTables()
 
-        assertTrue(database.categoryDao().getAllCategories().isEmpty())
+        assertTrue(database.categoryDao().getAllCategoryEntities().isEmpty())
     }
 
 }

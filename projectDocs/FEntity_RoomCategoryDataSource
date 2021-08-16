@@ -12,9 +12,6 @@ Does:
     2. getCategories :: () -> Iterable<Category>
     3. clearAllCategories :: () -> ()
     4. addCategories :: Iterable<Category> -> ()
-        *Note* this will First clearAllCategories Adding Cateogries
-    5. Iterator :: RCDS -> Iterator<Category>
 
 
 Don't(s):
-    {4} Keep persistent data from before adding -- clearAllCategories gets called before addCategories

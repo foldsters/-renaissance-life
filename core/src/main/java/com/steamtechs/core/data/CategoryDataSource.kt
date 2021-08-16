@@ -2,7 +2,7 @@ package com.steamtechs.core.data
 
 import com.steamtechs.core.domain.Category
 
-interface DayCategoryLogDataSource : Iterable<Category> {
+interface CategoryDataSource {
 
     fun getCategories() : Iterable<Category>
 

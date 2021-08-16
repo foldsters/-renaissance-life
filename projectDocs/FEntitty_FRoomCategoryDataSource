@@ -1,0 +1,18 @@
+FRoomCategoryDataSource: FEntity
+    extends CategoryDao
+-----------------------------------------------------------
+
+!!Finish Test Suite when testImplementaion is resolved!!
+
+Data:
+
+
+
+Does:
+    1. Create Instance of FRoomCategoryDataSource :: () -> FRoomCategoryDataSource
+    2. getAllCategoryEntities :: () -> List<CategoryEntities>
+    3. clearAllCategoryEntities :: () -> Unit
+    4. addCategoryEntities :: List<CategoryEntities> -> Unit
+
+
+Don't(s):

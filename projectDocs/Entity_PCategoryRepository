@@ -1,0 +1,15 @@
+PCategoryRepository : Entity
+    Extends CategoryRepository
+-----------------------------------------------------------
+
+Data:
+    1. <catList> : Holds a list of categories
+
+
+Does:
+    1. Create Instance of PCategoryRepository :: () -> PCategoryRepository
+    2. getCategories :: () -> List<Category>
+    3. clearAllCategories :: () -> Unit
+    4. addCategories :: Iterable<Category> -> Unit
+
+Don't(s):
