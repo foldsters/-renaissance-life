@@ -1,10 +1,9 @@
 package com.steamtechs.core.interactors
 
-import com.steamtechs.core.data.DayCategoryLog
-import com.steamtechs.core.domain.Category
+import com.steamtechs.core.data.CategoryRepository
 
 object ClearAllCategoriesInStorage {
-    operator fun invoke(dayCategoryLog: DayCategoryLog) {
-        dayCategoryLog.clearAllCategories()
+    operator fun invoke(categoryRepository: CategoryRepository) {
+        categoryRepository.clearAllCategories()
     }
 }

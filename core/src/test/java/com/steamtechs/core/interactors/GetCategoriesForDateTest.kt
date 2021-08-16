@@ -1,7 +1,7 @@
 package com.steamtechs.core.interactors
 
-import com.steamtechs.core.data.DayCategoryLog
-import com.steamtechs.renaissancelife.platform.datasources.PDayCategoryLog
+import com.steamtechs.core.data.CategoryRepository
+import com.steamtechs.renaissancelife.platform.datasources.PCategoryRepository
 import com.steamtechs.core.domain.Category
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.DisplayName
@@ -15,7 +15,7 @@ internal class GetCategoriesForDateTest{
         Category("Cat4", "2021-12-21", 0),
         Category("Cat5", "2021-08-21", 9),
     )
-    private val dayCategoryLog = DayCategoryLog(PDayCategoryLog().also { it.addCategories(categoryList) })
+    private val dayCategoryLog = CategoryRepository(PCategoryRepository().also { it.addCategories(categoryList) })
 
     private val checkList = listOf(
         Category("Cat1", "2021-08-21", 3),

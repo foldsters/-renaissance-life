@@ -1,10 +1,10 @@
 package com.steamtechs.core.interactors
 
-import com.steamtechs.core.data.DayCategoryLog
+import com.steamtechs.core.data.CategoryRepository
 import com.steamtechs.core.domain.Category
 
 object AddCategories {
-    operator fun invoke(dayCategoryLog: DayCategoryLog, categories: List<Category>){
-        dayCategoryLog.addCategories(categories)
+    operator fun invoke(categoryRepository: CategoryRepository, categories: List<Category>){
+        categoryRepository.addCategories(categories)
     }
 }

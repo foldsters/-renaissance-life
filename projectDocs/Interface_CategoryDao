@@ -6,9 +6,9 @@ Data:
 
 
 Does:
-    1. Get all CategoryEntities from Database :: () -> List<CategoryEntity>
-    2. Clear All CategoryEntities from Database :: () -> Unit
-    3. Add CategoryEntities to Database :: List<CategoryEntity> -> Unit
+    1. getAllCategoryEntities from Database :: () -> List<CategoryEntity>
+    2. clearAllCategoryEntities from Database :: () -> Unit
+    3. addCategoryEntities to Database :: Iterable<CategoryEntity> -> Unit
 
 
 Don't(s):

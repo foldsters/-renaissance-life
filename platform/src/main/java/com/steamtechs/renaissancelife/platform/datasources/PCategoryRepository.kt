@@ -1,9 +1,9 @@
 package com.steamtechs.renaissancelife.platform.datasources
 
 import com.steamtechs.core.domain.Category
-import com.steamtechs.core.data.DayCategoryLogDataSource
+import com.steamtechs.core.data.CategoryDataSource
 
-class PDayCategoryLog : DayCategoryLogDataSource
+class PCategoryRepository : CategoryDataSource
 {
     private val categoryList = mutableListOf<Category>()
 
@@ -16,14 +16,7 @@ class PDayCategoryLog : DayCategoryLogDataSource
     }
 
     override fun addCategories(categories: Iterable<Category>) {
-        this.clearAllCategories()
         categoryList.addAll(categories)
     }
-
-
-    override fun iterator(): Iterator<Category> {
-        return categoryList.iterator()
-    }
-
 
 }

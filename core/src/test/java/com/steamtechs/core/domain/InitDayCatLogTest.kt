@@ -1,7 +1,7 @@
 package com.steamtechs.core.domain
 
-import com.steamtechs.core.data.DayCategoryLog
-import com.steamtechs.renaissancelife.platform.datasources.PDayCategoryLog
+import com.steamtechs.core.data.CategoryRepository
+import com.steamtechs.renaissancelife.platform.datasources.PCategoryRepository
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.DisplayName
@@ -11,14 +11,14 @@ internal class InitDayCatLogTest {
 
     // SETUP
 
-    lateinit var sourceDayCategoryLog: DayCategoryLog
-    lateinit var targetDayCategoryLog: DayCategoryLog
+    lateinit var sourceCategoryRepository: CategoryRepository
+    lateinit var targetCategoryRepository: CategoryRepository
 
     @BeforeEach
     @DisplayName("Given a DayCatLog, ")
     fun `Given a DayCatLog`(){
-        sourceDayCategoryLog = DayCategoryLog(PDayCategoryLog())
-        targetDayCategoryLog = DayCategoryLog(PDayCategoryLog())
+        sourceCategoryRepository = CategoryRepository(PCategoryRepository())
+        targetCategoryRepository = CategoryRepository(PCategoryRepository())
     }
 
 
@@ -27,15 +27,15 @@ internal class InitDayCatLogTest {
     @Test
     @DisplayName("Return Local DayCategoryLog.")
     fun `Return copied DayCategoryLog`() {
-        assertInstanceOf(DayCategoryLog::class.java, InitDayCategoryLog(sourceDayCategoryLog, targetDayCategoryLog))
+        assertInstanceOf(CategoryRepository::class.java, InitDayCategoryLog(sourceCategoryRepository, targetCategoryRepository))
     }
 
     @Test
     @DisplayName("Show returned Instance is a Copy of given Instance.")
     fun `Show returned Instance is a Copy of given Instance`() {
         val categoryList = listOf<Category>(Category("Cat1"), Category("Cat2"))
-        sourceDayCategoryLog.addCategories(categoryList)
-        InitDayCategoryLog(sourceDayCategoryLog, targetDayCategoryLog)
-        assertEquals(categoryList, targetDayCategoryLog.getCategories())
+        sourceCategoryRepository.addCategories(categoryList)
+        InitDayCategoryLog(sourceCategoryRepository, targetCategoryRepository)
+        assertEquals(categoryList, targetCategoryRepository.getCategories())
     }
 }

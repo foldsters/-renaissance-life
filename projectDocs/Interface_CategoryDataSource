@@ -1,4 +1,4 @@
-DayCategoryLogDataSource : Interface
+CategoryDataSource : Interface
 -----------------------------------------------------------
 
 Data:
@@ -11,4 +11,3 @@ Does:
     3. Add Categories : Iterable<Category> -> ()
 
 Don't(s):
-    {3} Keep persistent data from before adding -- clearAllCategories gets called before addCategories in Extention

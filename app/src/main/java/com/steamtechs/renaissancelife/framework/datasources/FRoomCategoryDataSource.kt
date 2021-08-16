@@ -4,18 +4,18 @@ import com.steamtechs.core.domain.Category
 import com.steamtechs.renaissancelife.framework.db.CategoryDao
 import com.steamtechs.renaissancelife.framework.db.CategoryEntity
 
-class FCategoryDataSource: CategoryDao {
+class FRoomCategoryDataSource: CategoryDao {
     private val categoryList: List<CategoryEntity> = listOf()
 
-    override fun getAllCategories(): List<CategoryEntity> {
+    override fun getAllCategoryEntities(): List<CategoryEntity> {
         return categoryList
     }
 
-    override fun clearAllCategories() {
+    override fun clearAllCategoryEntities() {
         categoryList.drop(categoryList.size)
     }
 
-    override fun addCategories(categories: List<CategoryEntity>) {
+    override fun addCategoryEntities(categories: Iterable<CategoryEntity>) {
         categoryList.plus(categories)
     }
 }

@@ -1,7 +1,7 @@
 package com.steamtechs.core.interactors
 
-import com.steamtechs.core.data.DayCategoryLog
-import com.steamtechs.renaissancelife.platform.datasources.PDayCategoryLog
+import com.steamtechs.core.data.CategoryRepository
+import com.steamtechs.renaissancelife.platform.datasources.PCategoryRepository
 import com.steamtechs.core.domain.Category
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
@@ -12,13 +12,13 @@ internal class AddCategoriesTest {
 
     // SETUP
 
-    lateinit var dayCategoryLog: DayCategoryLog
+    lateinit var categoryRepository: CategoryRepository
     lateinit var categoryList : List<Category>
 
     @BeforeEach
     fun setup() {
-        val pDayCategoryLog = PDayCategoryLog()
-        dayCategoryLog = DayCategoryLog(pDayCategoryLog)
+        val pDayCategoryLog = PCategoryRepository()
+        categoryRepository = CategoryRepository(pDayCategoryLog)
         categoryList = listOf<Category>(Category("Test1"), Category("Test2"), Category("Test3"))
     }
 
@@ -28,7 +28,7 @@ internal class AddCategoriesTest {
     @Test
     @DisplayName("Show AddCategory.")
     fun `Show AddCategory`() {
-        AddCategories(dayCategoryLog, categoryList)
-        assertEquals(categoryList, dayCategoryLog.getCategories())
+        AddCategories(categoryRepository, categoryList)
+        assertEquals(categoryList, categoryRepository.getCategories())
     }
 }

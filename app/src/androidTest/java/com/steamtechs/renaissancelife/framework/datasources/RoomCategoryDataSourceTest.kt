@@ -65,23 +65,11 @@ class RoomCategoryDataSourceTest {
     @DisplayName("Add Categories to RCDS instance.")
     fun addCategoriesToRcdsInstance() {
         setupRoomCategoryDataSource()
-
-        val categories = listOf<Category>(Category("Test1"), Category("Test2"))
-        roomCategoryDataSource.addCategories(categories)
-
-        assertEquals(2, roomCategoryDataSource.getCategories().count())
+        val newCategories = listOf<Category>(Category("Test1"), Category("Test2"))
+        roomCategoryDataSource.addCategories(newCategories)
+        assert((roomCategoryDataSource.getCategories() as Collection).containsAll(newCategories))
     }
 
-    // Iterator Tests
-    @Test
-    @DisplayName("Show Iterator Method.")
-    fun showIteratorMethod() {
-        setupRoomCategoryDataSource()
-
-        val dataSourceIterator = roomCategoryDataSource.iterator()
-
-        assertInstanceOf(Iterator::class.java, dataSourceIterator)
-    }
 
 
 }

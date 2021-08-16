@@ -1,7 +1,7 @@
 package com.steamtechs.core.data
 
 
-import com.steamtechs.renaissancelife.platform.datasources.PDayCategoryLog
+import com.steamtechs.renaissancelife.platform.datasources.PCategoryRepository
 import com.steamtechs.core.domain.Category
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.BeforeEach
@@ -9,15 +9,15 @@ import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 
-internal class DayCategoryLogTest {
+internal class CategoryRepositoryTest {
 
     // SETUP
 
-    lateinit var dayCategoryLogDataSource: DayCategoryLogDataSource
+    lateinit var categoryDataSource: CategoryDataSource
 
     @BeforeEach
     fun setup() {
-        dayCategoryLogDataSource = PDayCategoryLog()
+        categoryDataSource = PCategoryRepository()
     }
 
 
@@ -25,26 +25,26 @@ internal class DayCategoryLogTest {
 
     // Instance / Constructor Tests
     @Test
-    @DisplayName("Create instance of DayCategoryLog.")
-    fun `Create instance of DayCategoryLog`() {
-        val dayCategoryLog = DayCategoryLog(dayCategoryLogDataSource)
-        assertInstanceOf(DayCategoryLog::class.java, dayCategoryLog)
+    @DisplayName("Create instance of CategoryRepository.")
+    fun `Create instance of CategoryRepository`() {
+        val categoryRepository = CategoryRepository(categoryDataSource)
+        assertInstanceOf(CategoryRepository::class.java, categoryRepository)
     }
 
 
-    // Tests Assuming Instance of DayCategoryLog
+    // Tests Assuming Instance of CategoryRepository
     @Nested
-    @DisplayName("Given instance of DayCategoryLog,")
-    inner class GivenDayCategoryLog {
+    @DisplayName("Given instance of CategoryRepository,")
+    inner class GivenCategoryRepository {
 
         // SETUP
 
-        lateinit var dayCategoryLog: DayCategoryLog
+        lateinit var categoryRepository: CategoryRepository
         var categoryList = listOf(Category("Test1"), Category("Test2"), Category("Test3"))
 
         @BeforeEach
-        fun `Given instance of PDayCategoryLog`() {
-            dayCategoryLog = DayCategoryLog(dayCategoryLogDataSource)
+        fun `Given instance of PCategoryRepository`() {
+            categoryRepository = CategoryRepository(categoryDataSource)
         }
 
 
@@ -54,7 +54,7 @@ internal class DayCategoryLogTest {
         @Test
         @DisplayName("Get Categories from Instance.")
         fun `Get Categories from Instance`() {
-            val emptyCategoryList = dayCategoryLog.getCategories()
+            val emptyCategoryList = categoryRepository.getCategories()
             assertEquals(listOf<Category>(), emptyCategoryList)
 
         }
@@ -64,8 +64,8 @@ internal class DayCategoryLogTest {
         @Test
         @DisplayName("Clear All Categories.")
         fun clearAllCategories() {
-            dayCategoryLog.clearAllCategories()
-            assertTrue(dayCategoryLog.getCategories().toList().isEmpty())
+            categoryRepository.clearAllCategories()
+            assertTrue(categoryRepository.getCategories().toList().isEmpty())
         }
 
 
@@ -73,12 +73,12 @@ internal class DayCategoryLogTest {
         @Test
         @DisplayName("Clear DB then Add Categories from Iterable.")
         fun clearDbThenAddCategoriesFromIterable() {
-            dayCategoryLog.addCategories(categoryList)
-            assertIterableEquals(categoryList, dayCategoryLog.getCategories())
+            categoryRepository.addCategories(categoryList)
+            assertIterableEquals(categoryList, categoryRepository.getCategories())
         }
 
 
-        // Assuming Instance of dayCategoryLog has Categories in it
+        // Assuming Instance of categoryRepository has Categories in it
         @Nested
         @DisplayName("Given Populated Instance,")
         inner class GivenPopulatedInstance {
@@ -87,7 +87,7 @@ internal class DayCategoryLogTest {
 
             @BeforeEach
             fun `Given Populated Instance`() {
-                dayCategoryLog.addCategories(categoryList)
+                categoryRepository.addCategories(categoryList)
             }
 
 
@@ -97,15 +97,15 @@ internal class DayCategoryLogTest {
             @Test
             @DisplayName("Show Getter on Populated Instance.")
             fun showGetterOnPopulatedInstance() {
-                assertIterableEquals(categoryList, dayCategoryLog.getCategories())
+                assertIterableEquals(categoryList, categoryRepository.getCategories())
             }
 
             // Clear Categories Tests
             @Test
             @DisplayName("Clear All Categories on Populated Instance.")
             fun clearAllCategoriesOnPopulatedInstance() {
-                dayCategoryLog.clearAllCategories()
-                assertTrue(dayCategoryLog.getCategories().toList().isEmpty())
+                categoryRepository.clearAllCategories()
+                assertTrue(categoryRepository.getCategories().toList().isEmpty())
             }
 
             // Add Categories Tests
@@ -114,8 +114,8 @@ internal class DayCategoryLogTest {
             fun clearDbThenAddCategoriesToPopulatedInstance() {
                 val newCategories: Iterable<Category> =
                     listOf(Category("Test3"), Category("Test4"), Category("Test5"))
-                dayCategoryLog.addCategories(newCategories)
-                assertIterableEquals(newCategories, dayCategoryLog.getCategories())
+                categoryRepository.addCategories(newCategories)
+                assertIterableEquals(newCategories, categoryRepository.getCategories())
             }
         }
     }
