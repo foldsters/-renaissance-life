@@ -19,7 +19,7 @@ data class CategoryEntity internal constructor(
             CategoryEntity(0, category.date, category.title, category.tickValue)
    }
 
-    fun toCategory() : Category = Category(title).apply { tickValue = tickValue }
+    fun toCategory() : Category = Category(title, date, tickValue)
 
     override fun equals(other: Any?) : Boolean {
         return hashCode() == other.hashCode()

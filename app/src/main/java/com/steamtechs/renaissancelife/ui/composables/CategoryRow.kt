@@ -1,4 +1,4 @@
-package com.steamtechs.renaissancelife.ui
+package com.steamtechs.renaissancelife.ui.composables
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Button
@@ -12,12 +12,12 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
 
+
 @Composable
-@Preview
 fun CategoryRow(categoryName: String = "") {
 
     val modifier = Modifier
-    var categoryInt by remember { mutableStateOf(0)}
+    var categoryInt by remember { mutableStateOf(0) }
 
     Row(
         modifier = modifier.height(75.dp),
@@ -56,7 +56,4 @@ fun CategoryRow(categoryName: String = "") {
             Text("+", fontSize = 8.em)
         }
     }
-
-
-
 }

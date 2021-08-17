@@ -1,4 +1,4 @@
-package com.steamtechs.renaissancelife.ui
+package com.steamtechs.renaissancelife.ui.composables
 
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.LazyColumn
@@ -16,7 +16,7 @@ fun LoggingScreen(){
         Text("L")
         LazyColumn {
             for (i in 1..20) {
-                item { com.steamtechs.renaissancelife.ui.composables.CategoryRow(i.toString()) }
+                item { CategoryRow(i.toString()) }
             }
 
 

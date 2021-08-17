@@ -2,7 +2,7 @@ package com.steamtechs.core.interactors
 
 import com.steamtechs.core.data.CategoryRepository
 
-object InitLocalCateogryRepository {
+object InitLocalCategoryRepository {
     operator fun invoke(
         sourceCategoryRepository: CategoryRepository,
         targetCategoryRepository: CategoryRepository
