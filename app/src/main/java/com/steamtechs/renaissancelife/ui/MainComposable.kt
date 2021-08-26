@@ -29,7 +29,7 @@ fun MainComposable() {
     val navOnSelect = appViewModel::navOnSelect
 
     // Logging
-    val liveCategoryState : List<LiveCategory>? by appViewModel.liveCategoryList.observeAsState()
+    val liveCategoryList : List<LiveCategory>? by appViewModel.liveCategoryList.observeAsState()
 
     // Radar
     val summary by viewModel<AppViewModel>().radarSummaryLists.observeAsState()
@@ -45,7 +45,7 @@ fun MainComposable() {
 
                 "Logging" -> {
                     CategoryColumn(
-                        liveCategoryState,
+                        liveCategoryList,
                         deleteCategory,
                         modifier
                     )
