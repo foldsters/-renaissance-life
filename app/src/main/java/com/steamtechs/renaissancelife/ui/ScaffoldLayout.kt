@@ -11,12 +11,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
+import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.steamtechs.renaissancelife.R
 
 @Composable
 @Preview
 fun LoggingScaffold(){
+    val picker = MaterialDatePicker.Builder.datePicker().build()
     Scaffold(
         topBar = {/**/ },
         drawerContent = {/**/ },
