@@ -1,0 +1,13 @@
+SummarizeCategories : Interactor
+-----------------------------------------------------------
+
+Data:
+
+
+
+Does:
+    1. Takes an iterable of categories and returns a map of category titles
+       to the sum of corresponding category ticks.
+
+
+Don't(s):

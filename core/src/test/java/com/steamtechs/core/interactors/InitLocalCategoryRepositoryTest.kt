@@ -28,7 +28,7 @@ internal class InitLocalCategoryRepositoryTest {
     @Test
     @DisplayName("Return Local CategoryRepository.")
     fun `Return copied CategoryRepository`() {
-        assertInstanceOf(CategoryRepository::class.java, InitLocalCateogryRepository(sourceCategoryRepository, targetCategoryRepository))
+        assertInstanceOf(CategoryRepository::class.java, InitLocalCategoryRepository(sourceCategoryRepository, targetCategoryRepository))
     }
 
     @Test
@@ -36,7 +36,7 @@ internal class InitLocalCategoryRepositoryTest {
     fun `Show returned Instance is a Copy of given Instance`() {
         val categoryList = listOf<Category>(Category("Cat1"), Category("Cat2"))
         sourceCategoryRepository.addCategories(categoryList)
-        InitLocalCateogryRepository(sourceCategoryRepository, targetCategoryRepository)
+        InitLocalCategoryRepository(sourceCategoryRepository, targetCategoryRepository)
         assertEquals(categoryList, targetCategoryRepository.getCategories())
     }
 }

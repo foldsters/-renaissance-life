@@ -2,6 +2,10 @@ package com.steamtechs.renaissancelife.di
 
 import android.content.Context
 import androidx.room.Room
+import com.steamtechs.core.data.CategoryRepository
+import com.steamtechs.core.interactors.InitLocalCategoryRepository
+import com.steamtechs.platform.datasources.PCategoryRepository
+import com.steamtechs.renaissancelife.framework.datasources.RoomCategoryDataSource
 import com.steamtechs.renaissancelife.framework.db.AppRoomDatabase
 import com.steamtechs.renaissancelife.framework.db.CategoryDao
 import dagger.Module
@@ -23,12 +27,27 @@ object AppModule {
             context,
             AppRoomDatabase::class.java,
             "renaissanceliferoom.db"
-        ).build()
+        ).allowMainThreadQueries().build()
     }
 
     @Singleton
     @Provides
     fun provideCategoryDao(database : AppRoomDatabase) : CategoryDao {
         return database.categoryDao()
+    }
+
+    @Singleton
+    @Provides
+    fun providesRoomCategoryDataSource(categoryDao: CategoryDao) : RoomCategoryDataSource {
+        return RoomCategoryDataSource(categoryDao)
+    }
+
+    @Singleton
+    @Provides
+    fun providesInitDataSource(roomCategoryDataSource: RoomCategoryDataSource) : CategoryRepository {
+        var targetCategoryRepository = CategoryRepository(PCategoryRepository())
+        val sourceCategoryRepository = CategoryRepository(roomCategoryDataSource)
+        targetCategoryRepository = InitLocalCategoryRepository(sourceCategoryRepository, targetCategoryRepository)
+        return targetCategoryRepository
     }
 }

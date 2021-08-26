@@ -38,7 +38,7 @@ android {
         jvmTarget = '1.8'
     }
     packagingOptions {
-        exclude 'META-INF/*'
+        exclude 'META-INF/LICENSE**'
     }
 
     composeOptions {
@@ -112,6 +112,9 @@ dependencies {
     // Integration with observables
     implementation 'androidx.compose.runtime:runtime-livedata:1.0.1'
     implementation 'androidx.compose.runtime:runtime-rxjava2:1.0.1'
+
+    // Layout Inspector
+    implementation "androidx.compose.ui:ui-tooling:1.0.1"
 
     // UI Tests
     androidTestImplementation 'androidx.compose.ui:ui-test-junit4:1.0.1'
