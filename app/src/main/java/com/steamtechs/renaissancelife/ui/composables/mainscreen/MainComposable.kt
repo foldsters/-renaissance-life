@@ -14,6 +14,7 @@ import com.steamtechs.renaissancelife.ui.NavBar
 
 @Preview
 @Composable
+@Preview
 fun MainComposable() {
 
     val appViewModel = viewModel<AppViewModel>()
