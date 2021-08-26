@@ -11,9 +11,7 @@ fun ContextMenu(
     onClickCallbacks: List<() -> Unit>,
     showMenu: Boolean,
     onDismiss: () -> Unit,
-    id: Int = 0
 ) {
-    println("CONTEXT MENU UPDATED. showState: $showMenu, id: $id")
     DropdownMenu(
         expanded = showMenu,
         onDismissRequest = { onDismiss() }

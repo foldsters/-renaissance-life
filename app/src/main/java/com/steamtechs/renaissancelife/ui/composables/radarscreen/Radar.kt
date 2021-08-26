@@ -1,4 +1,4 @@
-package com.steamtechs.renaissancelife.ui.composables
+package com.steamtechs.renaissancelife.ui.composables.radarscreen
 
 import android.graphics.Paint
 import androidx.compose.runtime.Composable

@@ -1,4 +1,4 @@
-package com.steamtechs.renaissancelife.ui.composables
+package com.steamtechs.renaissancelife.ui.composables.loggingscreen
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardActions
@@ -13,6 +13,7 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
+import com.steamtechs.renaissancelife.ui.composables.onLongPress
 
 @Composable
 fun CategoryRow(

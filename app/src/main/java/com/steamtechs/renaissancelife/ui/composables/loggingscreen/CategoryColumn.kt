@@ -1,4 +1,4 @@
-package com.steamtechs.renaissancelife.ui.composables
+package com.steamtechs.renaissancelife.ui.composables.loggingscreen
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -15,6 +15,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.steamtechs.renaissancelife.ui.LiveCategory
+import com.steamtechs.renaissancelife.ui.composables.ContextMenu
 
 
 @Composable
@@ -33,7 +34,7 @@ fun CategoryColumn(
             NoDataText(loading = false)
             return
         }
-        else -> LazyColumn() {
+        else -> LazyColumn {
 
             itemsIndexed(
                 items = liveCategoryState,
@@ -67,8 +68,7 @@ fun CategoryColumn(
                             println("MENU STATE : false")
                             println("ID : $id")
                             setMenuState(false)
-                        },
-                        id = id
+                        }
                     )
 
                     CategoryRow(
@@ -87,7 +87,7 @@ fun CategoryColumn(
                     )
                 }
             }
-            item() {
+            item {
                 Box(modifier = Modifier.height(90.dp)) {
                 }
             }
