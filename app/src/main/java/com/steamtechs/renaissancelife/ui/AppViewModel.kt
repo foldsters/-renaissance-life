@@ -1,7 +1,6 @@
 package com.steamtechs.renaissancelife.ui
 
-import androidx.compose.ui.graphics.painter.Painter
-import androidx.compose.ui.res.painterResource
+
 import androidx.lifecycle.*
 import com.steamtechs.core.data.CategoryRepository
 import com.steamtechs.core.domain.Category
@@ -31,8 +30,6 @@ class AppViewModel @Inject constructor(
     // Logging
 
     fun addNewLiveCategory() {
-
-        println("ADDING CATEGORY")
         val newLiveCategory = LiveCategory.defaultCategory()
         liveCategoryList.value = liveCategoryList.value?.plus(listOf(newLiveCategory))
 

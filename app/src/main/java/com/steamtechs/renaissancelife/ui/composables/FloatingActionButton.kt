@@ -12,10 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.steamtechs.renaissancelife.R
-import com.steamtechs.renaissancelife.ui.AppViewModel
-import com.steamtechs.renaissancelife.ui.LiveCategory
 
 
 @Composable
