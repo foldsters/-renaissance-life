@@ -6,6 +6,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.steamtechs.renaissancelife.ui.AppViewModel
 import com.steamtechs.renaissancelife.ui.LiveCategory
@@ -13,6 +14,7 @@ import com.steamtechs.renaissancelife.ui.NavBar
 
 
 @Composable
+@Preview
 fun MainComposable() {
 
     val appViewModel = viewModel<AppViewModel>()
