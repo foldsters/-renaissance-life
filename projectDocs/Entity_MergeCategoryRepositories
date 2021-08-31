@@ -1,0 +1,14 @@
+MergeCategoryRepositories(oldRepo, newRepo): Entity
+-----------------------------------------------------------
+
+Data:
+    From Constructor
+        1. oldRepo : CategoryRepository
+        2. newRepo : CategoryRepository
+
+Does:
+    1. Merge Overwrites/Appends to oldRepo with categories from newRepo ::
+        CategoryRepository -> CategoryRepository -> CategoryRepository
+
+
+Don't(s):
