@@ -1,0 +1,13 @@
+IterableEndecType<T> : Interface
+-----------------------------------------------------------
+
+Data:
+
+
+
+Does:
+    1. encodeIterable :: Iterable<T> -> ByteArray
+    2. decodeBytes :: ByteArray -> Iterable<T>
+
+
+Don't(s):

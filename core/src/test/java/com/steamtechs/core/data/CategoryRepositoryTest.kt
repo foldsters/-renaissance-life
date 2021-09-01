@@ -117,6 +117,14 @@ internal class CategoryRepositoryTest {
                 categoryRepository.addCategories(newCategories)
                 assertIterableEquals(newCategories, categoryRepository.getCategories())
             }
+
+            @Test
+            @DisplayName("Print as String.")
+            fun `Print as String`() {
+                println(categoryRepository.getCategories())
+                assert(true)
+            }
+
         }
     }
 }
