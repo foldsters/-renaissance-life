@@ -1,5 +1,8 @@
 package com.steamtechs.core.domain
 
+import kotlinx.serialization.Serializable
+
+@Serializable
 data class Category(private val _title: String,
                     private val _date : String = "",
                     private val _tickValue : Int = 0) {

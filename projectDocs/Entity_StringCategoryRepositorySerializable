@@ -1,0 +1,16 @@
+StringCategoryRepositorySerializable: Entity
+    Extends CategoryRepositoryEndecType
+-----------------------------------------------------------
+
+Data:
+
+
+
+Does:
+    1. encodeCategoryRepository creates a String from JSON Serialization of a Category Repository ::
+        CategoryRepository -> String
+    2. decodeString an encodedString to a targetRepository ::
+        String -> CategoryRepository -> Unit
+
+
+Don't(s):
