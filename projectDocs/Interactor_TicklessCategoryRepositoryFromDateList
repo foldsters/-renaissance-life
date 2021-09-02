@@ -1,0 +1,18 @@
+TicklessCategoryRepositoryFromDateList : Interactor
+-----------------------------------------------------------
+
+Data:
+    1. From Invoke:
+        1.1 dateList : List<String>
+        1.2 sourceRepository : CategoryRepository
+        1.3 targetRepository : CategoryRepository
+
+
+Does:
+    1. Accumulates Category titles from sourceRepository then populates
+            the targetRepository with Tickless categories for given dates ::
+            List<String> -> CategoryRepository -> CategoryRepository -> Unit
+
+
+
+Don't(s):

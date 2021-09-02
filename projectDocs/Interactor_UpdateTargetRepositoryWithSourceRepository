@@ -1,0 +1,17 @@
+UpdateTargetRepositoryWithSourceRepository: Interactor
+-----------------------------------------------------------
+
+Data:
+    1. From Invoke:
+        1.1 sourceRepository: CategoryRepository
+        1.2 targetRepository: CategoryRepository
+
+
+Does:
+    1. Invoke finds (title, date) matches for Categories from the targetRepository in the
+        sourceRepository and Updates tickvalues in the target - deleting Categories without matches ::
+        CategoryRepository -> CategoryRepository -> Unit
+
+
+
+Don't(s):
