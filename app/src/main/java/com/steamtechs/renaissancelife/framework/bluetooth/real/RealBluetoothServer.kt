@@ -1,12 +1,13 @@
-package com.steamtechs.renaissancelife.framework.bluetooth
+package com.steamtechs.renaissancelife.framework.bluetooth.real
 
 import android.bluetooth.BluetoothSocket
 import android.util.Log
+import com.steamtechs.renaissancelife.framework.bluetooth.templates.BluetoothServer
 import java.io.BufferedInputStream
 import java.lang.Exception
 
-class BluetoothServer(private val socket: BluetoothSocket,
-                      val messageCallback : (String, String?) -> Unit) : Thread() {
+class RealBluetoothServer(private val socket: BluetoothSocket,
+                          val messageCallback : (String, String?) -> Unit) : BluetoothServer() {
 
     private val inputStream = socket.inputStream
     private val outputStream = socket.outputStream

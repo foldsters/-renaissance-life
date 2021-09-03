@@ -6,12 +6,38 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import androidx.lifecycle.MutableLiveData
+import com.steamtechs.renaissancelife.framework.bluetooth.mocks.MockBluetoothClient
+import com.steamtechs.renaissancelife.framework.bluetooth.mocks.MockBluetoothServerController
+import com.steamtechs.renaissancelife.framework.bluetooth.real.RealBluetoothClient
+import com.steamtechs.renaissancelife.framework.bluetooth.real.RealBluetoothServerController
+import com.steamtechs.renaissancelife.framework.bluetooth.templates.BluetoothClient
+import com.steamtechs.renaissancelife.framework.bluetooth.templates.BluetoothServerController
 import java.time.Instant.now
 
 object BluetoothHandler {
 
+    var mock = true
+
+    // Extracted to beginning for testing with mocks
+    private val bluetoothServerController : ((String, String?) -> Unit) -> BluetoothServerController
+    get() {
+        return if (mock) {
+            ::MockBluetoothServerController
+        } else
+            ::RealBluetoothServerController
+    }
+
+
+    private val bluetoothClient : (BluetoothDevice, String) -> BluetoothClient
+        get() {
+        return if (mock) {
+            ::MockBluetoothClient
+        } else
+            ::RealBluetoothClient
+        }
+
     // Map of all the devices this devices is paired with
-    private var _devicesMap = HashMap<String, BluetoothDevice>()
+                                   private var _devicesMap = HashMap<String, BluetoothDevice>()
 
     // The message for the client server to send
     var message : MutableLiveData<String> = MutableLiveData("")
@@ -73,7 +99,7 @@ object BluetoothHandler {
 
         BluetoothAdapter.getDefaultAdapter().cancelDiscovery()
         println("BT DEVICE: ${device.address}")
-        BluetoothClient(device, message.value ?: "NO MESSAGE SET").start()
+        bluetoothClient(device, message.value ?: "NO MESSAGE SET").start()
 
     }
 
@@ -87,7 +113,7 @@ object BluetoothHandler {
     // This is to be called from the activity onResume
     fun startBluetoothServer() {
         if (server == null) {
-            server = BluetoothServerController(::messageReceiveCallback).apply {start()}
+            server = bluetoothServerController(::messageReceiveCallback).apply {start()}
         }
     }
 
@@ -100,8 +126,7 @@ object BluetoothHandler {
 
     // Used as a callback for the server
     // When the server receives a message, it adds it to the receivedMessages list
-    // TODO: Remember which device the server read the message from
-    // TODO: Add timestamps as well?
+    // TODO: Add a second callback for replies back to the client
     private fun messageReceiveCallback(receivedMessage : String, deviceAddress : String?) {
         println("CALLBACK CALLED $receivedMessage")
         val receivedMessageData = ReceivedMessageData(now().epochSecond, deviceAddress, receivedMessage)
@@ -110,10 +135,3 @@ object BluetoothHandler {
     }
 
 }
-
-// Data class containing information about a message received from the server
-data class ReceivedMessageData(
-    val time: Long,
-    val deviceAddress: String?,
-    val message: String
-)

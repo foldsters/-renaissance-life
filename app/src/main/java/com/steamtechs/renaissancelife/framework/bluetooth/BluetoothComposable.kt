@@ -6,7 +6,10 @@ import androidx.compose.runtime.*
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
+import com.steamtechs.renaissancelife.ui.composables.utils.onLongPress
 
 
 @Composable
@@ -55,8 +58,16 @@ fun BluetoothComposable() {
             }
         }
 
-        for (receivedMessage in receivedMessages) {
-            Text(receivedMessage, fontSize = 8.em)
+        for (receivedMessageData in receivedMessagesData) {
+            Row {
+                Column {
+                    Text(receivedMessageData.time.toString(), fontSize = 3.em, color = Color(0xFFAAAAAA))
+                    Text(receivedMessageData.deviceAddress ?: "UNKNOWN", fontSize = 3.em, color = Color(0xFFAAAAAA))
+                }
+                Spacer(modifier = Modifier.width(5.dp))
+                Text(receivedMessageData.message, fontSize = 8.em)
+            }
+            Spacer(modifier = Modifier.height(5.dp))
         }
 
     }

@@ -1,14 +1,16 @@
-package com.steamtechs.renaissancelife.framework.bluetooth
+package com.steamtechs.renaissancelife.framework.bluetooth.real
 
 
 import android.bluetooth.BluetoothDevice
 import android.util.Log
+import com.steamtechs.renaissancelife.framework.bluetooth.BluetoothUUID
+import com.steamtechs.renaissancelife.framework.bluetooth.templates.BluetoothClient
 import java.io.BufferedOutputStream
 import java.lang.Exception
 
-class BluetoothClient(device: BluetoothDevice, private val message : String): Thread() {
+class RealBluetoothClient(device: BluetoothDevice, private val message : String): BluetoothClient() {
 
-    private val socket = device.createRfcommSocketToServiceRecord(BluetoothConstants.uuid)
+    private val socket = device.createRfcommSocketToServiceRecord(BluetoothUUID)
 
     override fun run() {
         Log.i("client", "Connecting")

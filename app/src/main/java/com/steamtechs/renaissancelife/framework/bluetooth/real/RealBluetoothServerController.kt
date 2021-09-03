@@ -1,12 +1,15 @@
-package com.steamtechs.renaissancelife.framework.bluetooth
+package com.steamtechs.renaissancelife.framework.bluetooth.real
 
 import android.bluetooth.BluetoothAdapter
 import android.bluetooth.BluetoothServerSocket
 import android.bluetooth.BluetoothSocket
 import android.util.Log
+import com.steamtechs.renaissancelife.framework.bluetooth.BluetoothUUID
+import com.steamtechs.renaissancelife.framework.bluetooth.templates.BluetoothServerController
 import java.io.IOException
 
-class BluetoothServerController(private val messageCallback: (String, String?) -> Unit) : Thread() {
+open class RealBluetoothServerController(private val messageCallback: (String, String?) -> Unit) :
+    BluetoothServerController() {
 
     private var cancelled: Boolean
     private val serverSocket: BluetoothServerSocket?
@@ -15,7 +18,7 @@ class BluetoothServerController(private val messageCallback: (String, String?) -
     init {
         val btAdapter = BluetoothAdapter.getDefaultAdapter()
         if (btAdapter != null && btAdapter.isEnabled) {
-            serverSocket = btAdapter.listenUsingRfcommWithServiceRecord("test", BluetoothConstants.uuid)
+            serverSocket = btAdapter.listenUsingRfcommWithServiceRecord("test", BluetoothUUID)
             cancelled = false
         } else {
             serverSocket = null
@@ -46,12 +49,12 @@ class BluetoothServerController(private val messageCallback: (String, String?) -
             // Spawn a new server thread on the accepted socket
             if (!this.cancelled && socket != null) {
                 Log.i("server", "Connecting")
-                BluetoothServer(socket, messageCallback).start()
+                RealBluetoothServer(socket, messageCallback).start()
             }
         }
     }
 
-    fun cancel() {
+    override fun cancel() {
         cancelled = true
         serverSocket!!.close()
     }
