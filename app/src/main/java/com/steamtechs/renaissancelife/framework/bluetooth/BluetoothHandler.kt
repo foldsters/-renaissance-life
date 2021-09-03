@@ -6,15 +6,23 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import androidx.lifecycle.MutableLiveData
+import java.time.Instant.now
 
 object BluetoothHandler {
 
+    // Map of all the devices this devices is paired with
     private var _devicesMap = HashMap<String, BluetoothDevice>()
 
+    // The message for the client server to send
     var message : MutableLiveData<String> = MutableLiveData("")
-    var receivedMessages : MutableLiveData<List<String>> = MutableLiveData( listOf() )
+
+    // The messages that the server has received
+    var receivedMessagesData : MutableLiveData<List<ReceivedMessageData>> = MutableLiveData( listOf() )
+
+    // A server instance
     private var server : BluetoothServerController? = null
 
+    // Public device map, getter gets all the paired devices
     val devicesMap : HashMap<String, BluetoothDevice>?
         get() {
             val btAdapter = BluetoothAdapter.getDefaultAdapter()
@@ -33,15 +41,17 @@ object BluetoothHandler {
             return _devicesMap
         }
 
+    // Callback to update the message to send from the client
     fun onSetMessage(newMessage : String) {
         message.value = newMessage
     }
 
+    // Callback to clear the message
     fun clearMessage() {
         message.value = ""
     }
 
-
+    // Broadcast Receiver to add newly paired devices to the device map
     var bluetoothBroadcastReceiver = object : BroadcastReceiver() {
 
         override fun onReceive(context: Context, intent: Intent) {
@@ -58,7 +68,7 @@ object BluetoothHandler {
         }
     }
 
-
+    // Makes a client connection and sends message to the server
     fun sendMessageToDevice(device : BluetoothDevice) {
 
         BluetoothAdapter.getDefaultAdapter().cancelDiscovery()
@@ -67,27 +77,43 @@ object BluetoothHandler {
 
     }
 
+    // Makes a list of sendMessage functions, one for each paired device.
     val deviceCallbacks : List<()->Unit>
         get() {
             return _devicesMap.values.toList().map { { sendMessageToDevice(it) } }
         }
 
+    // Starts the internal bluetooth server controller
+    // This is to be called from the activity onResume
     fun startBluetoothServer() {
         if (server == null) {
             server = BluetoothServerController(::messageReceiveCallback).apply {start()}
         }
     }
 
+    // Stops the bluetooth server
+    // This is to be called from the activity onPause
     fun stopBluetoothServer() {
         server?.cancel()
         server = null
     }
 
-
-    private fun messageReceiveCallback(newMessage : String) {
-        println("CALLBACK CALLED $newMessage")
-        val updatedReceivedMessages = receivedMessages.value?.plus(listOf(newMessage)) ?: listOf()
-        receivedMessages.postValue( updatedReceivedMessages )
+    // Used as a callback for the server
+    // When the server receives a message, it adds it to the receivedMessages list
+    // TODO: Remember which device the server read the message from
+    // TODO: Add timestamps as well?
+    private fun messageReceiveCallback(receivedMessage : String, deviceAddress : String?) {
+        println("CALLBACK CALLED $receivedMessage")
+        val receivedMessageData = ReceivedMessageData(now().epochSecond, deviceAddress, receivedMessage)
+        val updatedReceivedMessages = receivedMessagesData.value?.plus(listOf(receivedMessageData)) ?: listOf()
+        receivedMessagesData.postValue( updatedReceivedMessages )
     }
 
 }
+
+// Data class containing information about a message received from the server
+data class ReceivedMessageData(
+    val time: Long,
+    val deviceAddress: String?,
+    val message: String
+)

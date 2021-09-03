@@ -13,19 +13,25 @@ class BluetoothClient(device: BluetoothDevice, private val message : String): Th
     override fun run() {
         Log.i("client", "Connecting")
 
+        // Try to connect to the server
         try {
             Log.i("client", "Socket Connected? ${socket.isConnected}")
             socket.connect()
         } catch(e : Exception) {
             Log.e("client", "Cannot Connect")
+            return
         }
 
         Log.i("client", "Sending: $message")
+
+
         val outputStream = socket.outputStream
         val inputStream = socket.inputStream
 
         val bufferedOutputStream = BufferedOutputStream(outputStream)
 
+        // Try sending the message to the server on the other device
+        // Doing so will cause that server to accept its server socket
         try {
             bufferedOutputStream.write(message.toByteArray())
             bufferedOutputStream.flush()

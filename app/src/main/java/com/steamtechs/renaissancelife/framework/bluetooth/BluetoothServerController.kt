@@ -6,11 +6,12 @@ import android.bluetooth.BluetoothSocket
 import android.util.Log
 import java.io.IOException
 
-class BluetoothServerController(private val messageCallback: (String) -> Unit) : Thread() {
+class BluetoothServerController(private val messageCallback: (String, String?) -> Unit) : Thread() {
 
     private var cancelled: Boolean
     private val serverSocket: BluetoothServerSocket?
 
+    // Create Server Socket
     init {
         val btAdapter = BluetoothAdapter.getDefaultAdapter()
         if (btAdapter != null && btAdapter.isEnabled) {
@@ -25,6 +26,8 @@ class BluetoothServerController(private val messageCallback: (String) -> Unit) :
     override fun run() {
         var socket: BluetoothSocket
 
+        // Keep looping until the server socket is accepted
+        //  i.e. a client on another device has a message to send to this one
         while(true) {
             if (cancelled) {
                 break
@@ -39,6 +42,8 @@ class BluetoothServerController(private val messageCallback: (String) -> Unit) :
                 break
             }
 
+            // When the server socket is accepted,
+            // Spawn a new server thread on the accepted socket
             if (!this.cancelled && socket != null) {
                 Log.i("server", "Connecting")
                 BluetoothServer(socket, messageCallback).start()

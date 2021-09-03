@@ -6,12 +6,14 @@ import java.io.BufferedInputStream
 import java.lang.Exception
 
 class BluetoothServer(private val socket: BluetoothSocket,
-                      val messageCallback : (String) -> Unit) : Thread() {
+                      val messageCallback : (String, String?) -> Unit) : Thread() {
 
     private val inputStream = socket.inputStream
     private val outputStream = socket.outputStream
 
     private val bufferedInputStream = BufferedInputStream(inputStream)
+
+    private val deviceAddress : String? = socket.remoteDevice.address
 
     override fun run() {
         try {
@@ -19,6 +21,7 @@ class BluetoothServer(private val socket: BluetoothSocket,
             var available = 0
             var i = 0
 
+            // Wait until a message is received
             while (available == 0) {
                 available = bufferedInputStream.available()
                 i++
@@ -26,13 +29,16 @@ class BluetoothServer(private val socket: BluetoothSocket,
 
             println("Times the loop ran: $i")
 
+            // Read input and convert to string
             val bytes = ByteArray(available)
             Log.i("server", "Reading $available bytes")
             val bytesRead = bufferedInputStream.read(bytes, 0, available)
             val text = String(bytes)
             Log.i("server", "Message received $bytesRead bytes")
             Log.i("server", "Message: $text")
-            messageCallback(text)
+
+            // Call the callback with the received message
+            messageCallback(text, deviceAddress)
 
 
         } catch (e: Exception) {

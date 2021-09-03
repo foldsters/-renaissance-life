@@ -24,7 +24,8 @@ fun BluetoothComposable() {
 
     var showMenu by remember { mutableStateOf(false) }
 
-    val receivedMessages : List<String> by BluetoothHandler.receivedMessages.observeAsState(listOf())
+    val receivedMessagesData : List<ReceivedMessageData> by BluetoothHandler.receivedMessagesData.observeAsState(listOf())
+    val receivedMessages = receivedMessagesData.map {it.message}
 
 
     Column{
