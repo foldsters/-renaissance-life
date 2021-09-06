@@ -72,6 +72,19 @@ class AppViewModel @Inject constructor(
 
     }
 
+    // Date Select Screen
+
+    val startDate : MutableLiveData<String> = MutableLiveData()
+    val endDate   : MutableLiveData<String> = MutableLiveData(getTodayDateString())
+
+    fun onStartDateChange(date : String) {
+        startDate.value = date
+    }
+
+    fun onEndDateChange(date : String) {
+        endDate.value = date
+    }
+
 
     // Navigation
 
@@ -80,7 +93,7 @@ class AppViewModel @Inject constructor(
 
     val navSelected = MutableLiveData<String>()
 
-    fun navOnSelect(navTitle : String) {
+    fun onNavSelect(navTitle : String) {
         navSelected.value = navTitle
     }
 

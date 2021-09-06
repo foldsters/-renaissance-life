@@ -9,11 +9,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
-import com.steamtechs.renaissancelife.ui.composables.utils.onLongPress
 
 
 @Composable
-fun BluetoothComposable() {
+fun BluetoothExample() {
 
     val modifier = Modifier
 
@@ -28,7 +27,6 @@ fun BluetoothComposable() {
     var showMenu by remember { mutableStateOf(false) }
 
     val receivedMessagesData : List<ReceivedMessageData> by BluetoothHandler.receivedMessagesData.observeAsState(listOf())
-    val receivedMessages = receivedMessagesData.map {it.message}
 
 
     Column{

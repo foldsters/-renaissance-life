@@ -31,7 +31,7 @@ fun MainComposable() {
     val navTitles = appViewModel.navTitles
     val navIcons = appViewModel.navIcons
     val navSelected : String by appViewModel.navSelected.observeAsState( navTitles[0] )
-    val navOnSelect = appViewModel::navOnSelect
+    val navOnSelect = appViewModel::onNavSelect
 
     // Logging
     val liveCategoryList : List<LiveCategory>? by appViewModel.liveCategoryList.observeAsState()
