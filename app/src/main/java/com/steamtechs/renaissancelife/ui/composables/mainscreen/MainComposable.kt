@@ -11,8 +11,8 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.steamtechs.renaissancelife.ui.AppViewModel
 import com.steamtechs.renaissancelife.ui.LiveCategory
 import com.steamtechs.renaissancelife.ui.NavBar
-import com.steamtechs.renaissancelife.ui.composables.ContextButton
 import com.steamtechs.renaissancelife.ui.composables.loggingscreen.CategoryColumn
+import com.steamtechs.renaissancelife.ui.composables.loggingscreen.ContextButton
 import com.steamtechs.renaissancelife.ui.composables.radarscreen.Radar
 
 @Preview

@@ -1,4 +1,4 @@
-package com.steamtechs.renaissancelife.ui.composables
+package com.steamtechs.renaissancelife.ui.composables.utils
 
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.ui.Modifier
