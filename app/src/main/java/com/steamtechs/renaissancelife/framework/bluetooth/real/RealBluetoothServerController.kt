@@ -14,11 +14,13 @@ open class RealBluetoothServerController(private val messageCallback: (String, S
     private var cancelled: Boolean
     private val serverSocket: BluetoothServerSocket?
 
+    private val tag = "server"
+
     // Create Server Socket
     init {
         val btAdapter = BluetoothAdapter.getDefaultAdapter()
         if (btAdapter != null && btAdapter.isEnabled) {
-            serverSocket = btAdapter.listenUsingRfcommWithServiceRecord("test", BluetoothUUID)
+            serverSocket = btAdapter.listenUsingRfcommWithServiceRecord("renlifeSync", BluetoothUUID)
             cancelled = false
         } else {
             serverSocket = null
@@ -37,9 +39,9 @@ open class RealBluetoothServerController(private val messageCallback: (String, S
             }
 
             try {
-                Log.i("server","ACCEPTING SERVER SOCKET")
+                Log.i(tag,"ACCEPTING SERVER SOCKET")
                 socket = serverSocket!!.accept()
-                Log.i("server","ACCEPTED SERVER SOCKET")
+                Log.i(tag,"ACCEPTED SERVER SOCKET")
 
             } catch(e: IOException) {
                 break
@@ -48,7 +50,7 @@ open class RealBluetoothServerController(private val messageCallback: (String, S
             // When the server socket is accepted,
             // Spawn a new server thread on the accepted socket
             if (!this.cancelled && socket != null) {
-                Log.i("server", "Connecting")
+                Log.i(tag, "Connecting")
                 RealBluetoothServer(socket, messageCallback).start()
             }
         }

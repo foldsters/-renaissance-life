@@ -24,7 +24,7 @@ class MockBluetoothServerController(private val messageCallback: (String, String
                     Log.i("server", "reading message")
                     val (device, message) = MockBluetoothHardware.read()
                     Log.i("server", "message: $message")
-                    messageCallback(message, device.address)
+                    messageCallback(message, device?.address)
                 }
             }
 

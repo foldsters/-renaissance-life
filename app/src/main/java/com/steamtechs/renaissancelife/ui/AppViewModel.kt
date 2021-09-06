@@ -7,6 +7,8 @@ import com.steamtechs.core.domain.Category
 import com.steamtechs.core.interactors.*
 import com.steamtechs.platform.datasources.PCategoryRepository
 import com.steamtechs.renaissancelife.R
+import com.steamtechs.renaissancelife.di.MockBluetoothHandler
+import com.steamtechs.renaissancelife.framework.bluetooth.BluetoothHandler
 import com.steamtechs.renaissancelife.framework.datasources.RoomCategoryDataSource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import java.time.LocalDateTime
@@ -16,7 +18,8 @@ import javax.inject.Inject
 @HiltViewModel
 class AppViewModel @Inject constructor(
     private val initCategoryRepository : CategoryRepository,
-    private val roomCategoryDataSource : RoomCategoryDataSource
+    private val roomCategoryDataSource : RoomCategoryDataSource,
+    @MockBluetoothHandler private val mockBluetoothHandler : BluetoothHandler
 ) : ViewModel() {
 
     // Setup
@@ -25,6 +28,28 @@ class AppViewModel @Inject constructor(
 
     var liveCategoryList : MutableLiveData<List<LiveCategory>> =
         MutableLiveData(todayCategoryIterable.map { LiveCategory.fromCategory(it) })
+
+    init {
+        mockBluetoothHandler.messageReceiveCallback = { message : String, deviceAddress : String? ->
+            println("$message -- $deviceAddress")
+            mockBluetoothHandler.messageReceiveCallback = null
+        }
+        mockBluetoothHandler.startBluetoothServer()
+        mockBluetoothHandler.onChangeMessage("Potato")
+        mockBluetoothHandler.sendMessageToDevice(null)
+    }
+
+
+    // Navigation
+
+    val navTitles = listOf("Logging", "Radar")
+    val navIcons : List<Int> = listOf(R.drawable.ic_log, R.drawable.ic_outline_grade_24)
+
+    val navSelected = MutableLiveData<String>()
+
+    fun onNavSelect(navTitle : String) {
+        navSelected.value = navTitle
+    }
 
 
     // Logging
@@ -83,18 +108,6 @@ class AppViewModel @Inject constructor(
 
     fun onEndDateChange(date : String) {
         endDate.value = date
-    }
-
-
-    // Navigation
-
-    val navTitles = listOf("Logging", "Radar")
-    val navIcons : List<Int> = listOf(R.drawable.ic_log, R.drawable.ic_outline_grade_24)
-
-    val navSelected = MutableLiveData<String>()
-
-    fun onNavSelect(navTitle : String) {
-        navSelected.value = navTitle
     }
 
 

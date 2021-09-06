@@ -16,6 +16,8 @@ class RealBluetoothServer(private val socket: BluetoothSocket,
 
     private val deviceAddress : String? = socket.remoteDevice.address
 
+    private val tag = "server"
+
     override fun run() {
         try {
 
@@ -32,18 +34,18 @@ class RealBluetoothServer(private val socket: BluetoothSocket,
 
             // Read input and convert to string
             val bytes = ByteArray(available)
-            Log.i("server", "Reading $available bytes")
+            Log.i(tag, "Reading $available bytes")
             val bytesRead = bufferedInputStream.read(bytes, 0, available)
             val text = String(bytes)
-            Log.i("server", "Message received $bytesRead bytes")
-            Log.i("server", "Message: $text")
+            Log.i(tag, "Message received $bytesRead bytes")
+            Log.i(tag, "Message: $text")
 
             // Call the callback with the received message
             messageCallback(text, deviceAddress)
 
 
         } catch (e: Exception) {
-            Log.e("server", "Cannot read data", e)
+            Log.e(tag, "Cannot read data", e)
 
         } finally {
 

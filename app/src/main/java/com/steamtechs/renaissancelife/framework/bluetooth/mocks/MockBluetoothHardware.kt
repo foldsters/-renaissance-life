@@ -5,13 +5,13 @@ import android.util.Log
 
 object MockBluetoothHardware {
 
-    var messageData : Pair<BluetoothDevice, String>? = null
+    private var messageData : Pair<BluetoothDevice?, String>? = null
 
-    fun write(device : BluetoothDevice, message : String) {
+    fun write(device : BluetoothDevice?, message : String) {
         messageData = Pair(device, message)
     }
 
-    fun read() : Pair<BluetoothDevice, String> {
+    fun read() : Pair<BluetoothDevice?, String> {
         val result = messageData!!.copy()
         messageData = null
         return result

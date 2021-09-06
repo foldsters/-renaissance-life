@@ -16,17 +16,17 @@ fun BluetoothExample() {
 
     val modifier = Modifier
 
-    val deviceMap = BluetoothHandler.devicesMap
+    val deviceMap = BluetoothHandlerObject.devicesMap
     val deviceInfo = deviceMap?.values?.toList()?.map { "${it.name ?: "Unknown"} \n ${it.address}" } ?: listOf()
 
-    val message : String by BluetoothHandler.message.observeAsState("")
-    val onSetMessage = BluetoothHandler::onSetMessage
+    val message : String by BluetoothHandlerObject.message.observeAsState("")
+    val onSetMessage = BluetoothHandlerObject::onSetMessage
 
-    val sendDeviceCallbacks = BluetoothHandler.deviceCallbacks
+    val sendDeviceCallbacks = BluetoothHandlerObject.deviceCallbacks
 
     var showMenu by remember { mutableStateOf(false) }
 
-    val receivedMessagesData : List<ReceivedMessageData> by BluetoothHandler.receivedMessagesData.observeAsState(listOf())
+    val receivedMessagesData : List<ReceivedMessageData> by BluetoothHandlerObject.receivedMessagesData.observeAsState(listOf())
 
 
     Column{

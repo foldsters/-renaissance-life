@@ -7,24 +7,28 @@ import com.steamtechs.renaissancelife.framework.bluetooth.BluetoothUUID
 import com.steamtechs.renaissancelife.framework.bluetooth.templates.BluetoothClient
 import java.io.BufferedOutputStream
 import java.lang.Exception
+import java.lang.IllegalArgumentException
 
-class RealBluetoothClient(device: BluetoothDevice, private val message : String): BluetoothClient() {
+class RealBluetoothClient(device: BluetoothDevice?, private val message : String): BluetoothClient() {
 
-    private val socket = device.createRfcommSocketToServiceRecord(BluetoothUUID)
+    private val socket = device?.createRfcommSocketToServiceRecord(BluetoothUUID) ?:
+        throw IllegalArgumentException("Real Bluetooth Client Device must not be null")
+
+    private val tag = "client"
 
     override fun run() {
-        Log.i("client", "Connecting")
+        Log.i(tag, "Connecting")
 
         // Try to connect to the server
         try {
-            Log.i("client", "Socket Connected? ${socket.isConnected}")
+            Log.i(tag, "Socket Connected? ${socket.isConnected}")
             socket.connect()
         } catch(e : Exception) {
-            Log.e("client", "Cannot Connect")
+            Log.e(tag, "Cannot Connect")
             return
         }
 
-        Log.i("client", "Sending: $message")
+        Log.i(tag, "Sending: $message")
 
 
         val outputStream = socket.outputStream
@@ -37,9 +41,9 @@ class RealBluetoothClient(device: BluetoothDevice, private val message : String)
         try {
             bufferedOutputStream.write(message.toByteArray())
             bufferedOutputStream.flush()
-            Log.i("client", "Sent")
+            Log.i(tag, "Sent")
         } catch(e: Exception) {
-            Log.e("client", "Cannot send", e)
+            Log.e(tag, "Cannot send", e)
         } finally {
             outputStream.close()
             inputStream.close()

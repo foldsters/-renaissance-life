@@ -20,11 +20,11 @@ class MainActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        //BluetoothHandler.startBluetoothServer()
+        //BluetoothHandlerObject.startBluetoothServer()
     }
 
     override fun onPause() {
         super.onPause()
-        //BluetoothHandler.stopBluetoothServer()
+        //BluetoothHandlerObject.stopBluetoothServer()
     }
 }
