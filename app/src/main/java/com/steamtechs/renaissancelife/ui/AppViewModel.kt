@@ -6,6 +6,7 @@ import com.steamtechs.core.data.CategoryRepository
 import com.steamtechs.core.domain.Category
 import com.steamtechs.core.domain.businesslogic.GetDatesInDateRange
 import com.steamtechs.core.domain.businesslogic.GetTodayIsoDateString
+import com.steamtechs.core.domain.businesslogic.MergeCategoryRepositories
 import com.steamtechs.core.domain.businesslogic.StringCategoryRepositorySerializable
 import com.steamtechs.core.interactors.*
 import com.steamtechs.platform.datasources.PCategoryRepository
@@ -149,13 +150,52 @@ class AppViewModel @Inject constructor(
             }
         }
 
-        // Good to here
+        StringCategoryRepositorySerializable.decodeString(syncString!!, targetRepository)
 
-        val decodedReceivedRepository = StringCategoryRepositorySerializable.decodeString(syncString!!)
+        syncString = null
 
-        UpdateTargetRepositoryWithSourceRepository(decodedReceivedRepository, initCategoryRepository)
+        UpdateTargetRepositoryWithSourceRepository(targetRepository, initCategoryRepository)
 
-        println(decodedReceivedRepository.getCategories())
+        println("UPDATED TARGET ${targetRepository.getCategories()}")
+
+        val newEncodedRepository = StringCategoryRepositorySerializable.encodeCategoryRepository(targetRepository)
+
+        println("NEW ENCODED REPOSITORY $newEncodedRepository")
+
+        mockBluetoothHandler.onChangeMessage(newEncodedRepository)
+
+        mockBluetoothHandler.sendMessageToDevice(null)
+
+
+        i = 0
+        while (syncString == null) {
+            sleep(1000)
+            i++
+            if (i > 20) {
+                error("Message 2 never received")
+            }
+        }
+
+        StringCategoryRepositorySerializable.decodeString(syncString!!, targetRepository)
+
+        println("DECODED MESSAGE ${targetRepository.getCategories()}")
+
+        MergeCategoryRepositories(initCategoryRepository, targetRepository)
+
+        println("FINAL REPO ${initCategoryRepository.getCategories()}")
+
+
+        sleep(2000)
+
+        println("THE RESULTS")
+
+        initCategoryRepository.getCategories().forEach {
+            println(it)
+        }
+
+//        println("END")
+//        println("???" + initCategoryRepository.getCategories().toString().split("), ").joinToString("\n"))
+
 
 
     }

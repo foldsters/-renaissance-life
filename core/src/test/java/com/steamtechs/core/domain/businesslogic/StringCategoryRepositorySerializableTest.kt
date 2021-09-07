@@ -21,16 +21,9 @@ internal class StringCategoryRepositorySerializableTest{
                 )
             ) })
 
-    
-    @Test
-    @DisplayName("Create Instance of StringCategoryRepositorySerializable<T>.")
-    fun `Create Instance of RawStringEndec`() {
-        assertInstanceOf(StringCategoryRepositorySerializable::class.java, rawEndec)
-    }
-
 
     @Test
-    @DisplayName("EncodeCateogryRepository returns a String of a Serialized Category Repository.")
+    @DisplayName("EncodeCategoryRepository returns a String of a Serialized Category Repository.")
     fun `EncodeCateogryRepository returns a String of a Serialized Category Repository`() {
         val encodedCategoryRepository = rawEndec.encodeCategoryRepository(categoryRepository)
         assertInstanceOf(String::class.java, encodedCategoryRepository)
@@ -40,7 +33,8 @@ internal class StringCategoryRepositorySerializableTest{
     @DisplayName("DecodeString copies a decoded, Serialized Category Repository to a targetRepository.")
     fun `DecodeString copies a decoded, Serialized Category Repository to a targetRepository`() {
         val encodedCategoryRepository = rawEndec.encodeCategoryRepository(categoryRepository)
-        val targetRepository = rawEndec.decodeString(encodedCategoryRepository)
+        val targetRepository = CategoryRepository(PCategoryRepository())
+        rawEndec.decodeString(encodedCategoryRepository, targetRepository)
         assertEquals(categoryRepository.getCategories(), targetRepository.getCategories())
     }
 
