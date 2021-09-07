@@ -28,7 +28,7 @@ class MockBluetoothServerController(private val messageCallback: (String, String
                 }
             }
 
-            sleep(10)
+            sleep(100)
 
         }
     }

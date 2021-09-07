@@ -9,6 +9,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.steamtechs.renaissancelife.ui.AppViewModel
 
 
 @Composable
@@ -27,6 +29,10 @@ fun BluetoothExample() {
     var showMenu by remember { mutableStateOf(false) }
 
     val receivedMessagesData : List<ReceivedMessageData> by BluetoothHandlerObject.receivedMessagesData.observeAsState(listOf())
+
+    val appViewModel = viewModel<AppViewModel>()
+
+    val syncButtonCallback : () -> Unit = appViewModel::exampleRepositoryBluetoothSync
 
 
     Column{
@@ -66,6 +72,10 @@ fun BluetoothExample() {
                 Text(receivedMessageData.message, fontSize = 8.em)
             }
             Spacer(modifier = Modifier.height(5.dp))
+        }
+
+        Button(onClick = syncButtonCallback) {
+            Text(text="Sync")
         }
 
     }

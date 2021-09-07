@@ -106,7 +106,6 @@ class BluetoothHandler(private val bluetoothServerControllerConstructor : ((Stri
 
     // Used as a callback for the server
     // When the server receives a message, it adds it to the receivedMessages list
-    // TODO: Add a second callback for replies back to the client
     private fun innerMessageReceiveCallback(receivedMessage : String, deviceAddress : String?) {
         println("CALLBACK CALLED $receivedMessage")
         val receivedMessageData = ReceivedMessageData(Instant.now().epochSecond, deviceAddress, receivedMessage)

@@ -20,7 +20,6 @@ object MockBluetoothHardware {
     fun available() : Int {
 
         val available = messageData?.second?.length ?: 0
-        Log.i("mock hardware", "availability check: $available")
         return available
 
     }

@@ -1,0 +1,16 @@
+GetDatesInDateRange : Entity
+-----------------------------------------------------------
+
+Data:
+    From Constructor
+        1. startDate(ISO Format) : String
+        2. endDate(ISO Format) : String
+
+
+Does:
+    1. Returns a list of all dates between the start date and end date, inclusive :: (String, String) -> List<String>
+        1.1 If the dates are the same, return the list containing just the start date
+        1.2 If the start date is after the end date, return an empty list
+
+
+Don't(s):

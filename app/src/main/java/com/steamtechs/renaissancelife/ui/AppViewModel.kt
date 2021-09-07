@@ -4,6 +4,9 @@ package com.steamtechs.renaissancelife.ui
 import androidx.lifecycle.*
 import com.steamtechs.core.data.CategoryRepository
 import com.steamtechs.core.domain.Category
+import com.steamtechs.core.domain.businesslogic.GetDatesInDateRange
+import com.steamtechs.core.domain.businesslogic.GetTodayIsoDateString
+import com.steamtechs.core.domain.businesslogic.StringCategoryRepositorySerializable
 import com.steamtechs.core.interactors.*
 import com.steamtechs.platform.datasources.PCategoryRepository
 import com.steamtechs.renaissancelife.R
@@ -11,23 +14,24 @@ import com.steamtechs.renaissancelife.di.MockBluetoothHandler
 import com.steamtechs.renaissancelife.framework.bluetooth.BluetoothHandler
 import com.steamtechs.renaissancelife.framework.datasources.RoomCategoryDataSource
 import dagger.hilt.android.lifecycle.HiltViewModel
-import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
+import java.lang.Thread.sleep
 import javax.inject.Inject
 
 @HiltViewModel
 class AppViewModel @Inject constructor(
-    private val initCategoryRepository : CategoryRepository,
+    private var initCategoryRepository : CategoryRepository,
     private val roomCategoryDataSource : RoomCategoryDataSource,
     @MockBluetoothHandler private val mockBluetoothHandler : BluetoothHandler
 ) : ViewModel() {
 
     // Setup
 
-    private var todayCategoryIterable = GetCategoriesForDate(initCategoryRepository, getTodayDateString())
+    private var todayCategoryIterable = GetCategoriesForDate(initCategoryRepository, GetTodayIsoDateString())
 
     var liveCategoryList : MutableLiveData<List<LiveCategory>> =
         MutableLiveData(todayCategoryIterable.map { LiveCategory.fromCategory(it) })
+
+        // Mock Bluetooth Testing
 
     init {
         mockBluetoothHandler.messageReceiveCallback = { message : String, deviceAddress : String? ->
@@ -70,7 +74,7 @@ class AppViewModel @Inject constructor(
         val newTodayCategoryRepository = CategoryRepository(PCategoryRepository().also {it.addCategories(newTodayCategoryIterable)} )
         val roomCategoryRepository = CategoryRepository(roomCategoryDataSource)
 
-        ReplaceCategoriesByDate(getTodayDateString(), newTodayCategoryRepository, initCategoryRepository)
+        ReplaceCategoriesByDate(GetTodayIsoDateString(), newTodayCategoryRepository, initCategoryRepository)
         SaveToExternalCategoryRepository(initCategoryRepository, roomCategoryRepository)
 
     }
@@ -100,7 +104,7 @@ class AppViewModel @Inject constructor(
     // Date Select Screen
 
     val startDate : MutableLiveData<String> = MutableLiveData()
-    val endDate   : MutableLiveData<String> = MutableLiveData(getTodayDateString())
+    val endDate   : MutableLiveData<String> = MutableLiveData(GetTodayIsoDateString())
 
     fun onStartDateChange(date : String) {
         startDate.value = date
@@ -110,12 +114,49 @@ class AppViewModel @Inject constructor(
         endDate.value = date
     }
 
+    // TODO : The view model shouldn't know how to make a repository, should it?
+    var targetRepository = CategoryRepository(PCategoryRepository())
 
-    // Helpers
+    var syncString : String? = null
 
-    private fun getTodayDateString() : String {
-        val currentDateTime = LocalDateTime.now()
-        return currentDateTime.format(DateTimeFormatter.ISO_DATE)
+
+    fun exampleRepositoryBluetoothSync() {
+        val dateList = GetDatesInDateRange("2021-06-01", "2021-11-01")
+
+        targetRepository.clearAllCategories()
+
+        TicklessCategoryRepositoryFromDateList(
+            dateList,
+            initCategoryRepository,
+            targetRepository
+        )
+
+        val categoryRepositoryEndec = StringCategoryRepositorySerializable()
+        val encodedTargetRepository = categoryRepositoryEndec.encodeCategoryRepository(targetRepository)
+
+        mockBluetoothHandler.startBluetoothServer()
+
+        mockBluetoothHandler.messageReceiveCallback = {message, _ -> syncString = message}
+        mockBluetoothHandler.onChangeMessage(encodedTargetRepository)
+
+        mockBluetoothHandler.sendMessageToDevice(null)
+
+        var i = 0
+        while (syncString == null) {
+            sleep(1000)
+            i++
+            if (i > 20) {
+                error("Message never received")
+            }
+        }
+
+        // Good to here
+
+        //val decodedReceivedRepository = categoryRepositoryEndec.decodeString(syncString!!)
+
+
     }
+
+
 
 }
