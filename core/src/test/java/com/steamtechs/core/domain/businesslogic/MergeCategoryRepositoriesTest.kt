@@ -30,19 +30,14 @@ internal class MergeCategoryRepositoriesTest{
                 )
             ) })
 
-    @Test
-    @DisplayName("MergeCategoryRepositores returns a CategoryRepository instance.")
-    fun `MergeCategoryRepositories returns a CategoryRepository instance`() {
-        assertInstanceOf(CategoryRepository::class.java, MergeCategoryRepositories(oldRepo, newRepo))
-    }
-
 
     @Test
     @DisplayName("Merge Overwrites/Appends to oldRepo with categories from newRepo.")
     fun `Merge Overwrites Appends to oldRepo with categories from newRepo`() {
+        MergeCategoryRepositories(oldRepo,newRepo)
         assertAll(
-            { assertTrue(MergeCategoryRepositories(oldRepo,newRepo).getCategories().toList().containsAll(newRepo.getCategories().toList())) },
-            { assertTrue(MergeCategoryRepositories(oldRepo,newRepo).getCategories().contains(Category("oldCat1","2020-08-29", 3))) }
+            { assertTrue(oldRepo.getCategories().toList().containsAll(newRepo.getCategories().toList())) },
+            { assertTrue(oldRepo.getCategories().contains(Category("oldCat1","2020-08-29", 3))) }
 
         )
     }

@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Test
 
 internal class StringCategoryRepositorySerializableTest{
 
-    val rawEndec = StringCategoryRepositorySerializable()
+    val rawEndec = StringCategoryRepositorySerializable
     val categoryRepository = CategoryRepository(
         PCategoryRepository().also {
             it.addCategories(
@@ -45,8 +45,7 @@ internal class StringCategoryRepositorySerializableTest{
     @DisplayName("DecodeString copies a decoded, Serialized Category Repository to a targetRepository.")
     fun `DecodeString copies a decoded, Serialized Category Repository to a targetRepository`() {
         val encodedCategoryRepository = rawEndec.encodeCategoryRepository(categoryRepository)
-        val targetRepository = CategoryRepository(PCategoryRepository())
-        rawEndec.decodeString(encodedCategoryRepository, targetRepository)
+        val targetRepository = rawEndec.decodeString(encodedCategoryRepository)
         assertEquals(categoryRepository.getCategories(), targetRepository.getCategories())
     }
 

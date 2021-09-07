@@ -131,8 +131,7 @@ class AppViewModel @Inject constructor(
             targetRepository
         )
 
-        val categoryRepositoryEndec = StringCategoryRepositorySerializable()
-        val encodedTargetRepository = categoryRepositoryEndec.encodeCategoryRepository(targetRepository)
+        val encodedTargetRepository = StringCategoryRepositorySerializable.encodeCategoryRepository(targetRepository)
 
         mockBluetoothHandler.startBluetoothServer()
 
@@ -152,7 +151,11 @@ class AppViewModel @Inject constructor(
 
         // Good to here
 
-        //val decodedReceivedRepository = categoryRepositoryEndec.decodeString(syncString!!)
+        val decodedReceivedRepository = StringCategoryRepositorySerializable.decodeString(syncString!!)
+
+        UpdateTargetRepositoryWithSourceRepository(decodedReceivedRepository, initCategoryRepository)
+
+        println(decodedReceivedRepository.getCategories())
 
 
     }

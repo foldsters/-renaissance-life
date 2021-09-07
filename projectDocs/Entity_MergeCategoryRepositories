@@ -8,7 +8,7 @@ Data:
 
 Does:
     1. Merge Overwrites/Appends to oldRepo with categories from newRepo ::
-        CategoryRepository -> CategoryRepository -> CategoryRepository
+        CategoryRepository -> CategoryRepository -> Unit
 
 
 Don't(s):
