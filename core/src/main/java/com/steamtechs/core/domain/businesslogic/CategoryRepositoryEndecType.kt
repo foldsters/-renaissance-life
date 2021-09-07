@@ -7,5 +7,5 @@ interface CategoryRepositoryEndecType {
 
     fun encodeCategoryRepository(categoryRepository: CategoryRepository) : String
 
-    fun decodeString(encodedString: String, targetRepo : CategoryRepository)
+    fun decodeString(encodedString: String) : CategoryRepository
 }

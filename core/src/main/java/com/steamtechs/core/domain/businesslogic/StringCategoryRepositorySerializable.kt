@@ -9,12 +9,12 @@ import kotlinx.serialization.json.Json
 class StringCategoryRepositorySerializable : CategoryRepositoryEndecType {
 
     override fun encodeCategoryRepository(categoryRepository: CategoryRepository): String {
-        return Json.encodeToString(categoryRepository.getCategories().toList())
+        return Json.encodeToString(categoryRepository)
     }
 
-    override fun decodeString(encodedString: String, targetRepo : CategoryRepository) {
-        val decodedList = Json.decodeFromString<List<Category>>(encodedString)
-        targetRepo.addCategories(decodedList)
+    override fun decodeString(encodedString: String): CategoryRepository {
+        val decodedRepo = Json.decodeFromString<CategoryRepository>(encodedString)
+        return decodedRepo
     }
 
 }

@@ -3,11 +3,10 @@ package com.steamtechs.core.domain.businesslogic
 import com.steamtechs.core.data.CategoryRepository
 
 object MergeCategoryRepositories {
-    operator fun invoke(oldRepo: CategoryRepository, newRepo: CategoryRepository) : CategoryRepository {
-        val oldMap = oldRepo.getCategories().associateBy { Pair(it.title,it.date) }
-        val newMap = newRepo.getCategories().associateBy { Pair(it.title,it.date) }
-        oldRepo.addCategories((oldMap + newMap).values)
-        return oldRepo
+    operator fun invoke(sourceRepository: CategoryRepository, targetRepository: CategoryRepository){
+        val oldMap = sourceRepository.getCategories().associateBy { Pair(it.title,it.date) }
+        val newMap = targetRepository.getCategories().associateBy { Pair(it.title,it.date) }
+        sourceRepository.addCategories((oldMap + newMap).values)
     }
 
 }
