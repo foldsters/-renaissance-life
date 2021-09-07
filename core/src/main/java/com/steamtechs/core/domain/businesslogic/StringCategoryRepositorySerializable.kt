@@ -6,15 +6,14 @@ import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 
-class StringCategoryRepositorySerializable : CategoryRepositoryEndecType {
+class StringCategoryRepositorySerializable  {
 
-    override fun encodeCategoryRepository(categoryRepository: CategoryRepository): String {
-        return Json.encodeToString(categoryRepository)
+    fun encodeCategoryRepository(categoryRepository: CategoryRepository): String {
+        return Json.encodeToString(categoryRepository.getCategories().toList())
     }
 
-    override fun decodeString(encodedString: String): CategoryRepository {
-        val decodedRepo = Json.decodeFromString<CategoryRepository>(encodedString)
-        return decodedRepo
+    fun decodeString(encodedString: String, targetRepository: CategoryRepository) {
+        targetRepository.addCategories(Json.decodeFromString<List<Category>>(encodedString))
     }
 
 }

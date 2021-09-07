@@ -7,7 +7,7 @@ Data:
 
 
 Does:
-    1. encodeCategoryRepository creates a String from JSON Serialization of a Category Repository ::
+    1. encodeCategoryRepository creates a String from JSON Serialization of a List<Category> ::
         CategoryRepository -> String
     2. decodeString an encodedString to a targetRepository ::
         String -> CategoryRepository -> Unit
