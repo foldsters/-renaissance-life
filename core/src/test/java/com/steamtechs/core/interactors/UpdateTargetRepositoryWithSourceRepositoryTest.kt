@@ -35,6 +35,23 @@ internal class UpdateTargetRepositoryWithSourceRepositoryTest{
         ))
     })
 
+
+    val desiredRepository = CategoryRepository(PCategoryRepository().apply {
+        addCategories( listOf(
+            Category("This One", "2021-09-02", 4),
+            Category("No", "2021-09-02", 6),
+            Category("This One", "2001-06-18", 2),
+            Category("No", "2001-06-18", 3),
+            Category("This One", "1987-02-09", 14),
+            Category("No", "1987-02-09", 0),
+            Category("This One", "2013-09-13", 9),
+            Category("No", "2013-09-13", 4),
+            Category("This One", "2022-11-31", 7),
+            Category("No", "2022-11-31", 1)
+        ))
+    })
+
+
     @BeforeEach
     @DisplayName("Init targetRepository")
     fun `Init targetRepository`(){
@@ -54,10 +71,7 @@ internal class UpdateTargetRepositoryWithSourceRepositoryTest{
                 Category("This Way", "2013-09-13", 0),
                 Category("This One", "2022-11-31", 0),
                 Category("No", "2022-11-31", 0),
-                Category("This Way", "2022-11-31", 0),
-                Category("This One", "2015-01-17", 0),
-                Category("No", "2015-01-17", 0),
-                Category("This Way", "2015-01-17", 0),
+                Category("This Way", "2022-11-31", 0)
             ))
         })
     }
@@ -71,11 +85,23 @@ internal class UpdateTargetRepositoryWithSourceRepositoryTest{
     }
 
     @Test
-    @DisplayName("Updated targetRepository does not contain Categories for '2015-01-17' after Update.")
-    fun `Updated targetRepository does not contain Categories for '2015-01-17' after Update`() {
+    @DisplayName("Updated targetRepository removes Categories which do not have a date match.")
+    fun `Updated targetRepository removes Categories which do not have a date match`() {
         UpdateTargetRepositoryWithSourceRepository(targetRepository, sourceRepository)
         val updatedTargetCategoryDates = targetRepository.getCategories().groupBy { it.date }
-        assertFalse(updatedTargetCategoryDates.containsKey("2015-01-17"))
+        println(targetRepository.getCategories().toString())
+        assertAll(
+            {assertFalse(updatedTargetCategoryDates.containsKey("2015-01-17"))},
+            {assertFalse(updatedTargetCategoryDates.containsKey("2015-01-16"))}
+        )
+
+    }
+
+    @Test
+    @DisplayName("Updated targetReposiotry matches the desiredRepository.")
+    fun `Updated targetReposiotry matches the desiredRepository`() {
+        UpdateTargetRepositoryWithSourceRepository(targetRepository, sourceRepository)
+        assert(targetRepository.getCategories().toList().containsAll(desiredRepository.getCategories().toList()))
     }
 
 
