@@ -28,11 +28,6 @@ internal class StringCategoryRepositorySerializableTest{
         assertInstanceOf(StringCategoryRepositorySerializable::class.java, rawEndec)
     }
 
-    @Test
-    @DisplayName("Instance is an CategoryRepositoryEndecType.")
-    fun `Instance is a CategoryRepositoryEndecType`() {
-        assertInstanceOf(CategoryRepositoryEndecType::class.java, rawEndec)
-    }
 
     @Test
     @DisplayName("EncodeCateogryRepository returns a String of a Serialized Category Repository.")

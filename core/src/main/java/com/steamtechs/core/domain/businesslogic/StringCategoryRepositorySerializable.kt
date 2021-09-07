@@ -1,19 +1,19 @@
 package com.steamtechs.core.domain.businesslogic
 
 import com.steamtechs.core.data.CategoryRepository
+import com.steamtechs.core.domain.Category
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 
-object StringCategoryRepositorySerializable : CategoryRepositoryEndecType {
+object StringCategoryRepositorySerializable {
 
-    override fun encodeCategoryRepository(categoryRepository: CategoryRepository): String {
-        return Json.encodeToString(categoryRepository)
+    fun encodeCategoryRepository(categoryRepository: CategoryRepository): String {
+        return Json.encodeToString(categoryRepository.getCategories().toList())
     }
 
-    override fun decodeString(encodedString: String): CategoryRepository {
-        val decodedRepo = Json.decodeFromString<CategoryRepository>(encodedString)
-        return decodedRepo
+    fun decodeString(encodedString: String, targetRepository: CategoryRepository) {
+        targetRepository.addCategories(Json.decodeFromString<List<Category>>(encodedString))
     }
 
 }
