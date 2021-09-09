@@ -2,19 +2,19 @@ package com.steamtechs.renaissancelife.framework.bluetooth.real
 
 import android.bluetooth.BluetoothSocket
 import android.util.Log
+import com.steamtechs.renaissancelife.framework.bluetooth.BluetoothMessageResponseModel
+import com.steamtechs.renaissancelife.framework.bluetooth.decodeBluetoothMessageRequestString
 import com.steamtechs.renaissancelife.framework.bluetooth.templates.BluetoothServer
 import java.io.BufferedInputStream
 import java.lang.Exception
 
 class RealBluetoothServer(private val socket: BluetoothSocket,
-                          val messageCallback : (String, String?) -> Unit) : BluetoothServer() {
+                          val messageCallback : (BluetoothMessageResponseModel) -> Unit) : BluetoothServer() {
 
     private val inputStream = socket.inputStream
     private val outputStream = socket.outputStream
 
     private val bufferedInputStream = BufferedInputStream(inputStream)
-
-    private val deviceAddress : String? = socket.remoteDevice.address
 
     private val tag = "server"
 
@@ -36,12 +36,16 @@ class RealBluetoothServer(private val socket: BluetoothSocket,
             val bytes = ByteArray(available)
             Log.i(tag, "Reading $available bytes")
             val bytesRead = bufferedInputStream.read(bytes, 0, available)
-            val text = String(bytes)
+            val requestModelString = String(bytes)
             Log.i(tag, "Message received $bytesRead bytes")
-            Log.i(tag, "Message: $text")
+            Log.i(tag, "Message: $requestModelString")
 
-            // Call the callback with the received message
-            messageCallback(text, deviceAddress)
+            val device = socket.remoteDevice
+
+            val requestModel = decodeBluetoothMessageRequestString(requestModelString)
+            val responseModel = BluetoothMessageResponseModel.fromRequestModel(requestModel, device)
+
+            messageCallback(responseModel)
 
 
         } catch (e: Exception) {

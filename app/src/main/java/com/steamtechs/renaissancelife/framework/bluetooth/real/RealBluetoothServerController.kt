@@ -4,11 +4,12 @@ import android.bluetooth.BluetoothAdapter
 import android.bluetooth.BluetoothServerSocket
 import android.bluetooth.BluetoothSocket
 import android.util.Log
+import com.steamtechs.renaissancelife.framework.bluetooth.BluetoothMessageResponseModel
 import com.steamtechs.renaissancelife.framework.bluetooth.BluetoothUUID
 import com.steamtechs.renaissancelife.framework.bluetooth.templates.BluetoothServerController
 import java.io.IOException
 
-open class RealBluetoothServerController(private val messageCallback: (String, String?) -> Unit) :
+open class RealBluetoothServerController(private val messageCallback: (BluetoothMessageResponseModel) -> Unit) :
     BluetoothServerController() {
 
     private var cancelled: Boolean
