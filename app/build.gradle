@@ -4,6 +4,7 @@ plugins {
     // Hilt plugin dependencies
     id 'kotlin-kapt'
     id 'dagger.hilt.android.plugin'
+    id 'org.jetbrains.kotlin.plugin.serialization' version '1.5.30'
 }
 
 android {
@@ -125,5 +126,7 @@ dependencies {
     implementation "androidx.constraintlayout:constraintlayout-compose:1.0.0-beta02"
 
     implementation "androidx.navigation:navigation-compose:2.4.0-alpha06"
+
+    implementation 'org.jetbrains.kotlinx:kotlinx-serialization-json:1.2.2'
 }
 

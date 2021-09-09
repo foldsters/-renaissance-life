@@ -1,9 +1,10 @@
 package com.steamtechs.renaissancelife.framework.bluetooth.mocks
 
 import android.util.Log
+import com.steamtechs.renaissancelife.framework.bluetooth.*
 import com.steamtechs.renaissancelife.framework.bluetooth.templates.BluetoothServerController
 
-class MockBluetoothServerController(private val messageCallback: (String, String?) -> Unit) :
+class MockBluetoothServerController(private val messageCallback: (BluetoothMessageResponseModel) -> Unit) :
     BluetoothServerController() {
 
     private var cancelled = false
@@ -24,7 +25,11 @@ class MockBluetoothServerController(private val messageCallback: (String, String
                     Log.i("server", "reading message")
                     val (device, message) = MockBluetoothHardware.read()
                     Log.i("server", "message: $message")
-                    messageCallback(message, device?.address)
+
+                    val requestModel = decodeBluetoothMessageRequestString(message)
+                    val responseModel = BluetoothMessageResponseModel.fromRequestModel(requestModel, device)
+
+                    messageCallback(responseModel)
                 }
             }
 
