@@ -1,11 +1,11 @@
-package com.steamtechs.renaissancelife.framework.bluetooth.mocks
+package com.steamtechs.renaissancelife.framework.bluetooth.mock
 
 
 import android.bluetooth.BluetoothDevice
 import android.util.Log
-import com.steamtechs.renaissancelife.framework.bluetooth.BluetoothMessageRequestModel
-import com.steamtechs.renaissancelife.framework.bluetooth.encodeBluetoothMessageRequestModel
-import com.steamtechs.renaissancelife.framework.bluetooth.templates.BluetoothClient
+import com.steamtechs.renaissancelife.framework.bluetooth.core.BluetoothClient
+import com.steamtechs.renaissancelife.framework.bluetooth.util.BluetoothMessageRequestModel
+import com.steamtechs.renaissancelife.framework.bluetooth.util.encodeBluetoothMessageRequestModel
 
 class MockBluetoothClient(
     private val device: BluetoothDevice?,

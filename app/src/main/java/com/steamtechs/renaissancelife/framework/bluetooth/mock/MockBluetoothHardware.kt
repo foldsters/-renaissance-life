@@ -1,7 +1,6 @@
-package com.steamtechs.renaissancelife.framework.bluetooth.mocks
+package com.steamtechs.renaissancelife.framework.bluetooth.mock
 
 import android.bluetooth.BluetoothDevice
-import android.util.Log
 
 object MockBluetoothHardware {
 

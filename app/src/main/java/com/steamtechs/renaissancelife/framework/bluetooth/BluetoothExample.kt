@@ -1,5 +1,6 @@
 package com.steamtechs.renaissancelife.framework.bluetooth
 
+import android.util.Log
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.runtime.*
@@ -10,7 +11,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.steamtechs.renaissancelife.framework.bluetooth.real.RealBluetoothClient
+import com.steamtechs.renaissancelife.framework.bluetooth.util.BluetoothMessageResponseModel
 import com.steamtechs.renaissancelife.ui.AppViewModel
 
 
@@ -20,22 +21,22 @@ fun BluetoothExample() {
     val modifier = Modifier
 
     val appViewModel = viewModel<AppViewModel>()
-    val bluetoothHandler = appViewModel.mockBluetoothHandler
+    val bluetoothHandler = appViewModel.mockBluetoothHandlerImpl
 
-    val deviceMap = bluetoothHandler.devicesMap
-    val deviceInfo = deviceMap?.values?.toList()?.map { "${it.name ?: "Unknown"} \n ${it.address}" } ?: listOf()
+    val deviceList = bluetoothHandler.devicesMap.values.toList()
+    val deviceInfo = deviceList.map { "${it?.name ?: "Unknown"} \n ${it?.address}" }
 
     var message by remember { mutableStateOf("") }
 
     val onSetMessage : (String) -> Unit = { message = it }
 
-    val sendDeviceCallbacks = bluetoothHandler.deviceCallbacks.map {  { it(message, "Compose") }  }
+    val sendDeviceCallbacks = deviceList.map { { bluetoothHandler.sendMessageToDevice(it, message, "Chat")  } }
 
     var showMenu by remember { mutableStateOf(false) }
 
-    val receivedMessagesData : List<BluetoothMessageResponseModel> by bluetoothHandler.receivedMessagesData.observeAsState(listOf())
+    val receivedMessagesData : List<BluetoothMessageResponseModel> by appViewModel.receivedChatMessages.observeAsState(listOf())
 
-
+    Log.i("Chat", receivedMessagesData.toString())
 
     val syncButtonCallback : () -> Unit = appViewModel::exampleRepositoryBluetoothSync
 
@@ -67,6 +68,11 @@ fun BluetoothExample() {
             }
         }
 
+        Button(onClick = syncButtonCallback) {
+            Text(text="Sync")
+        }
+
+
         for (receivedMessageData in receivedMessagesData) {
             Row {
                 Column {
@@ -77,10 +83,6 @@ fun BluetoothExample() {
                 Text(receivedMessageData.message, fontSize = 8.em)
             }
             Spacer(modifier = Modifier.height(5.dp))
-        }
-
-        Button(onClick = syncButtonCallback) {
-            Text(text="Sync")
         }
 
     }

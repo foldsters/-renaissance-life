@@ -1,4 +1,4 @@
-package com.steamtechs.renaissancelife.framework.bluetooth.templates
+package com.steamtechs.renaissancelife.framework.bluetooth.core
 
 abstract class BluetoothServerController : Thread() {
 

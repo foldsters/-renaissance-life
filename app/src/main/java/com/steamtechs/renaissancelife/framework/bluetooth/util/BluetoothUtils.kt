@@ -1,6 +1,7 @@
-package com.steamtechs.renaissancelife.framework.bluetooth
+package com.steamtechs.renaissancelife.framework.bluetooth.util
 
 import android.bluetooth.BluetoothDevice
+import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
@@ -36,9 +37,11 @@ data class BluetoothMessageResponseModel (
     }
 }
 
+
 fun encodeBluetoothMessageRequestModel(bluetoothMessageRequestModel: BluetoothMessageRequestModel): String {
     return Json.encodeToString(bluetoothMessageRequestModel)
 }
+
 
 fun decodeBluetoothMessageRequestString(bluetoothMessageResponseString: String): BluetoothMessageRequestModel {
     return Json.decodeFromString(bluetoothMessageResponseString)

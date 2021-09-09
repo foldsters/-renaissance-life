@@ -1,6 +1,7 @@
 package com.steamtechs.renaissancelife.ui
 
 
+import android.util.Log
 import androidx.lifecycle.*
 import com.steamtechs.core.data.CategoryRepository
 import com.steamtechs.core.domain.Category
@@ -12,8 +13,8 @@ import com.steamtechs.core.interactors.*
 import com.steamtechs.platform.datasources.PCategoryRepository
 import com.steamtechs.renaissancelife.R
 import com.steamtechs.renaissancelife.di.MockBluetoothHandler
-import com.steamtechs.renaissancelife.framework.bluetooth.BluetoothHandler
-import com.steamtechs.renaissancelife.framework.bluetooth.BluetoothMessageResponseModel
+import com.steamtechs.renaissancelife.framework.bluetooth.core.BluetoothHandler
+import com.steamtechs.renaissancelife.framework.bluetooth.util.BluetoothMessageResponseModel
 import com.steamtechs.renaissancelife.framework.datasources.RoomCategoryDataSource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import java.lang.Thread.sleep
@@ -23,7 +24,7 @@ import javax.inject.Inject
 class AppViewModel @Inject constructor(
     private var initCategoryRepository : CategoryRepository,
     private val roomCategoryDataSource : RoomCategoryDataSource,
-    @MockBluetoothHandler val mockBluetoothHandler : BluetoothHandler
+    @MockBluetoothHandler val mockBluetoothHandlerImpl : BluetoothHandler
 ) : ViewModel() {
 
     // Setup
@@ -69,7 +70,6 @@ class AppViewModel @Inject constructor(
 
     }
 
-
     // Radar
 
     private fun summarizeLogCategories() : Map<String, Int> =
@@ -104,18 +104,47 @@ class AppViewModel @Inject constructor(
         endDate.value = date
     }
 
-    // TODO : The view model shouldn't know how to make a repository, should it?
-
 
     init {
-        mockBluetoothHandler.registerBluetoothMessageResponseCallback("Update", ::serverCallbackUpdate)
-        mockBluetoothHandler.registerBluetoothMessageResponseCallback("Merge", ::serverCallbackMerge)
+        mockBluetoothHandlerImpl.startBluetoothServerController()
+        mockBluetoothHandlerImpl.registerBluetoothMessageResponseCallback("Update", ::serverCallbackUpdate)
+        mockBluetoothHandlerImpl.registerBluetoothMessageResponseCallback("Merge", ::serverCallbackMerge)
     }
+
+    val tag = "View Model"
 
     fun exampleRepositoryBluetoothSync() {
 
-        val dateList = GetDatesInDateRange("2021-06-01", "2021-11-01")
+        Log.i(tag, "Starting Sync")
+
+        val dateList = GetDatesInDateRange("2021-06-01", "2021-08-01")
         val targetRepository = CategoryRepository(PCategoryRepository())
+
+        initCategoryRepository.addCategories(
+            listOf(
+                Category("A", "2021-05-01", 1),
+                Category("B", "2021-05-01", 1),
+                Category("C", "2021-05-01", 1),
+
+                Category("B", "2021-06-01", 2),
+                Category("C", "2021-06-01", 2),
+                Category("D", "2021-06-01", 2),
+
+                Category("C", "2021-07-01", 3),
+                Category("D", "2021-07-01", 3),
+                Category("E", "2021-07-01", 3),
+
+                Category("D", "2021-08-01", 4),
+                Category("E", "2021-08-01", 4),
+                Category("F", "2021-08-01", 4),
+
+                Category("E", "2021-09-01", 5),
+                Category("F", "2021-09-01", 5),
+                Category("G", "2021-09-01", 5),
+            )
+        )
+
+        Log.i(tag, "0. ${initCategoryRepository.getCategories()}")
 
         TicklessCategoryRepositoryFromDateList(
             dateList,
@@ -123,29 +152,64 @@ class AppViewModel @Inject constructor(
             targetRepository
         )
 
+        Log.i(tag, "1. Encoding ${targetRepository.getCategories()}")
+
         val encodedTargetRepository =
             StringCategoryRepositorySerializable.encodeCategoryRepository(targetRepository)
 
+        Log.i(tag, "2. Sending $encodedTargetRepository")
 
-        mockBluetoothHandler.sendMessageToDevice(null, encodedTargetRepository, "Update")
+        mockBluetoothHandlerImpl.sendMessageToDevice(null, encodedTargetRepository, "Update")
 
     }
 
-    fun serverCallbackUpdate(bluetoothMessageResponseModel: BluetoothMessageResponseModel) {
+    private fun serverCallbackUpdate(bluetoothMessageResponseModel: BluetoothMessageResponseModel) {
+
+        Log.i(tag, "3. Updating")
 
         val targetRepository = CategoryRepository(PCategoryRepository())
         val syncString = bluetoothMessageResponseModel.message
 
+        val fakeInitRepository = CategoryRepository(PCategoryRepository())
+
+        fakeInitRepository.addCategories(
+            listOf(
+                Category("A", "2021-05-02", 1),
+                Category("B", "2021-05-02", 1),
+                Category("C", "2021-05-02", 1),
+
+                Category("B", "2021-06-02", 2),
+                Category("C", "2021-06-02", 2),
+                Category("D", "2021-06-02", 2),
+
+                Category("C", "2021-07-02", 3),
+                Category("D", "2021-07-02", 3),
+                Category("E", "2021-07-02", 3),
+
+                Category("D", "2021-08-02", 4),
+                Category("E", "2021-08-02", 4),
+                Category("F", "2021-08-02", 4),
+
+                Category("E", "2021-09-02", 5),
+                Category("F", "2021-09-02", 5),
+                Category("G", "2021-09-02", 5),
+            )
+        )
+
         StringCategoryRepositorySerializable.decodeString(syncString, targetRepository)
-        UpdateTargetRepositoryWithSourceRepository(targetRepository, initCategoryRepository)
+        UpdateTargetRepositoryWithSourceRepository(targetRepository, fakeInitRepository)
 
         val newEncodedRepository = StringCategoryRepositorySerializable.encodeCategoryRepository(targetRepository)
 
-        mockBluetoothHandler.sendMessageToDevice(null, newEncodedRepository, "Merge")
+        Log.i(tag, "4. Sending $newEncodedRepository")
+
+        mockBluetoothHandlerImpl.sendMessageToDevice(null, newEncodedRepository, "Merge")
 
     }
 
-    fun serverCallbackMerge(bluetoothMessageResponseModel: BluetoothMessageResponseModel) {
+    private fun serverCallbackMerge(bluetoothMessageResponseModel: BluetoothMessageResponseModel) {
+
+        Log.i(tag, "5. Merging")
 
         val targetRepository = CategoryRepository(PCategoryRepository())
         val syncString = bluetoothMessageResponseModel.message
@@ -155,21 +219,22 @@ class AppViewModel @Inject constructor(
 
         sleep(1000)
 
-        println("THE RESULTS")
+        Log.i(tag, "6. Results")
 
-        initCategoryRepository.getCategories().forEach { println(it) }
+        initCategoryRepository.getCategories().forEach { Log.i(tag, it.toString()) }
     }
 
     // Bluetooth Example Screen
 
-    val receivedChatMessages : MutableLiveData<List<BluetoothMessageResponseModel>> = MutableLiveData()
+    val receivedChatMessages : MutableLiveData<List<BluetoothMessageResponseModel>> = MutableLiveData(listOf())
 
     init {
-        mockBluetoothHandler.registerBluetoothMessageResponseCallback("Chat", ::serverCallbackChat)
+        mockBluetoothHandlerImpl.registerBluetoothMessageResponseCallback("Chat", ::serverCallbackChat)
     }
 
-    fun serverCallbackChat(bluetoothMessageResponseModel: BluetoothMessageResponseModel) {
-        receivedChatMessages.postValue( receivedChatMessages.value?.plus(listOf(bluetoothMessageResponseModel)) ?: listOf() )
+    private fun serverCallbackChat(bluetoothMessageResponseModel: BluetoothMessageResponseModel) {
+        println("Received Chat Message: $bluetoothMessageResponseModel")
+        receivedChatMessages.postValue( receivedChatMessages.value?.plus(listOf(bluetoothMessageResponseModel)) ?: listOf(bluetoothMessageResponseModel) )
     }
 
 

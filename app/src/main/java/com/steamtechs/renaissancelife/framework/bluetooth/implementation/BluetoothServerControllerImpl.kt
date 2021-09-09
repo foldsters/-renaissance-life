@@ -1,15 +1,15 @@
-package com.steamtechs.renaissancelife.framework.bluetooth.real
+package com.steamtechs.renaissancelife.framework.bluetooth.implementation
 
 import android.bluetooth.BluetoothAdapter
 import android.bluetooth.BluetoothServerSocket
 import android.bluetooth.BluetoothSocket
 import android.util.Log
-import com.steamtechs.renaissancelife.framework.bluetooth.BluetoothMessageResponseModel
-import com.steamtechs.renaissancelife.framework.bluetooth.BluetoothUUID
-import com.steamtechs.renaissancelife.framework.bluetooth.templates.BluetoothServerController
+import com.steamtechs.renaissancelife.framework.bluetooth.core.BluetoothServerController
+import com.steamtechs.renaissancelife.framework.bluetooth.util.BluetoothMessageResponseModel
+import com.steamtechs.renaissancelife.framework.bluetooth.util.BluetoothUUID
 import java.io.IOException
 
-open class RealBluetoothServerController(private val messageCallback: (BluetoothMessageResponseModel) -> Unit) :
+open class BluetoothServerControllerImpl(private val messageCallback: (BluetoothMessageResponseModel) -> Unit) :
     BluetoothServerController() {
 
     private var cancelled: Boolean
@@ -52,7 +52,7 @@ open class RealBluetoothServerController(private val messageCallback: (Bluetooth
             // Spawn a new server thread on the accepted socket
             if (!this.cancelled && socket != null) {
                 Log.i(tag, "Connecting")
-                RealBluetoothServer(socket, messageCallback).start()
+                BluetoothServerImpl(socket, messageCallback).start()
             }
         }
     }

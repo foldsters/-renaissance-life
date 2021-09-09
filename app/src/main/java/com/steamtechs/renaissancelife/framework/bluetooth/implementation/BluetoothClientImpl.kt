@@ -1,20 +1,20 @@
-package com.steamtechs.renaissancelife.framework.bluetooth.real
+package com.steamtechs.renaissancelife.framework.bluetooth.implementation
 
 
 import android.bluetooth.BluetoothDevice
 import android.util.Log
-import com.steamtechs.renaissancelife.framework.bluetooth.BluetoothMessageRequestModel
-import com.steamtechs.renaissancelife.framework.bluetooth.BluetoothUUID
-import com.steamtechs.renaissancelife.framework.bluetooth.encodeBluetoothMessageRequestModel
-import com.steamtechs.renaissancelife.framework.bluetooth.templates.BluetoothClient
+import com.steamtechs.renaissancelife.framework.bluetooth.core.BluetoothClient
+import com.steamtechs.renaissancelife.framework.bluetooth.util.BluetoothMessageRequestModel
+import com.steamtechs.renaissancelife.framework.bluetooth.util.BluetoothUUID
+import com.steamtechs.renaissancelife.framework.bluetooth.util.encodeBluetoothMessageRequestModel
 import java.io.BufferedOutputStream
 import java.lang.Exception
 import java.lang.IllegalArgumentException
 
-class RealBluetoothClient(
+class BluetoothClientImpl(
     device: BluetoothDevice?,
     private val message: String,
-    private val header: String? = null
+    header: String? = null
 ): BluetoothClient() {
 
     private val socket = device?.createRfcommSocketToServiceRecord(BluetoothUUID) ?:

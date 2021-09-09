@@ -5,11 +5,12 @@ import androidx.room.Room
 import com.steamtechs.core.data.CategoryRepository
 import com.steamtechs.core.interactors.InitLocalCategoryRepository
 import com.steamtechs.platform.datasources.PCategoryRepository
-import com.steamtechs.renaissancelife.framework.bluetooth.BluetoothHandler
-import com.steamtechs.renaissancelife.framework.bluetooth.mocks.MockBluetoothClient
-import com.steamtechs.renaissancelife.framework.bluetooth.mocks.MockBluetoothServerController
-import com.steamtechs.renaissancelife.framework.bluetooth.real.RealBluetoothClient
-import com.steamtechs.renaissancelife.framework.bluetooth.real.RealBluetoothServerController
+import com.steamtechs.renaissancelife.framework.bluetooth.core.BluetoothHandler
+import com.steamtechs.renaissancelife.framework.bluetooth.implementation.BluetoothHandlerImpl
+import com.steamtechs.renaissancelife.framework.bluetooth.mock.MockBluetoothClient
+import com.steamtechs.renaissancelife.framework.bluetooth.mock.MockBluetoothServerController
+import com.steamtechs.renaissancelife.framework.bluetooth.implementation.BluetoothClientImpl
+import com.steamtechs.renaissancelife.framework.bluetooth.implementation.BluetoothServerControllerImpl
 import com.steamtechs.renaissancelife.framework.datasources.RoomCategoryDataSource
 import com.steamtechs.renaissancelife.framework.db.AppRoomDatabase
 import com.steamtechs.renaissancelife.framework.db.CategoryDao
@@ -60,13 +61,13 @@ object AppModule {
     @Singleton
     @Provides
     fun providesMockBluetoothHandler() : BluetoothHandler {
-        return BluetoothHandler(::MockBluetoothServerController, ::MockBluetoothClient)
+        return BluetoothHandlerImpl(::MockBluetoothServerController, ::MockBluetoothClient)
     }
 
     @RealBluetoothHandler
     @Singleton
     @Provides
     fun providesRealBluetoothHandler() : BluetoothHandler {
-        return BluetoothHandler(::RealBluetoothServerController, ::RealBluetoothClient)
+        return BluetoothHandlerImpl(::BluetoothServerControllerImpl, ::BluetoothClientImpl)
     }
 }

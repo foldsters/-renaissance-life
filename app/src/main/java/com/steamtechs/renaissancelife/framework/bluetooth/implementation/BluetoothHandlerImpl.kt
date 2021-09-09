@@ -1,37 +1,37 @@
-package com.steamtechs.renaissancelife.framework.bluetooth
+package com.steamtechs.renaissancelife.framework.bluetooth.implementation
 
 import android.bluetooth.BluetoothAdapter
 import android.bluetooth.BluetoothDevice
-import android.content.BroadcastReceiver
-import android.content.Context
-import android.content.Intent
-import androidx.lifecycle.MutableLiveData
-import com.steamtechs.renaissancelife.framework.bluetooth.templates.BluetoothClient
-import com.steamtechs.renaissancelife.framework.bluetooth.templates.BluetoothServerController
-import java.time.Instant
+import android.util.Log
+import com.steamtechs.renaissancelife.framework.bluetooth.core.BluetoothHandler
+import com.steamtechs.renaissancelife.framework.bluetooth.core.BluetoothClient
+import com.steamtechs.renaissancelife.framework.bluetooth.core.BluetoothServerController
+import com.steamtechs.renaissancelife.framework.bluetooth.util.BluetoothMessageCallback
+import com.steamtechs.renaissancelife.framework.bluetooth.util.BluetoothMessageResponseModel
 
-class BluetoothHandler(private val bluetoothServerControllerConstructor : (BluetoothMessageCallback) -> BluetoothServerController,
-                       private val bluetoothClientConstructor : (BluetoothDevice?, String, String?) -> BluetoothClient) {
+class BluetoothHandlerImpl(private val bluetoothServerControllerConstructor : (BluetoothMessageCallback) -> BluetoothServerController,
+                           private val bluetoothClientConstructor : (BluetoothDevice?, String, String?) -> BluetoothClient) :
+    BluetoothHandler {
 
 
     // Map of all the devices this devices is paired with
-    private var _devicesMap = HashMap<String, BluetoothDevice>()
-
-    // The messages that the server has received
-    var receivedMessagesData : MutableLiveData<List<BluetoothMessageResponseModel>> = MutableLiveData( listOf() )
-
-    // A server instance
+    private var _devicesMap = hashMapOf<String, BluetoothDevice?>("this" to null)
     private var server : BluetoothServerController? = null
 
+    // A server instance
+
+
+    val tag : String = "BTHandler"
+
     // Public device map, getter gets all the paired devices
-    val devicesMap : HashMap<String, BluetoothDevice>?
+    override val devicesMap : HashMap<String, BluetoothDevice?>
         get() {
             val btAdapter = BluetoothAdapter.getDefaultAdapter()
 
             if (btAdapter == null || !btAdapter.isEnabled) {
 
                 println("BLUETOOTH IS DISABLED")
-                return null
+                return _devicesMap
 
             }
 
@@ -42,25 +42,25 @@ class BluetoothHandler(private val bluetoothServerControllerConstructor : (Bluet
             return _devicesMap
         }
 
-    // Broadcast Receiver to add newly paired devices to the device map
-    var bluetoothBroadcastReceiver = object : BroadcastReceiver() {
-
-        override fun onReceive(context: Context, intent: Intent) {
-            val action = intent.action
-            // When discovery finds a device
-            if (BluetoothDevice.ACTION_FOUND == action) {
-                // Get the BluetoothDevice object from the Intent
-                val device =
-                    intent.getParcelableExtra<BluetoothDevice>(BluetoothDevice.EXTRA_DEVICE)
-                        ?: return
-
-                _devicesMap[device.address] = device
-            }
-        }
-    }
+//    // Broadcast Receiver to add newly paired devices to the device map
+//    var bluetoothBroadcastReceiver = object : BroadcastReceiver() {
+//
+//        override fun onReceive(context: Context, intent: Intent) {
+//            val action = intent.action
+//            // When discovery finds a device
+//            if (BluetoothDevice.ACTION_FOUND == action) {
+//                // Get the BluetoothDevice object from the Intent
+//                val device =
+//                    intent.getParcelableExtra<BluetoothDevice>(BluetoothDevice.EXTRA_DEVICE)
+//                        ?: return
+//
+//                _devicesMap[device.address] = device
+//            }
+//        }
+//    }
 
     // Makes a client connection and sends message to the device's server
-    fun sendMessageToDevice(device : BluetoothDevice?, message : String, header : String? = null) {
+    override fun sendMessageToDevice(device : BluetoothDevice?, message : String, header : String?) {
 
         BluetoothAdapter.getDefaultAdapter().cancelDiscovery()
         bluetoothClientConstructor(device, message, header).start()
@@ -75,7 +75,7 @@ class BluetoothHandler(private val bluetoothServerControllerConstructor : (Bluet
 
     // Starts the internal bluetooth server controller
     // This is to be called from the activity onResume
-    fun startBluetoothServerController() {
+    override fun startBluetoothServerController() {
         if (server == null) {
             server = bluetoothServerControllerConstructor(::innerMessageReceiveCallback).apply {start()}
         }
@@ -83,7 +83,7 @@ class BluetoothHandler(private val bluetoothServerControllerConstructor : (Bluet
 
     // Stops the bluetooth server
     // This is to be called from the activity onPause
-    fun stopBluetoothServer() {
+    override fun stopBluetoothServer() {
         server?.cancel()
         server = null
     }
@@ -91,7 +91,9 @@ class BluetoothHandler(private val bluetoothServerControllerConstructor : (Bluet
 
     private val bluetoothCallbackRoster : MutableMap<String, MutableList<BluetoothMessageCallback>> = mutableMapOf()
 
-    fun registerBluetoothMessageResponseCallback(header : String, callback : BluetoothMessageCallback) : () -> Unit {
+    override fun registerBluetoothMessageResponseCallback(header : String, callback : BluetoothMessageCallback) : () -> Unit {
+
+        Log.i(tag, "Registering Callback")
 
         bluetoothCallbackRoster.putIfAbsent(header, mutableListOf())
         bluetoothCallbackRoster[header]!!.add(callback)
@@ -103,8 +105,6 @@ class BluetoothHandler(private val bluetoothServerControllerConstructor : (Bluet
     // When the server receives a message, it adds it to the receivedMessages list
     private fun innerMessageReceiveCallback(btResponseModel: BluetoothMessageResponseModel) {
         println("CALLBACK CALLED $btResponseModel")
-        val updatedReceivedMessages = receivedMessagesData.value?.plus(listOf(btResponseModel)) ?: listOf()
-        receivedMessagesData.postValue( updatedReceivedMessages )
 
         // Update callback roster
         bluetoothCallbackRoster[btResponseModel.header]?.forEach { it(btResponseModel) }
