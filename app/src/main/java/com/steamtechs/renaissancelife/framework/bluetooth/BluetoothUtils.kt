@@ -43,10 +43,12 @@ data class BluetoothMessageResponseModel (
     }
 }
 
-fun encodeBluetoothMessageRequestModel(bluetoothMessageResponseModel: BluetoothMessageResponseModel): String {
-    return Json.encodeToString(bluetoothMessageResponseModel)
+fun encodeBluetoothMessageRequestModel(bluetoothMessageRequestModel: BluetoothMessageRequestModel): String {
+    return Json.encodeToString(bluetoothMessageRequestModel)
 }
 
 fun decodeBluetoothMessageRequestString(bluetoothMessageResponseString: String): BluetoothMessageRequestModel {
     return Json.decodeFromString(bluetoothMessageResponseString)
 }
+
+typealias BluetoothMessageCallback = (BluetoothMessageResponseModel) -> Unit

@@ -39,7 +39,7 @@ class AppViewModel @Inject constructor(
             println("$message -- $deviceAddress")
             mockBluetoothHandler.messageReceiveCallback = null
         }
-        mockBluetoothHandler.startBluetoothServer()
+        mockBluetoothHandler.startBluetoothServerController()
         mockBluetoothHandler.onChangeMessage("Potato")
         mockBluetoothHandler.sendMessageToDevice(null)
     }
@@ -134,7 +134,7 @@ class AppViewModel @Inject constructor(
 
         val encodedTargetRepository = StringCategoryRepositorySerializable.encodeCategoryRepository(targetRepository)
 
-        mockBluetoothHandler.startBluetoothServer()
+        mockBluetoothHandler.startBluetoothServerController()
 
         mockBluetoothHandler.messageReceiveCallback = {message, _ -> syncString = message}
         mockBluetoothHandler.onChangeMessage(encodedTargetRepository)

@@ -10,21 +10,15 @@ import com.steamtechs.renaissancelife.framework.bluetooth.templates.BluetoothCli
 import com.steamtechs.renaissancelife.framework.bluetooth.templates.BluetoothServerController
 import java.time.Instant
 
-class BluetoothHandler(private val bluetoothServerControllerConstructor : ((String, String?) -> Unit) -> BluetoothServerController,
-                       private val bluetoothClientConstructor : (BluetoothDevice?, String) -> BluetoothClient) {
+class BluetoothHandler(private val bluetoothServerControllerConstructor : (BluetoothMessageCallback) -> BluetoothServerController,
+                       private val bluetoothClientConstructor : (BluetoothDevice?, String, String?) -> BluetoothClient) {
 
-
-    // Callback to be called when the server receives a message
-    var messageReceiveCallback : ((String, String?) -> Unit)? = null
 
     // Map of all the devices this devices is paired with
     private var _devicesMap = HashMap<String, BluetoothDevice>()
 
-    // The message for the client server to send
-    var message : MutableLiveData<String> = MutableLiveData("")
-
     // The messages that the server has received
-    var receivedMessagesData : MutableLiveData<List<ReceivedMessageData>> = MutableLiveData( listOf() )
+    var receivedMessagesData : MutableLiveData<List<BluetoothMessageResponseModel>> = MutableLiveData( listOf() )
 
     // A server instance
     private var server : BluetoothServerController? = null
@@ -48,16 +42,6 @@ class BluetoothHandler(private val bluetoothServerControllerConstructor : ((Stri
             return _devicesMap
         }
 
-    // Callback to update the message to send from the client
-    fun onChangeMessage(newMessage : String) {
-        message.value = newMessage
-    }
-
-    // Callback to clear the message
-    fun clearMessage() {
-        message.value = ""
-    }
-
     // Broadcast Receiver to add newly paired devices to the device map
     var bluetoothBroadcastReceiver = object : BroadcastReceiver() {
 
@@ -76,22 +60,22 @@ class BluetoothHandler(private val bluetoothServerControllerConstructor : ((Stri
     }
 
     // Makes a client connection and sends message to the device's server
-    fun sendMessageToDevice(device : BluetoothDevice?) {
+    fun sendMessageToDevice(device : BluetoothDevice?, message : String, header : String? = null) {
 
         BluetoothAdapter.getDefaultAdapter().cancelDiscovery()
-        bluetoothClientConstructor(device, message.value ?: "NO MESSAGE SET").start()
+        bluetoothClientConstructor(device, message, header).start()
 
     }
 
     // Makes a list of sendMessage functions, one for each paired device.
-    val deviceCallbacks : List<()->Unit>
+    val deviceCallbacks : List<(String, String?) -> Unit>
         get() {
-            return _devicesMap.values.toList().map { { sendMessageToDevice(it) } }
+            return _devicesMap.values.toList().map { {message, header -> sendMessageToDevice(it, message, header) } }
         }
 
     // Starts the internal bluetooth server controller
     // This is to be called from the activity onResume
-    fun startBluetoothServer() {
+    fun startBluetoothServerController() {
         if (server == null) {
             server = bluetoothServerControllerConstructor(::innerMessageReceiveCallback).apply {start()}
         }
@@ -104,13 +88,26 @@ class BluetoothHandler(private val bluetoothServerControllerConstructor : ((Stri
         server = null
     }
 
+
+    private val bluetoothCallbackRoster : MutableMap<String, MutableList<BluetoothMessageCallback>> = mutableMapOf()
+
+    fun registerBluetoothMessageResponseCallback(header : String, callback : BluetoothMessageCallback) : () -> Unit {
+
+        bluetoothCallbackRoster.putIfAbsent(header, mutableListOf())
+        bluetoothCallbackRoster[header]!!.add(callback)
+
+        return { bluetoothCallbackRoster[header]?.remove(callback) } // Unregister callback
+    }
+
     // Used as a callback for the server
     // When the server receives a message, it adds it to the receivedMessages list
-    private fun innerMessageReceiveCallback(receivedMessage : String, deviceAddress : String?) {
-        println("CALLBACK CALLED $receivedMessage")
-        val receivedMessageData = ReceivedMessageData(Instant.now().epochSecond, deviceAddress, receivedMessage)
-        val updatedReceivedMessages = receivedMessagesData.value?.plus(listOf(receivedMessageData)) ?: listOf()
+    private fun innerMessageReceiveCallback(btResponseModel: BluetoothMessageResponseModel) {
+        println("CALLBACK CALLED $btResponseModel")
+        val updatedReceivedMessages = receivedMessagesData.value?.plus(listOf(btResponseModel)) ?: listOf()
         receivedMessagesData.postValue( updatedReceivedMessages )
-        messageReceiveCallback?.let { it(receivedMessage, deviceAddress) }
+
+        // Update callback roster
+        bluetoothCallbackRoster[btResponseModel.header]?.forEach { it(btResponseModel) }
+
     }
 }

@@ -5,21 +5,21 @@ import android.util.Log
 
 object MockBluetoothHardware {
 
-    private var messageData : Pair<BluetoothDevice?, String>? = null
+    private var streamData : Pair<BluetoothDevice?, String>? = null
 
-    fun write(device : BluetoothDevice?, message : String) {
-        messageData = Pair(device, message)
+    fun write(device : BluetoothDevice?, messageRequestString : String) {
+        streamData = Pair(device, messageRequestString)
     }
 
     fun read() : Pair<BluetoothDevice?, String> {
-        val result = messageData!!.copy()
-        messageData = null
+        val result = streamData!!.copy()
+        streamData = null
         return result
     }
 
     fun available() : Int {
 
-        val available = messageData?.second?.length ?: 0
+        val available = streamData?.second?.length ?: 0
         return available
 
     }
