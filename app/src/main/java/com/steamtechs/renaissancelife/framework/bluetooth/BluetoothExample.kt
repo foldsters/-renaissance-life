@@ -10,6 +10,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.steamtechs.renaissancelife.framework.bluetooth.real.RealBluetoothClient
 import com.steamtechs.renaissancelife.ui.AppViewModel
 
 
@@ -18,19 +19,23 @@ fun BluetoothExample() {
 
     val modifier = Modifier
 
-    val deviceMap = BluetoothHandlerObject.devicesMap
+    val appViewModel = viewModel<AppViewModel>()
+    val bluetoothHandler = appViewModel.mockBluetoothHandler
+
+    val deviceMap = bluetoothHandler.devicesMap
     val deviceInfo = deviceMap?.values?.toList()?.map { "${it.name ?: "Unknown"} \n ${it.address}" } ?: listOf()
 
-    val message : String by BluetoothHandlerObject.message.observeAsState("")
-    val onSetMessage = BluetoothHandlerObject::onSetMessage
+    var message by remember { mutableStateOf("") }
 
-    val sendDeviceCallbacks = BluetoothHandlerObject.deviceCallbacks
+    val onSetMessage : (String) -> Unit = { message = it }
+
+    val sendDeviceCallbacks = bluetoothHandler.deviceCallbacks.map {  { it(message, "Compose") }  }
 
     var showMenu by remember { mutableStateOf(false) }
 
-    val receivedMessagesData : List<ReceivedMessageData> by BluetoothHandlerObject.receivedMessagesData.observeAsState(listOf())
+    val receivedMessagesData : List<BluetoothMessageResponseModel> by bluetoothHandler.receivedMessagesData.observeAsState(listOf())
 
-    val appViewModel = viewModel<AppViewModel>()
+
 
     val syncButtonCallback : () -> Unit = appViewModel::exampleRepositoryBluetoothSync
 
@@ -65,7 +70,7 @@ fun BluetoothExample() {
         for (receivedMessageData in receivedMessagesData) {
             Row {
                 Column {
-                    Text(receivedMessageData.time.toString(), fontSize = 3.em, color = Color(0xFFAAAAAA))
+                    Text(receivedMessageData.header.toString(), fontSize = 3.em, color = Color(0xFFAAAAAA))
                     Text(receivedMessageData.deviceAddress ?: "UNKNOWN", fontSize = 3.em, color = Color(0xFFAAAAAA))
                 }
                 Spacer(modifier = Modifier.width(5.dp))

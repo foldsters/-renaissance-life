@@ -13,6 +13,7 @@ import com.steamtechs.platform.datasources.PCategoryRepository
 import com.steamtechs.renaissancelife.R
 import com.steamtechs.renaissancelife.di.MockBluetoothHandler
 import com.steamtechs.renaissancelife.framework.bluetooth.BluetoothHandler
+import com.steamtechs.renaissancelife.framework.bluetooth.BluetoothMessageResponseModel
 import com.steamtechs.renaissancelife.framework.datasources.RoomCategoryDataSource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import java.lang.Thread.sleep
@@ -22,7 +23,7 @@ import javax.inject.Inject
 class AppViewModel @Inject constructor(
     private var initCategoryRepository : CategoryRepository,
     private val roomCategoryDataSource : RoomCategoryDataSource,
-    @MockBluetoothHandler private val mockBluetoothHandler : BluetoothHandler
+    @MockBluetoothHandler val mockBluetoothHandler : BluetoothHandler
 ) : ViewModel() {
 
     // Setup
@@ -31,18 +32,6 @@ class AppViewModel @Inject constructor(
 
     var liveCategoryList : MutableLiveData<List<LiveCategory>> =
         MutableLiveData(todayCategoryIterable.map { LiveCategory.fromCategory(it) })
-
-        // Mock Bluetooth Testing
-
-    init {
-        mockBluetoothHandler.messageReceiveCallback = { message : String, deviceAddress : String? ->
-            println("$message -- $deviceAddress")
-            mockBluetoothHandler.messageReceiveCallback = null
-        }
-        mockBluetoothHandler.startBluetoothServerController()
-        mockBluetoothHandler.onChangeMessage("Potato")
-        mockBluetoothHandler.sendMessageToDevice(null)
-    }
 
 
     // Navigation
@@ -116,15 +105,17 @@ class AppViewModel @Inject constructor(
     }
 
     // TODO : The view model shouldn't know how to make a repository, should it?
-    var targetRepository = CategoryRepository(PCategoryRepository())
 
-    var syncString : String? = null
 
+    init {
+        mockBluetoothHandler.registerBluetoothMessageResponseCallback("Update", ::serverCallbackUpdate)
+        mockBluetoothHandler.registerBluetoothMessageResponseCallback("Merge", ::serverCallbackMerge)
+    }
 
     fun exampleRepositoryBluetoothSync() {
-        val dateList = GetDatesInDateRange("2021-06-01", "2021-11-01")
 
-        targetRepository.clearAllCategories()
+        val dateList = GetDatesInDateRange("2021-06-01", "2021-11-01")
+        val targetRepository = CategoryRepository(PCategoryRepository())
 
         TicklessCategoryRepositoryFromDateList(
             dateList,
@@ -132,72 +123,53 @@ class AppViewModel @Inject constructor(
             targetRepository
         )
 
-        val encodedTargetRepository = StringCategoryRepositorySerializable.encodeCategoryRepository(targetRepository)
+        val encodedTargetRepository =
+            StringCategoryRepositorySerializable.encodeCategoryRepository(targetRepository)
 
-        mockBluetoothHandler.startBluetoothServerController()
 
-        mockBluetoothHandler.messageReceiveCallback = {message, _ -> syncString = message}
-        mockBluetoothHandler.onChangeMessage(encodedTargetRepository)
+        mockBluetoothHandler.sendMessageToDevice(null, encodedTargetRepository, "Update")
 
-        mockBluetoothHandler.sendMessageToDevice(null)
+    }
 
-        var i = 0
-        while (syncString == null) {
-            sleep(1000)
-            i++
-            if (i > 20) {
-                error("Message never received")
-            }
-        }
+    fun serverCallbackUpdate(bluetoothMessageResponseModel: BluetoothMessageResponseModel) {
 
-        StringCategoryRepositorySerializable.decodeString(syncString!!, targetRepository)
+        val targetRepository = CategoryRepository(PCategoryRepository())
+        val syncString = bluetoothMessageResponseModel.message
 
-        syncString = null
-
+        StringCategoryRepositorySerializable.decodeString(syncString, targetRepository)
         UpdateTargetRepositoryWithSourceRepository(targetRepository, initCategoryRepository)
-
-        println("UPDATED TARGET ${targetRepository.getCategories()}")
 
         val newEncodedRepository = StringCategoryRepositorySerializable.encodeCategoryRepository(targetRepository)
 
-        println("NEW ENCODED REPOSITORY $newEncodedRepository")
+        mockBluetoothHandler.sendMessageToDevice(null, newEncodedRepository, "Merge")
 
-        mockBluetoothHandler.onChangeMessage(newEncodedRepository)
+    }
 
-        mockBluetoothHandler.sendMessageToDevice(null)
+    fun serverCallbackMerge(bluetoothMessageResponseModel: BluetoothMessageResponseModel) {
 
+        val targetRepository = CategoryRepository(PCategoryRepository())
+        val syncString = bluetoothMessageResponseModel.message
 
-        i = 0
-        while (syncString == null) {
-            sleep(1000)
-            i++
-            if (i > 20) {
-                error("Message 2 never received")
-            }
-        }
-
-        StringCategoryRepositorySerializable.decodeString(syncString!!, targetRepository)
-
-        println("DECODED MESSAGE ${targetRepository.getCategories()}")
-
+        StringCategoryRepositorySerializable.decodeString(syncString, targetRepository)
         MergeCategoryRepositories(initCategoryRepository, targetRepository)
 
-        println("FINAL REPO ${initCategoryRepository.getCategories()}")
-
-
-        sleep(2000)
+        sleep(1000)
 
         println("THE RESULTS")
 
-        initCategoryRepository.getCategories().forEach {
-            println(it)
-        }
+        initCategoryRepository.getCategories().forEach { println(it) }
+    }
 
-//        println("END")
-//        println("???" + initCategoryRepository.getCategories().toString().split("), ").joinToString("\n"))
+    // Bluetooth Example Screen
 
+    val receivedChatMessages : MutableLiveData<List<BluetoothMessageResponseModel>> = MutableLiveData()
 
+    init {
+        mockBluetoothHandler.registerBluetoothMessageResponseCallback("Chat", ::serverCallbackChat)
+    }
 
+    fun serverCallbackChat(bluetoothMessageResponseModel: BluetoothMessageResponseModel) {
+        receivedChatMessages.postValue( receivedChatMessages.value?.plus(listOf(bluetoothMessageResponseModel)) ?: listOf() )
     }
 
 
