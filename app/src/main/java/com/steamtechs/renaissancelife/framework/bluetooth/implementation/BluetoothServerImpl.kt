@@ -33,10 +33,6 @@ class BluetoothServerImpl(private val socket: BluetoothSocket,
             var available = 0
             var i = 0
 
-            val maxSize : Int = socket.maxReceivePacketSize
-
-            Log.i(tag, "Max Packet Size: $maxSize" )
-
             // Wait until a message is received
             while (available == 0) {
                 available = bufferedInputStream.available()
@@ -45,8 +41,6 @@ class BluetoothServerImpl(private val socket: BluetoothSocket,
             }
 
             println("Times the loop ran: $i")
-
-            Log.i(tag, "Max Packet Size: ${socket.maxReceivePacketSize}" )
 
             // Read input and convert to string
             var bytes = ByteArray(available)
