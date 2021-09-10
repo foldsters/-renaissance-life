@@ -1,9 +1,11 @@
 package com.steamtechs.renaissancelife.framework.bluetooth.mock
 
 import android.util.Log
-import com.steamtechs.renaissancelife.framework.bluetooth.core.BluetoothServerController
-import com.steamtechs.renaissancelife.framework.bluetooth.util.BluetoothMessageResponseModel
-import com.steamtechs.renaissancelife.framework.bluetooth.util.decodeBluetoothMessageRequestString
+import com.steamtechs.renaissancelife.framework.bluetooth.data.BluetoothServerController
+import com.steamtechs.renaissancelife.framework.bluetooth.data.BluetoothMessageRequestModel
+import com.steamtechs.renaissancelife.framework.bluetooth.data.BluetoothMessageResponseModel
+import com.steamtechs.renaissancelife.framework.bluetooth.util.fromRequestModel
+import com.steamtechs.renaissancelife.framework.bluetooth.util.fromRequestString
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -36,7 +38,7 @@ class MockBluetoothServerControllerCoroutine(private val messageCallback: (Bluet
                     val (device, message) = MockBluetoothHardware.read()
                     Log.i("server", "message: $message")
 
-                    val requestModel = decodeBluetoothMessageRequestString(message)
+                    val requestModel = BluetoothMessageRequestModel.fromRequestString(message)
                     val responseModel = BluetoothMessageResponseModel.fromRequestModel(requestModel, device)
 
                     messageCallback(responseModel)

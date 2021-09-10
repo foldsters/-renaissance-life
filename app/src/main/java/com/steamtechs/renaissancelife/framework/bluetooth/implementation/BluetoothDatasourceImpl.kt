@@ -3,15 +3,15 @@ package com.steamtechs.renaissancelife.framework.bluetooth.implementation
 import android.bluetooth.BluetoothAdapter
 import android.bluetooth.BluetoothDevice
 import android.util.Log
-import com.steamtechs.renaissancelife.framework.bluetooth.core.BluetoothHandler
-import com.steamtechs.renaissancelife.framework.bluetooth.core.BluetoothClient
-import com.steamtechs.renaissancelife.framework.bluetooth.core.BluetoothServerController
+import com.steamtechs.renaissancelife.framework.bluetooth.data.BluetoothDatasource
+import com.steamtechs.renaissancelife.framework.bluetooth.data.BluetoothClient
+import com.steamtechs.renaissancelife.framework.bluetooth.data.BluetoothServerController
 import com.steamtechs.renaissancelife.framework.bluetooth.util.BluetoothMessageCallback
-import com.steamtechs.renaissancelife.framework.bluetooth.util.BluetoothMessageResponseModel
+import com.steamtechs.renaissancelife.framework.bluetooth.data.BluetoothMessageResponseModel
 
-class BluetoothHandlerImpl(private val bluetoothServerControllerConstructor : (BluetoothMessageCallback) -> BluetoothServerController,
-                           private val bluetoothClientConstructor : (BluetoothDevice?, String, String?) -> BluetoothClient) :
-    BluetoothHandler {
+class BluetoothDatasourceImpl(private val bluetoothServerControllerConstructor : (BluetoothMessageCallback) -> BluetoothServerController,
+                              private val bluetoothClientConstructor : (BluetoothDevice?, String, String?) -> BluetoothClient) :
+    BluetoothDatasource {
 
 
     // Map of all the devices this devices is paired with
@@ -24,23 +24,23 @@ class BluetoothHandlerImpl(private val bluetoothServerControllerConstructor : (B
     val tag : String = "BTHandler"
 
     // Public device map, address to device name
-    override val devicesMap : HashMap<String, String>
-        get() {
-            val btAdapter = BluetoothAdapter.getDefaultAdapter()
+    override fun getDevices() : HashMap<String, String> {
 
-            if (btAdapter == null || !btAdapter.isEnabled) {
+        val btAdapter = BluetoothAdapter.getDefaultAdapter()
 
-                println("BLUETOOTH IS DISABLED")
-                return _devicesMap.mapValues { (_, it) -> it?.name ?: "Unknown"} as HashMap<String, String>
+        if (btAdapter == null || !btAdapter.isEnabled) {
 
-            }
-
-            for (device in BluetoothAdapter.getDefaultAdapter().bondedDevices) {
-                _devicesMap[device.address] = device
-            }
-
+            println("BLUETOOTH IS DISABLED")
             return _devicesMap.mapValues { (_, it) -> it?.name ?: "Unknown"} as HashMap<String, String>
+
         }
+
+        for (device in BluetoothAdapter.getDefaultAdapter().bondedDevices) {
+            _devicesMap[device.address] = device
+        }
+
+        return _devicesMap.mapValues { (_, it) -> it?.name ?: "Unknown"} as HashMap<String, String>
+    }
 
 
 
@@ -54,7 +54,7 @@ class BluetoothHandlerImpl(private val bluetoothServerControllerConstructor : (B
 
     // Starts the internal bluetooth server controller
     // This is to be called from the activity onResume
-    override fun startBluetoothServerController() {
+    override fun startBluetoothServer() {
         if (server == null) {
             server = bluetoothServerControllerConstructor(::innerMessageReceiveCallback).apply { start() }
             server

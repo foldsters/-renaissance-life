@@ -4,8 +4,8 @@ import android.bluetooth.BluetoothAdapter
 import android.bluetooth.BluetoothServerSocket
 import android.bluetooth.BluetoothSocket
 import android.util.Log
-import com.steamtechs.renaissancelife.framework.bluetooth.core.BluetoothServerController
-import com.steamtechs.renaissancelife.framework.bluetooth.util.BluetoothMessageResponseModel
+import com.steamtechs.renaissancelife.framework.bluetooth.data.BluetoothServerController
+import com.steamtechs.renaissancelife.framework.bluetooth.data.BluetoothMessageResponseModel
 import com.steamtechs.renaissancelife.framework.bluetooth.util.BluetoothUUID
 import java.io.IOException
 

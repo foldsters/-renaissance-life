@@ -1,8 +1,6 @@
 package com.steamtechs.renaissancelife.ui
 
 
-import android.bluetooth.BluetoothClass
-import android.bluetooth.BluetoothDevice
 import android.util.Log
 import androidx.lifecycle.*
 import com.steamtechs.core.data.CategoryRepository
@@ -14,10 +12,8 @@ import com.steamtechs.core.domain.businesslogic.StringCategoryRepositorySerializ
 import com.steamtechs.core.interactors.*
 import com.steamtechs.platform.datasources.PCategoryRepository
 import com.steamtechs.renaissancelife.R
-import com.steamtechs.renaissancelife.di.MockBluetoothHandler
-import com.steamtechs.renaissancelife.di.RealBluetoothHandler
-import com.steamtechs.renaissancelife.framework.bluetooth.core.BluetoothHandler
-import com.steamtechs.renaissancelife.framework.bluetooth.util.BluetoothMessageResponseModel
+import com.steamtechs.renaissancelife.framework.bluetooth.data.BluetoothMessageResponseModel
+import com.steamtechs.renaissancelife.framework.bluetooth.interactors.BluetoothRepository
 import com.steamtechs.renaissancelife.framework.datasources.RoomCategoryDataSource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import java.lang.Thread.sleep
@@ -27,7 +23,7 @@ import javax.inject.Inject
 class AppViewModel @Inject constructor(
     private var initCategoryRepository : CategoryRepository,
     private val roomCategoryDataSource : RoomCategoryDataSource,
-    @RealBluetoothHandler val bluetoothHandler: BluetoothHandler
+    val bluetoothRepository: BluetoothRepository
 ) : ViewModel() {
 
     // Setup
@@ -109,9 +105,9 @@ class AppViewModel @Inject constructor(
 
 
     init {
-        bluetoothHandler.startBluetoothServerController()
-        bluetoothHandler.registerBluetoothMessageResponseCallback("Update", ::serverCallbackUpdate)
-        bluetoothHandler.registerBluetoothMessageResponseCallback("Merge", ::serverCallbackMerge)
+        bluetoothRepository.startBluetoothServer()
+        bluetoothRepository.registerBluetoothMessageResponseCallback("Update", ::serverCallbackUpdate)
+        bluetoothRepository.registerBluetoothMessageResponseCallback("Merge", ::serverCallbackMerge)
     }
 
     val tag = "View Model"
@@ -162,7 +158,7 @@ class AppViewModel @Inject constructor(
 
         Log.i(tag, "2. Sending $encodedTargetRepository")
 
-        bluetoothHandler.sendMessageToDevice(deviceAddress, encodedTargetRepository, "Update")
+        bluetoothRepository.sendMessageToDevice(deviceAddress, encodedTargetRepository, "Update")
 
     }
 
@@ -207,7 +203,7 @@ class AppViewModel @Inject constructor(
 
         Log.i(tag, "4. Sending $newEncodedRepository")
 
-        bluetoothHandler.sendMessageToDevice(deviceAddress, newEncodedRepository, "Merge")
+        bluetoothRepository.sendMessageToDevice(deviceAddress, newEncodedRepository, "Merge")
 
     }
 
@@ -233,7 +229,7 @@ class AppViewModel @Inject constructor(
     val receivedChatMessages : MutableLiveData<List<BluetoothMessageResponseModel>> = MutableLiveData(listOf())
 
     init {
-        bluetoothHandler.registerBluetoothMessageResponseCallback("Chat", ::serverCallbackChat)
+        bluetoothRepository.registerBluetoothMessageResponseCallback("Chat", ::serverCallbackChat)
     }
 
     private fun serverCallbackChat(bluetoothMessageResponseModel: BluetoothMessageResponseModel) {

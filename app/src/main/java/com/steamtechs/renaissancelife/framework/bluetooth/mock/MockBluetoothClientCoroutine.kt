@@ -2,11 +2,10 @@ package com.steamtechs.renaissancelife.framework.bluetooth.mock
 
 import android.bluetooth.BluetoothDevice
 import android.util.Log
-import com.steamtechs.renaissancelife.framework.bluetooth.core.BluetoothClient
-import com.steamtechs.renaissancelife.framework.bluetooth.util.BluetoothMessageRequestModel
-import com.steamtechs.renaissancelife.framework.bluetooth.util.encodeBluetoothMessageRequestModel
+import com.steamtechs.renaissancelife.framework.bluetooth.data.BluetoothClient
+import com.steamtechs.renaissancelife.framework.bluetooth.data.BluetoothMessageRequestModel
+import com.steamtechs.renaissancelife.framework.bluetooth.util.toRequestString
 import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 class MockBluetoothClientCoroutine(
@@ -21,8 +20,7 @@ class MockBluetoothClientCoroutine(
     private fun send() {
         Log.i("client", "sending message: $message")
 
-        val messageRequestModel = BluetoothMessageRequestModel(header, message)
-        val messageRequestString = encodeBluetoothMessageRequestModel(messageRequestModel)
+        val messageRequestString = BluetoothMessageRequestModel(header, message).toRequestString()
 
         MockBluetoothHardware.write(device, messageRequestString)
     }

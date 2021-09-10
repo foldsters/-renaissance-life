@@ -4,8 +4,9 @@ import android.bluetooth.BluetoothAdapter
 import android.bluetooth.BluetoothServerSocket
 import android.bluetooth.BluetoothSocket
 import android.util.Log
-import com.steamtechs.renaissancelife.framework.bluetooth.core.BluetoothServerController
-import com.steamtechs.renaissancelife.framework.bluetooth.util.BluetoothMessageResponseModel
+import com.steamtechs.renaissancelife.framework.bluetooth.data.BluetoothServerController
+import com.steamtechs.renaissancelife.framework.bluetooth.data.BluetoothMessageResponseModel
+import com.steamtechs.renaissancelife.framework.bluetooth.data.BluetoothServer
 import com.steamtechs.renaissancelife.framework.bluetooth.util.BluetoothUUID
 import kotlinx.coroutines.*
 import java.io.IOException
@@ -18,6 +19,8 @@ open class BluetoothServerControllerImpl(private val messageCallback: (Bluetooth
     private val tag = "server"
 
     private var job : Job? = null
+
+    private var spawnedServers : MutableList<BluetoothServer> = mutableListOf()
 
     // Create Server Socket
     init {
@@ -54,7 +57,9 @@ open class BluetoothServerControllerImpl(private val messageCallback: (Bluetooth
             // Spawn a new server thread on the accepted socket
             if (socket != null) {
                 Log.i(tag, "Connecting")
-                BluetoothServerImpl(socket, messageCallback).start()
+                val newServer = BluetoothServerImpl(socket, messageCallback)
+                newServer.start()
+                spawnedServers.add(newServer)
             }
 
             delay(10)
@@ -62,6 +67,7 @@ open class BluetoothServerControllerImpl(private val messageCallback: (Bluetooth
     }
 
     override fun cancel() {
+        spawnedServers.forEach { it.cancel() }
         job?.cancel()
         serverSocket!!.close()
     }

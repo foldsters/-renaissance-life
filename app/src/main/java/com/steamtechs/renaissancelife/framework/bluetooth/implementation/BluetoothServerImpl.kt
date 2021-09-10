@@ -2,9 +2,11 @@ package com.steamtechs.renaissancelife.framework.bluetooth.implementation
 
 import android.bluetooth.BluetoothSocket
 import android.util.Log
-import com.steamtechs.renaissancelife.framework.bluetooth.core.BluetoothServer
-import com.steamtechs.renaissancelife.framework.bluetooth.util.BluetoothMessageResponseModel
-import com.steamtechs.renaissancelife.framework.bluetooth.util.decodeBluetoothMessageRequestString
+import com.steamtechs.renaissancelife.framework.bluetooth.data.BluetoothServer
+import com.steamtechs.renaissancelife.framework.bluetooth.data.BluetoothMessageRequestModel
+import com.steamtechs.renaissancelife.framework.bluetooth.data.BluetoothMessageResponseModel
+import com.steamtechs.renaissancelife.framework.bluetooth.util.fromRequestModel
+import com.steamtechs.renaissancelife.framework.bluetooth.util.fromRequestString
 import kotlinx.coroutines.*
 import java.io.BufferedInputStream
 import java.lang.Exception
@@ -77,7 +79,7 @@ class BluetoothServerImpl(private val socket: BluetoothSocket,
 
             val device = socket.remoteDevice
 
-            val requestModel = decodeBluetoothMessageRequestString(requestModelString)
+            val requestModel = BluetoothMessageRequestModel.fromRequestString(requestModelString)
             val responseModel = BluetoothMessageResponseModel.fromRequestModel(requestModel, device)
 
             messageCallback(responseModel)

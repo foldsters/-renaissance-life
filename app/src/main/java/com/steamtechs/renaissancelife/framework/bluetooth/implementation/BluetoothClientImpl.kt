@@ -3,10 +3,10 @@ package com.steamtechs.renaissancelife.framework.bluetooth.implementation
 
 import android.bluetooth.BluetoothDevice
 import android.util.Log
-import com.steamtechs.renaissancelife.framework.bluetooth.core.BluetoothClient
-import com.steamtechs.renaissancelife.framework.bluetooth.util.BluetoothMessageRequestModel
+import com.steamtechs.renaissancelife.framework.bluetooth.data.BluetoothClient
+import com.steamtechs.renaissancelife.framework.bluetooth.data.BluetoothMessageRequestModel
 import com.steamtechs.renaissancelife.framework.bluetooth.util.BluetoothUUID
-import com.steamtechs.renaissancelife.framework.bluetooth.util.encodeBluetoothMessageRequestModel
+import com.steamtechs.renaissancelife.framework.bluetooth.util.toRequestString
 import kotlinx.coroutines.*
 import java.io.BufferedOutputStream
 import java.lang.Exception
@@ -23,8 +23,7 @@ class BluetoothClientImpl(
 
     private val tag = "client"
 
-    private val messageRequestModel = BluetoothMessageRequestModel(header, message)
-    private val messageRequestString = encodeBluetoothMessageRequestModel(messageRequestModel)
+    private val messageRequestString = BluetoothMessageRequestModel(header, message).toRequestString()
 
     private var job : Job? = null
 

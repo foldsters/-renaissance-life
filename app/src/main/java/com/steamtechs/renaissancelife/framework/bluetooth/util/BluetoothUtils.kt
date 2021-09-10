@@ -4,50 +4,29 @@ import android.bluetooth.BluetoothDevice
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
-import kotlinx.serialization.ExperimentalSerializationApi
-import kotlinx.serialization.Serializable
+import com.steamtechs.renaissancelife.framework.bluetooth.data.BluetoothMessageRequestModel
+import com.steamtechs.renaissancelife.framework.bluetooth.data.BluetoothMessageResponseModel
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import java.util.*
 
-
+// App Identifier for Bluetooth
+// Generated Randomly
 val BluetoothUUID : UUID = UUID.fromString("fb5f7580-d51f-4e5d-b070-99edc1eaf1d4")
 
-@Serializable
-data class BluetoothMessageRequestModel (
-    val header : String?,
-    val message : String,
-)
 
+// Extension functions for structuring and destructuring the request and response models
+fun BluetoothMessageRequestModel.Companion.fromRequestString(bluetoothMessageResponseString: String) : BluetoothMessageRequestModel =
+    Json.decodeFromString(bluetoothMessageResponseString)
 
-data class BluetoothMessageResponseModel (
-    val header : String?,
-    val message : String,
-    val deviceName : String?,
-    val deviceAddress : String?
-) {
+fun BluetoothMessageRequestModel.toRequestString(): String =
+    Json.encodeToString(this)
 
-    companion object {
-        fun fromRequestModel(
-            messageRequestModel: BluetoothMessageRequestModel,
-            device: BluetoothDevice?) : BluetoothMessageResponseModel {
-
-            messageRequestModel.apply {
-                return BluetoothMessageResponseModel(header, message, device?.name, device?.address)
-            }
-        }
+fun BluetoothMessageResponseModel.Companion.fromRequestModel(messageRequestModel: BluetoothMessageRequestModel, device: BluetoothDevice?) : BluetoothMessageResponseModel {
+    messageRequestModel.apply {
+        return BluetoothMessageResponseModel(header, message, device?.name, device?.address)
     }
-}
-
-
-fun encodeBluetoothMessageRequestModel(bluetoothMessageRequestModel: BluetoothMessageRequestModel): String {
-    return Json.encodeToString(bluetoothMessageRequestModel)
-}
-
-
-fun decodeBluetoothMessageRequestString(bluetoothMessageResponseString: String): BluetoothMessageRequestModel {
-    return Json.decodeFromString(bluetoothMessageResponseString)
 }
 
 

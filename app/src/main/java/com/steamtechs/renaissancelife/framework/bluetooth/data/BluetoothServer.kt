@@ -1,4 +1,4 @@
-package com.steamtechs.renaissancelife.framework.bluetooth.core
+package com.steamtechs.renaissancelife.framework.bluetooth.data
 
 interface BluetoothServer {
 

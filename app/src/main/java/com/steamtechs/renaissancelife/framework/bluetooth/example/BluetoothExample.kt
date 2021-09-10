@@ -11,7 +11,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.steamtechs.renaissancelife.framework.bluetooth.util.BluetoothMessageResponseModel
+import com.steamtechs.renaissancelife.framework.bluetooth.data.BluetoothMessageResponseModel
 import com.steamtechs.renaissancelife.ui.AppViewModel
 
 
@@ -21,9 +21,9 @@ fun BluetoothExample() {
     val modifier = Modifier
 
     val appViewModel = viewModel<AppViewModel>()
-    val bluetoothHandler = appViewModel.bluetoothHandler
+    val bluetoothHandler = appViewModel.bluetoothRepository
 
-    val deviceList = bluetoothHandler.devicesMap.toList()
+    val deviceList = bluetoothHandler.getDevices().toList()
     val deviceInfo = deviceList.map { (address, name) -> "$address \n $name" }
 
     var message by remember { mutableStateOf("") }

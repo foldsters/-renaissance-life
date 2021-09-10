@@ -5,9 +5,10 @@ import androidx.room.Room
 import com.steamtechs.core.data.CategoryRepository
 import com.steamtechs.core.interactors.InitLocalCategoryRepository
 import com.steamtechs.platform.datasources.PCategoryRepository
-import com.steamtechs.renaissancelife.framework.bluetooth.core.BluetoothHandler
+import com.steamtechs.renaissancelife.framework.bluetooth.data.BluetoothDatasource
 import com.steamtechs.renaissancelife.framework.bluetooth.implementation.*
-import com.steamtechs.renaissancelife.framework.bluetooth.implementation.BluetoothHandlerImpl
+import com.steamtechs.renaissancelife.framework.bluetooth.implementation.BluetoothDatasourceImpl
+import com.steamtechs.renaissancelife.framework.bluetooth.interactors.BluetoothRepository
 import com.steamtechs.renaissancelife.framework.bluetooth.mock.MockBluetoothClientCoroutine
 import com.steamtechs.renaissancelife.framework.bluetooth.mock.MockBluetoothServerControllerCoroutine
 import com.steamtechs.renaissancelife.framework.datasources.RoomCategoryDataSource
@@ -59,14 +60,22 @@ object AppModule {
     @MockBluetoothHandler
     @Singleton
     @Provides
-    fun providesMockBluetoothHandler() : BluetoothHandler {
-        return BluetoothHandlerImpl(::MockBluetoothServerControllerCoroutine, ::MockBluetoothClientCoroutine)
+    fun providesMockBluetoothHandler() : BluetoothDatasource {
+        return BluetoothDatasourceImpl(::MockBluetoothServerControllerCoroutine, ::MockBluetoothClientCoroutine)
     }
 
     @RealBluetoothHandler
     @Singleton
     @Provides
-    fun providesRealBluetoothHandler() : BluetoothHandler {
-        return BluetoothHandlerImpl(::BluetoothServerControllerImpl, ::BluetoothClientImpl)
+    fun providesRealBluetoothHandler() : BluetoothDatasource {
+        return BluetoothDatasourceImpl(::BluetoothServerControllerImpl, ::BluetoothClientImpl)
     }
+
+    @Singleton
+    @Provides
+    fun providesRealBluetoothRepository() : BluetoothRepository {
+        return BluetoothRepository(providesRealBluetoothHandler())
+    }
+
+
 }

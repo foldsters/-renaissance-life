@@ -3,10 +3,10 @@ package com.steamtechs.renaissancelife.framework.bluetooth.implementation.old
 
 import android.bluetooth.BluetoothDevice
 import android.util.Log
-import com.steamtechs.renaissancelife.framework.bluetooth.core.BluetoothClient
-import com.steamtechs.renaissancelife.framework.bluetooth.util.BluetoothMessageRequestModel
+import com.steamtechs.renaissancelife.framework.bluetooth.data.BluetoothClient
+import com.steamtechs.renaissancelife.framework.bluetooth.data.BluetoothMessageRequestModel
 import com.steamtechs.renaissancelife.framework.bluetooth.util.BluetoothUUID
-import com.steamtechs.renaissancelife.framework.bluetooth.util.encodeBluetoothMessageRequestModel
+import com.steamtechs.renaissancelife.framework.bluetooth.util.toRequestString
 import java.io.BufferedOutputStream
 import java.lang.Exception
 import java.lang.IllegalArgumentException
@@ -23,7 +23,7 @@ class BluetoothClientOldImpl(
     private val tag = "client"
 
     private val messageRequestModel = BluetoothMessageRequestModel(header, message)
-    private val messageRequestString = encodeBluetoothMessageRequestModel(messageRequestModel)
+    private val messageRequestString = messageRequestModel.toRequestString()
 
     override fun run() {
         Log.i(tag, "Connecting")
