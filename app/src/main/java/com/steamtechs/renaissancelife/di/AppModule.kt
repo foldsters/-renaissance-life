@@ -6,11 +6,10 @@ import com.steamtechs.core.data.CategoryRepository
 import com.steamtechs.core.interactors.InitLocalCategoryRepository
 import com.steamtechs.platform.datasources.PCategoryRepository
 import com.steamtechs.renaissancelife.framework.bluetooth.core.BluetoothHandler
+import com.steamtechs.renaissancelife.framework.bluetooth.implementation.*
 import com.steamtechs.renaissancelife.framework.bluetooth.implementation.BluetoothHandlerImpl
-import com.steamtechs.renaissancelife.framework.bluetooth.mock.MockBluetoothClient
-import com.steamtechs.renaissancelife.framework.bluetooth.mock.MockBluetoothServerController
-import com.steamtechs.renaissancelife.framework.bluetooth.implementation.BluetoothClientImpl
-import com.steamtechs.renaissancelife.framework.bluetooth.implementation.BluetoothServerControllerImpl
+import com.steamtechs.renaissancelife.framework.bluetooth.mock.MockBluetoothClientCoroutine
+import com.steamtechs.renaissancelife.framework.bluetooth.mock.MockBluetoothServerControllerCoroutine
 import com.steamtechs.renaissancelife.framework.datasources.RoomCategoryDataSource
 import com.steamtechs.renaissancelife.framework.db.AppRoomDatabase
 import com.steamtechs.renaissancelife.framework.db.CategoryDao
@@ -61,7 +60,7 @@ object AppModule {
     @Singleton
     @Provides
     fun providesMockBluetoothHandler() : BluetoothHandler {
-        return BluetoothHandlerImpl(::MockBluetoothServerController, ::MockBluetoothClient)
+        return BluetoothHandlerImpl(::MockBluetoothServerControllerCoroutine, ::MockBluetoothClientCoroutine)
     }
 
     @RealBluetoothHandler

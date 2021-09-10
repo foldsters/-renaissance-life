@@ -23,15 +23,15 @@ class BluetoothHandlerImpl(private val bluetoothServerControllerConstructor : (B
 
     val tag : String = "BTHandler"
 
-    // Public device map, getter gets all the paired devices
-    override val devicesMap : HashMap<String, BluetoothDevice?>
+    // Public device map, address to device name
+    override val devicesMap : HashMap<String, String>
         get() {
             val btAdapter = BluetoothAdapter.getDefaultAdapter()
 
             if (btAdapter == null || !btAdapter.isEnabled) {
 
                 println("BLUETOOTH IS DISABLED")
-                return _devicesMap
+                return _devicesMap.mapValues { (_, it) -> it?.name ?: "Unknown"} as HashMap<String, String>
 
             }
 
@@ -39,45 +39,25 @@ class BluetoothHandlerImpl(private val bluetoothServerControllerConstructor : (B
                 _devicesMap[device.address] = device
             }
 
-            return _devicesMap
+            return _devicesMap.mapValues { (_, it) -> it?.name ?: "Unknown"} as HashMap<String, String>
         }
 
-//    // Broadcast Receiver to add newly paired devices to the device map
-//    var bluetoothBroadcastReceiver = object : BroadcastReceiver() {
-//
-//        override fun onReceive(context: Context, intent: Intent) {
-//            val action = intent.action
-//            // When discovery finds a device
-//            if (BluetoothDevice.ACTION_FOUND == action) {
-//                // Get the BluetoothDevice object from the Intent
-//                val device =
-//                    intent.getParcelableExtra<BluetoothDevice>(BluetoothDevice.EXTRA_DEVICE)
-//                        ?: return
-//
-//                _devicesMap[device.address] = device
-//            }
-//        }
-//    }
+
 
     // Makes a client connection and sends message to the device's server
-    override fun sendMessageToDevice(device : BluetoothDevice?, message : String, header : String?) {
+    override fun sendMessageToDevice(deviceAddress : String?, message : String, header : String?) {
 
         BluetoothAdapter.getDefaultAdapter().cancelDiscovery()
-        bluetoothClientConstructor(device, message, header).start()
+        bluetoothClientConstructor(_devicesMap[deviceAddress], message, header).start()
 
     }
-
-    // Makes a list of sendMessage functions, one for each paired device.
-    val deviceCallbacks : List<(String, String?) -> Unit>
-        get() {
-            return _devicesMap.values.toList().map { {message, header -> sendMessageToDevice(it, message, header) } }
-        }
 
     // Starts the internal bluetooth server controller
     // This is to be called from the activity onResume
     override fun startBluetoothServerController() {
         if (server == null) {
-            server = bluetoothServerControllerConstructor(::innerMessageReceiveCallback).apply {start()}
+            server = bluetoothServerControllerConstructor(::innerMessageReceiveCallback).apply { start() }
+            server
         }
     }
 
@@ -87,7 +67,6 @@ class BluetoothHandlerImpl(private val bluetoothServerControllerConstructor : (B
         server?.cancel()
         server = null
     }
-
 
     private val bluetoothCallbackRoster : MutableMap<String, MutableList<BluetoothMessageCallback>> = mutableMapOf()
 

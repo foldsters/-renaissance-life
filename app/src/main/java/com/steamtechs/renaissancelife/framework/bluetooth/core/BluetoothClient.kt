@@ -1,7 +1,7 @@
 package com.steamtechs.renaissancelife.framework.bluetooth.core
 
-abstract class BluetoothClient : Thread() {
+interface BluetoothClient {
 
-    abstract override fun run()
+    fun start()
 
 }

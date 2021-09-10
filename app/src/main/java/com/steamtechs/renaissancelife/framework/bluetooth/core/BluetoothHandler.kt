@@ -5,11 +5,11 @@ import com.steamtechs.renaissancelife.framework.bluetooth.util.BluetoothMessageC
 
 interface BluetoothHandler {
 
-    // Public device map, getter gets all the paired devices
-    val devicesMap: HashMap<String, BluetoothDevice?>
+    // Public device map from address to device, getter gets all the paired devices
+    val devicesMap: HashMap<String, String>
 
     // Sends message to the device's server
-    fun sendMessageToDevice(device: BluetoothDevice?, message: String, header: String? = null)
+    fun sendMessageToDevice(deviceAddress: String?, message: String, header: String? = null)
 
     // Starts the bluetooth server controller
     // This is to be called from the activity onResume

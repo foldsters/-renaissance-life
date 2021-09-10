@@ -1,4 +1,4 @@
-package com.steamtechs.renaissancelife.framework.bluetooth.implementation
+package com.steamtechs.renaissancelife.framework.bluetooth.implementation.old
 
 
 import android.bluetooth.BluetoothDevice
@@ -7,16 +7,15 @@ import com.steamtechs.renaissancelife.framework.bluetooth.core.BluetoothClient
 import com.steamtechs.renaissancelife.framework.bluetooth.util.BluetoothMessageRequestModel
 import com.steamtechs.renaissancelife.framework.bluetooth.util.BluetoothUUID
 import com.steamtechs.renaissancelife.framework.bluetooth.util.encodeBluetoothMessageRequestModel
-import kotlinx.coroutines.*
 import java.io.BufferedOutputStream
 import java.lang.Exception
 import java.lang.IllegalArgumentException
 
-class BluetoothClientImpl(
+class BluetoothClientOldImpl(
     device: BluetoothDevice?,
     private val message: String,
     header: String? = null
-): BluetoothClient {
+): BluetoothClient, Thread() {
 
     private val socket = device?.createRfcommSocketToServiceRecord(BluetoothUUID) ?:
         throw IllegalArgumentException("Real Bluetooth Client Device must not be null")
@@ -26,13 +25,7 @@ class BluetoothClientImpl(
     private val messageRequestModel = BluetoothMessageRequestModel(header, message)
     private val messageRequestString = encodeBluetoothMessageRequestModel(messageRequestModel)
 
-    private var job : Job? = null
-
-    override fun start() {
-        job = CoroutineScope(Dispatchers.IO).launch { run() }
-    }
-
-    private fun run() {
+    override fun run() {
         Log.i(tag, "Connecting")
 
         // Try to connect to the server

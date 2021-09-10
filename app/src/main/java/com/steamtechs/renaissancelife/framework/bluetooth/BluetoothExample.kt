@@ -21,24 +21,26 @@ fun BluetoothExample() {
     val modifier = Modifier
 
     val appViewModel = viewModel<AppViewModel>()
-    val bluetoothHandler = appViewModel.mockBluetoothHandlerImpl
+    val bluetoothHandler = appViewModel.bluetoothHandler
 
-    val deviceList = bluetoothHandler.devicesMap.values.toList()
-    val deviceInfo = deviceList.map { "${it?.name ?: "Unknown"} \n ${it?.address}" }
+    val deviceList = bluetoothHandler.devicesMap.toList()
+    val deviceInfo = deviceList.map { (address, name) -> "$address \n $name" }
 
     var message by remember { mutableStateOf("") }
 
     val onSetMessage : (String) -> Unit = { message = it }
 
-    val sendDeviceCallbacks = deviceList.map { { bluetoothHandler.sendMessageToDevice(it, message, "Chat")  } }
+    val sendChatCallbacks = deviceList.map { (address, _) -> { bluetoothHandler.sendMessageToDevice(address, message, "Chat")  } }
+    val sendSyncCallbacks = deviceList.map { (address, _) -> { appViewModel.exampleRepositoryBluetoothSync(address)  } }
 
-    var showMenu by remember { mutableStateOf(false) }
+    var showChatMenu by remember { mutableStateOf(false) }
+    var showSyncMenu by remember { mutableStateOf(false) }
 
     val receivedMessagesData : List<BluetoothMessageResponseModel> by appViewModel.receivedChatMessages.observeAsState(listOf())
 
     Log.i("Chat", receivedMessagesData.toString())
 
-    val syncButtonCallback : () -> Unit = appViewModel::exampleRepositoryBluetoothSync
+    val syncButtonCallback : (String) -> Unit = appViewModel::exampleRepositoryBluetoothSync
 
 
     Column{
@@ -49,18 +51,18 @@ fun BluetoothExample() {
 
             Box(modifier.weight(1f)) {
 
-                if (showMenu)
+                if (showChatMenu)
                 {
                     ContextMenu(
                         menuItems = deviceInfo,
-                        onClickCallbacks = sendDeviceCallbacks,
-                        showMenu = showMenu,
-                        onDismiss = {showMenu = false
+                        onClickCallbacks = sendChatCallbacks,
+                        showMenu = showChatMenu,
+                        onDismiss = {showChatMenu = false
                                      onSetMessage("")}
                     )
                 }
 
-                Button(onClick = { showMenu = true }, modifier = modifier) {
+                Button(onClick = { showChatMenu = true }, modifier = modifier) {
                     Text("Send")
                 }
 
@@ -68,15 +70,27 @@ fun BluetoothExample() {
             }
         }
 
-        Button(onClick = syncButtonCallback) {
-            Text(text="Sync")
+        Box {
+
+            if (showSyncMenu) {
+                ContextMenu(
+                    menuItems = deviceInfo,
+                    onClickCallbacks = sendSyncCallbacks,
+                    showMenu = true,
+                    onDismiss = { showSyncMenu = false }
+                )
+            }
+
+            Button(onClick = { showSyncMenu = true }) {
+                Text(text = "Sync")
+            }
         }
 
 
         for (receivedMessageData in receivedMessagesData) {
             Row {
                 Column {
-                    Text(receivedMessageData.header.toString(), fontSize = 3.em, color = Color(0xFFAAAAAA))
+                    Text(receivedMessageData.deviceName.toString(), fontSize = 3.em, color = Color(0xFFAAAAAA))
                     Text(receivedMessageData.deviceAddress ?: "UNKNOWN", fontSize = 3.em, color = Color(0xFFAAAAAA))
                 }
                 Spacer(modifier = Modifier.width(5.dp))
@@ -87,8 +101,6 @@ fun BluetoothExample() {
 
     }
 }
-
-
 
 
 @Composable

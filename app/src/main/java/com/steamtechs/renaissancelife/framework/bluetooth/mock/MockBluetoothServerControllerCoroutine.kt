@@ -4,23 +4,32 @@ import android.util.Log
 import com.steamtechs.renaissancelife.framework.bluetooth.core.BluetoothServerController
 import com.steamtechs.renaissancelife.framework.bluetooth.util.BluetoothMessageResponseModel
 import com.steamtechs.renaissancelife.framework.bluetooth.util.decodeBluetoothMessageRequestString
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
-class MockBluetoothServerController(private val messageCallback: (BluetoothMessageResponseModel) -> Unit) :
-    BluetoothServerController, Thread() {
+class MockBluetoothServerControllerCoroutine(private val messageCallback: (BluetoothMessageResponseModel) -> Unit) :
+    BluetoothServerController {
 
     private var cancelled = false
+    private var job : Job? = null
 
-    override fun run() {
+    override fun start() {
+        job = GlobalScope.launch { run() }
+    }
+
+    private suspend fun run() {
 
         Log.i("server", "running")
 
-        while (!cancelled) {
+        while (true) {
 
             val available = MockBluetoothHardware.available()
 
             when {
                 available == -1 -> {
-                    cancel()
+                    return
                 }
                 available > 0   -> {
                     Log.i("server", "reading message")
@@ -34,12 +43,13 @@ class MockBluetoothServerController(private val messageCallback: (BluetoothMessa
                 }
             }
 
-            sleep(100)
+            delay(100)
 
         }
     }
 
     override fun cancel() {
-        cancelled = true
+        GlobalScope.launch { job?.cancel() }
+
     }
 }

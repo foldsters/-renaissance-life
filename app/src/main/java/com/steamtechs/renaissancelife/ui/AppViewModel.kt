@@ -1,6 +1,8 @@
 package com.steamtechs.renaissancelife.ui
 
 
+import android.bluetooth.BluetoothClass
+import android.bluetooth.BluetoothDevice
 import android.util.Log
 import androidx.lifecycle.*
 import com.steamtechs.core.data.CategoryRepository
@@ -13,6 +15,7 @@ import com.steamtechs.core.interactors.*
 import com.steamtechs.platform.datasources.PCategoryRepository
 import com.steamtechs.renaissancelife.R
 import com.steamtechs.renaissancelife.di.MockBluetoothHandler
+import com.steamtechs.renaissancelife.di.RealBluetoothHandler
 import com.steamtechs.renaissancelife.framework.bluetooth.core.BluetoothHandler
 import com.steamtechs.renaissancelife.framework.bluetooth.util.BluetoothMessageResponseModel
 import com.steamtechs.renaissancelife.framework.datasources.RoomCategoryDataSource
@@ -24,7 +27,7 @@ import javax.inject.Inject
 class AppViewModel @Inject constructor(
     private var initCategoryRepository : CategoryRepository,
     private val roomCategoryDataSource : RoomCategoryDataSource,
-    @MockBluetoothHandler val mockBluetoothHandlerImpl : BluetoothHandler
+    @RealBluetoothHandler val bluetoothHandler: BluetoothHandler
 ) : ViewModel() {
 
     // Setup
@@ -106,14 +109,14 @@ class AppViewModel @Inject constructor(
 
 
     init {
-        mockBluetoothHandlerImpl.startBluetoothServerController()
-        mockBluetoothHandlerImpl.registerBluetoothMessageResponseCallback("Update", ::serverCallbackUpdate)
-        mockBluetoothHandlerImpl.registerBluetoothMessageResponseCallback("Merge", ::serverCallbackMerge)
+        bluetoothHandler.startBluetoothServerController()
+        bluetoothHandler.registerBluetoothMessageResponseCallback("Update", ::serverCallbackUpdate)
+        bluetoothHandler.registerBluetoothMessageResponseCallback("Merge", ::serverCallbackMerge)
     }
 
     val tag = "View Model"
 
-    fun exampleRepositoryBluetoothSync() {
+    fun exampleRepositoryBluetoothSync(deviceAddress : String) {
 
         Log.i(tag, "Starting Sync")
 
@@ -159,7 +162,7 @@ class AppViewModel @Inject constructor(
 
         Log.i(tag, "2. Sending $encodedTargetRepository")
 
-        mockBluetoothHandlerImpl.sendMessageToDevice(null, encodedTargetRepository, "Update")
+        bluetoothHandler.sendMessageToDevice(deviceAddress, encodedTargetRepository, "Update")
 
     }
 
@@ -171,6 +174,7 @@ class AppViewModel @Inject constructor(
         val syncString = bluetoothMessageResponseModel.message
 
         val fakeInitRepository = CategoryRepository(PCategoryRepository())
+        val deviceAddress = bluetoothMessageResponseModel.deviceAddress
 
         fakeInitRepository.addCategories(
             listOf(
@@ -203,7 +207,7 @@ class AppViewModel @Inject constructor(
 
         Log.i(tag, "4. Sending $newEncodedRepository")
 
-        mockBluetoothHandlerImpl.sendMessageToDevice(null, newEncodedRepository, "Merge")
+        bluetoothHandler.sendMessageToDevice(deviceAddress, newEncodedRepository, "Merge")
 
     }
 
@@ -229,7 +233,7 @@ class AppViewModel @Inject constructor(
     val receivedChatMessages : MutableLiveData<List<BluetoothMessageResponseModel>> = MutableLiveData(listOf())
 
     init {
-        mockBluetoothHandlerImpl.registerBluetoothMessageResponseCallback("Chat", ::serverCallbackChat)
+        bluetoothHandler.registerBluetoothMessageResponseCallback("Chat", ::serverCallbackChat)
     }
 
     private fun serverCallbackChat(bluetoothMessageResponseModel: BluetoothMessageResponseModel) {

@@ -1,7 +1,8 @@
 package com.steamtechs.renaissancelife.framework.bluetooth.core
 
-abstract class BluetoothServer : Thread() {
+interface BluetoothServer {
 
-    abstract override fun run()
+    fun start()
+    fun cancel()
 
 }
